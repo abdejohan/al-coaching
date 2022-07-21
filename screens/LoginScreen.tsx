@@ -27,8 +27,8 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
 	return (
 		<View style={styles.container}>
 			<StatusBar style='light' />
-			<ImageBackground source={login_background} style={styles.backgroundImage}>
-				<View style={[styles.innerContainer, { backgroundColor: colors.darkfade }]}>
+			<ImageBackground source={login_background} style={{ flex: 1 }}>
+				<View style={[styles.innerContainer, { backgroundColor: colors.darkestfade }]}>
 					<KeyboardAwareScrollView
 						contentContainerStyle={{
 							justifyContent: "flex-end",
@@ -51,12 +51,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "flex-end",
 		backgroundColor: "black",
-	},
-	backgroundImage: {
-		flex: 1,
-		left: 0,
-		top: 0,
-		resizeMode: "cover",
 	},
 	title: {
 		fontSize: 34,

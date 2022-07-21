@@ -91,7 +91,7 @@ const fontConfig = {
 
 const defaultColors = {
 	accent: "#C6CED5",
-	primary: "#1B3E5B",
+	primary: "#d0a058",
 	background: "#F4F4F6",
 	text: "#7E858B",
 	highlightText: "#121212",
@@ -107,7 +107,7 @@ const defaultColors = {
 	negative: "#FF0000",
 	neutral: "#4c4c4c",
 	darkfade: "#00000066",
-	darkestfade: "#00000090",
+	darkestfade: "#00000099",
 	black: "#121212",
 	white: "#FFFFFF",
 };
@@ -115,7 +115,7 @@ const defaultColors = {
 const darkColors = {
 	...defaultColors,
 	accent: "#1C1C1C",
-	primary: "#1B3E5B",
+	primary: "#d0a058",
 	background: "#111111",
 	text: "#989898",
 	highlightText: "#E8E8E8",

@@ -41,9 +41,9 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordProps> = ({ navigation }) => 
 	};
 
 	return (
-		<ImageBackground source={login_background} style={{ flex: 1, resizeMode: "cover" }}>
+		<ImageBackground source={login_background} style={{ flex: 1 }}>
 			<KeyboardAwareScrollView
-				style={{ backgroundColor: colors.darkfade, flex: 1 }}
+				style={{ backgroundColor: colors.darkestfade, flex: 1 }}
 				contentContainerStyle={{
 					justifyContent: "flex-end",
 					flex: 1,

@@ -11,7 +11,7 @@ import { StatusBar } from "expo-status-bar";
 import { useTheme } from "react-native-paper";
 import Button from "../components/common/Button";
 import Constants from "expo-constants";
-import { Headline, Subheading, Text } from "../typography";
+import { Headline, Text } from "../typography";
 interface IntroProps {
 	navigation: any;
 }
@@ -22,8 +22,8 @@ const IntroScreen: React.FC<IntroProps> = ({ navigation }) => {
 	return (
 		<View style={styles.container}>
 			<StatusBar style='light' />
-			<ImageBackground source={login_background} style={styles.backgroundImage}>
-				<View style={[styles.innerContainer, { backgroundColor: colors.darkfade }]}>
+			<ImageBackground source={login_background} style={{ flex: 1 }}>
+				<View style={[styles.innerContainer, { backgroundColor: colors.darkestfade }]}>
 					<Headline
 						style={{
 							color: colors.white,
@@ -67,13 +67,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "black",
 		justifyContent: "flex-end",
 	},
-	backgroundImage: {
-		flex: 1,
-		left: 0,
-		top: 0,
-		width: Dimensions.get("window").width,
-		height: Dimensions.get("window").height,
-	},
+
 	title: {
 		fontSize: 34,
 		fontWeight: "bold",
