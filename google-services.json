@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1057650471989",
+    "project_id": "al-coaching",
+    "storage_bucket": "al-coaching.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1057650471989:android:1414579208251ff6c52d7c",
+        "android_client_info": {
+          "package_name": "app.al.coaching"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1057650471989-op5moplk6tv2f0d37k4rdk7n4hcasicb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA09JJjENBXY9XMm_72i_V9dnyn8LHTz_4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1057650471989-op5moplk6tv2f0d37k4rdk7n4hcasicb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1057650471989-japa72k2qc9o1bre4c1sgosi3pdi36on.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "io.al.coaching",
+                "app_store_id": "1576329079"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

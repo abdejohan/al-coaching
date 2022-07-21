@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1057650471989-japa72k2qc9o1bre4c1sgosi3pdi36on.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1057650471989-japa72k2qc9o1bre4c1sgosi3pdi36on</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCdnez6btrj1Dh518m2qCRXsp7Zw37UOyQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1057650471989</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>io.al.coaching</string>
+	<key>PROJECT_ID</key>
+	<string>al-coaching</string>
+	<key>STORAGE_BUCKET</key>
+	<string>al-coaching.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1057650471989:ios:89aa0c91fe3fd25ac52d7c</string>
+</dict>
+</plist>
