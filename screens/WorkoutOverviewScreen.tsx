@@ -1,5 +1,5 @@
 import { StyleSheet, View, Dimensions } from "react-native";
-import placeholder_image from "../assets/images/placeholder_image.jpg";
+import placeholder_image from "../assets/images/placeholder_image.png";
 import { Divider, useTheme } from "react-native-paper";
 import Constants from "expo-constants";
 import HeroScrollView from "../components/common/HeroScrollView";

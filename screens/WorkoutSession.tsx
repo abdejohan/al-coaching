@@ -1,7 +1,7 @@
 import { Alert, StyleSheet, View } from "react-native";
 import { Divider, useTheme } from "react-native-paper";
 import HeroScrollView from "../components/common/HeroScrollView";
-import placeholder_image from "../assets/images/placeholder_image.jpg";
+import placeholder_image from "../assets/images/placeholder_image.png";
 import { Ionicons } from "@expo/vector-icons";
 import ListItemInput from "../components/common/ListItemInput";
 import Button from "../components/common/Button";
