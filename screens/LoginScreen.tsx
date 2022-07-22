@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from "react";
-import { StyleSheet, View, ImageBackground } from "react-native";
+import { StyleSheet, ImageBackground } from "react-native";
 import { useTheme } from "react-native-paper";
-import { StatusBar } from "expo-status-bar";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import login_background from "../assets/images/login_background.jpg";
 import AuthContext from "../context/Auth";
@@ -25,44 +24,23 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
 	}, [token, isLoggingOut, user]);
 
 	return (
-		<View style={styles.container}>
-			<StatusBar style='light' />
-			<ImageBackground source={login_background} style={{ flex: 1 }}>
-				<View style={[styles.innerContainer, { backgroundColor: colors.darkestfade }]}>
-					<KeyboardAwareScrollView
-						contentContainerStyle={{
-							justifyContent: "flex-end",
-							flex: 1,
-							paddingHorizontal: 20,
-							marginBottom: 50,
-						}}>
-						<PasswordLogin navigation={navigation} />
-					</KeyboardAwareScrollView>
-				</View>
-			</ImageBackground>
-		</View>
+		<ImageBackground source={login_background} style={{ flex: 1 }}>
+			<KeyboardAwareScrollView
+				style={{ backgroundColor: colors.darkestfade }}
+				contentContainerStyle={styles.scrollContentContainer}>
+				<PasswordLogin navigation={navigation} />
+			</KeyboardAwareScrollView>
+		</ImageBackground>
 	);
 };
 
 export default LoginScreen;
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
+	scrollContentContainer: {
 		justifyContent: "flex-end",
-		backgroundColor: "black",
-	},
-	title: {
-		fontSize: 34,
-		fontWeight: "bold",
-		paddingTop: 10,
-		color: "white",
-	},
-	text: {
-		color: "white",
-		fontSize: 16,
-	},
-	innerContainer: {
 		flex: 1,
+		paddingHorizontal: 20,
+		marginBottom: 50,
 	},
 });

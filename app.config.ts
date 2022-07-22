@@ -15,7 +15,7 @@ export default {
 		splash: {
 			image: "./assets/images/splash.png",
 			resizeMode: "contain",
-			backgroundColor: "#121212",
+			backgroundColor: "#3DA6AF",
 		},
 		updates: {
 			fallbackToCacheTimeout: 0,
@@ -36,12 +36,13 @@ export default {
 			useNextNotificationsApi: true,
 			adaptiveIcon: {
 				foregroundImage: "./assets/images/adaptive-icon.png",
-				backgroundColor: "#121212",
+				backgroundColor: "#3DA6AF",
 			},
 		},
 		androidStatusBar: {
 			barStyle: "light-content",
-			backgroundColor: "#121212",
+			//backgroundColor: "#121212",
+			translucent: true,
 		},
 		web: {
 			favicon: "./assets/images/favicon.png",

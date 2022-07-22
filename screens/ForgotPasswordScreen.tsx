@@ -43,13 +43,8 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordProps> = ({ navigation }) => 
 	return (
 		<ImageBackground source={login_background} style={{ flex: 1 }}>
 			<KeyboardAwareScrollView
-				style={{ backgroundColor: colors.darkestfade, flex: 1 }}
-				contentContainerStyle={{
-					justifyContent: "flex-end",
-					flex: 1,
-					paddingHorizontal: 20,
-					marginBottom: 20,
-				}}>
+				style={{ backgroundColor: colors.darkestfade }}
+				contentContainerStyle={styles.scrollContentContainer}>
 				<Headline style={{ color: colors.white, marginBottom: 5 }}>
 					Glömt lösenord
 				</Headline>
@@ -122,3 +117,12 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordProps> = ({ navigation }) => 
 };
 
 export default ForgotPasswordScreen;
+
+const styles = StyleSheet.create({
+	scrollContentContainer: {
+		justifyContent: "flex-end",
+		flex: 1,
+		paddingHorizontal: 20,
+		marginBottom: 50,
+	},
+});

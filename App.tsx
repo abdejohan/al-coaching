@@ -11,6 +11,7 @@ import Navigation from "./navigation";
 import * as SystemUI from "expo-system-ui";
 import NetInfo from "@react-native-community/netinfo";
 import NoConnection from "./components/NoConnection";
+import { StatusBar } from "expo-status-bar";
 
 const App: React.FC = () => {
 	const { isLoadingComplete, initialRoute } = useCachedResources();
@@ -59,6 +60,7 @@ const App: React.FC = () => {
 				<NotificationsContextProvider>
 					<WeeklyReportContextProvider>
 						<ThemeProvider>
+							<StatusBar />
 							<Navigation initialRoute={initialRoute} />
 							{!networkConnection && <NoConnection />}
 						</ThemeProvider>
