@@ -50,12 +50,10 @@ const DietCategoryScreen: React.FC<DietCategoryProps> = ({ navigation, route }) 
 	);
 
 	const SecondRoute = () => (
-		<View style={{ flex: 1 }}>
+		<View style={{ borderRadius: 20, backgroundColor: colors.surface }}>
 			{!meal.products[0]?.description ? (
 				meal?.products?.map((product: Product, index: number) => (
-					<View
-						key={index}
-						style={{ backgroundColor: colors.surface, borderRadius: roundness }}>
+					<View key={index}>
 						<ListItemBasic
 							style={{ padding: 10, marginRight: 10 }}
 							title={product.name}
@@ -94,18 +92,10 @@ const DietCategoryScreen: React.FC<DietCategoryProps> = ({ navigation, route }) 
 	]);
 
 	return (
-		<View style={[styles.container, { backgroundColor: colors.background }]}>
+		<View style={{ paddingHorizontal: 20, backgroundColor: colors.background, flex: 1 }}>
 			<TabBarView renderScene={renderScene} routes={routes} />
 		</View>
 	);
 };
 
 export default DietCategoryScreen;
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		padding: 20,
-		paddingBottom: 0,
-	},
-});
