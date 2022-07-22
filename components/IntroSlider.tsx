@@ -54,7 +54,7 @@ const IntroSlider: React.FC<SliderProps> = ({ navigation }) => {
 
 	const introDone = async () => {
 		try {
-			await AsyncStorage.setItem("seenIntro", "true");
+			await AsyncStorage.setItem("SEEN_INTRO", "true");
 		} catch (e) {
 			Alert.alert("something went wrong, try again later. :(");
 		} finally {

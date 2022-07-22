@@ -20,6 +20,7 @@ import { useDialog } from "../hooks/useDialog";
 import * as Linking from "expo-linking";
 import * as Notifications from "expo-notifications";
 import { Headline, Subheading, Caption } from "../typography";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface SettingsProps {
 	navigation: any;
@@ -28,12 +29,18 @@ interface SettingsProps {
 const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 	const { useAxios } = useAxiosAuthenticated();
 	const { colors, roundness } = useTheme();
-	const { user, logout, updateUser } = useContext(AuthContext);
+	const {
+		user,
+		darkMode: globaldarkMode,
+		logout,
+		updateUser,
+		setDarkMode,
+	} = useContext(AuthContext);
 	const { askForPermission } = useContext(NotificationsContext);
 	const [allowNotifications, setAllowNotifications] = useState(
 		user?.send_notifications === 1 ? true : false
 	);
-	const [darkmode, setDarkmode] = useState(user?.color_mode === "dark" ? true : false);
+	const [darkmode, setDarkmode] = useState(globaldarkMode ? true : false);
 	const [nativeNotificationPermission, setNativeNotificationPermission] =
 		useState<boolean>(true);
 	const { DialogBox, showDialog, hideDialog } = useDialog();
@@ -70,16 +77,16 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 	};
 
 	useEffect(() => {
-		if (darkmode && user?.color_mode !== "dark") {
-			editClient({ data: { color_mode: "dark" } })
-				.then(() => updateUser())
-				.catch(() => Alert.alert("Något gick fel, försök igen."));
-		}
-		if (!darkmode && user?.color_mode !== "light") {
-			editClient({ data: { color_mode: "light" } })
-				.then(() => updateUser())
-				.catch(() => Alert.alert("Något gick fel, försök igen."));
-		}
+		const handleDarkMode = async () => {
+			if (darkmode) {
+				await AsyncStorage.setItem("DARK_MODE", "true");
+				setDarkMode(true);
+			} else {
+				await AsyncStorage.setItem("DARK_MODE", "false");
+				setDarkMode(false);
+			}
+		};
+		handleDarkMode();
 	}, [darkmode]);
 
 	useEffect(() => {

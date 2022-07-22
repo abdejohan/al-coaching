@@ -14,7 +14,7 @@ import NoConnection from "./components/NoConnection";
 import { StatusBar } from "expo-status-bar";
 
 const App: React.FC = () => {
-	const { isLoadingComplete, initialRoute } = useCachedResources();
+	const { isLoadingComplete, initialRoute, darkMode } = useCachedResources();
 	const [networkConnection, setNetworkConnection] = useState<boolean>(false);
 
 	// This makes sure that the app is only visible for uers if they have network connection
@@ -56,7 +56,7 @@ const App: React.FC = () => {
 	}
 	return (
 		<SafeAreaProvider>
-			<AuthContextProvider initialRoute={initialRoute}>
+			<AuthContextProvider initialRoute={initialRoute} darkMode={darkMode}>
 				<NotificationsContextProvider>
 					<WeeklyReportContextProvider>
 						<ThemeProvider>

@@ -27,7 +27,7 @@ interface StartProps {
 
 const StartScreen: React.FC<StartProps> = ({ navigation, route }) => {
 	const status = route?.params?.status;
-	const { user, seenIntro } = useContext(AuthContext);
+	const { user, initialRoute, darkMode } = useContext(AuthContext);
 	const { colors, roundness } = useTheme();
 	const { useAxios } = useAxiosAuthenticated();
 	const [{ data: sizesData, loading: sizesLoading, error: sizesError }, fetchSizes] =
@@ -36,8 +36,8 @@ const StartScreen: React.FC<StartProps> = ({ navigation, route }) => {
 		});
 
 	useEffect(() => {
-		!seenIntro && navigation.navigate("IntroSlider");
-	}, [seenIntro]);
+		initialRoute === "Intro" && navigation.navigate("IntroSlider");
+	}, [initialRoute]);
 
 	useEffect(() => {
 		if (status === "success") {
@@ -53,7 +53,7 @@ const StartScreen: React.FC<StartProps> = ({ navigation, route }) => {
 				justifyContent: "space-between",
 				paddingBottom: 50,
 			}}>
-			<StatusBar style={user?.color_mode === "light" ? "dark" : "light"} />
+			<StatusBar style={darkMode ? "light" : "dark"} />
 			<View
 				style={{
 					justifyContent: "space-between",

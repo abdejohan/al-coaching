@@ -158,9 +158,8 @@ export const NavigationDarkTheme: RNTheme = {
 };
 
 const InnerThemeProvider: React.FC = ({ children }) => {
-	// const colorScheme = useColorScheme();
-	const { user } = useContext(AuthContext);
-	const paperTheme = user?.color_mode === "dark" ? PaperThemeDark : PaperTheme;
+	const { darkMode } = useContext(AuthContext);
+	const paperTheme = darkMode ? PaperThemeDark : PaperTheme;
 
 	return <PaperProvider theme={paperTheme}>{children}</PaperProvider>;
 };

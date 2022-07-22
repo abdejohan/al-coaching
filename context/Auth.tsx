@@ -25,7 +25,8 @@ type ContextType = {
 	token: string | null;
 	user: User | null;
 	logout: () => void;
-	seenIntro: boolean;
+	darkMode: boolean;
+	setDarkMode: (value: boolean) => void;
 	isLoggingOut: boolean;
 	login: (response: LoginResponse) => void;
 	updateUser: () => void;
@@ -36,15 +37,16 @@ const AuthContext = React.createContext<ContextType>({
 	user: null,
 	logout: () => {},
 	isLoggingOut: false,
-	seenIntro: false,
+	darkMode: false,
+	setDarkMode: () => {},
 	login: () => {},
 	updateUser: () => {},
 });
 
 export const AuthContextProvider: FunctionComponent = (props: any) => {
-	const { initialRoute, children } = props;
+	const { initialRoute, darkMode: darkModeProps, children } = props;
+	const [darkMode, setDarkMode] = useState<boolean>(darkModeProps);
 	const [token, setToken] = useState<string | null>(null);
-	const seenIntro = initialRoute === "Login" ? true : false;
 	const [user, setUser] = useState<User | null>(null);
 	const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 	const [, fetchUser] = useAxios<LoginWithTokenResponse>(
@@ -123,12 +125,14 @@ export const AuthContextProvider: FunctionComponent = (props: any) => {
 			token,
 			user,
 			isLoggingOut,
-			seenIntro,
+			initialRoute,
+			darkMode,
+			setDarkMode,
 			logout,
 			login,
 			updateUser,
 		}),
-		[token, isLoggingOut, logout, login, seenIntro, updateUser]
+		[token, isLoggingOut, logout, login, initialRoute, updateUser, darkMode, setDarkMode]
 	);
 
 	return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>;

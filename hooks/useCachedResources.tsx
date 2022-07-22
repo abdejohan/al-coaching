@@ -7,6 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function useCachedResources() {
 	const [isLoadingComplete, setLoadingComplete] = useState(false);
 	const [initialRoute, setInitialRoute] = useState<string>("Intro");
+	const [darkMode, setDarkMode] = useState<boolean>(false);
 
 	// Load any resources or data that we need prior to rendering the app
 	useEffect(() => {
@@ -28,11 +29,15 @@ export default function useCachedResources() {
 					"ubuntu-bold-italic": require("../assets/fonts/Ubuntu-BoldItalic.ttf"),
 				});
 				// Set the initial Route for the navigation, if the user has seen intro the initial route is "Login"
-				const seenIntroValue = await AsyncStorage.getItem("seenIntro");
-				if (seenIntroValue === "true") {
+				const SEEN_INTRO = await AsyncStorage.getItem("SEEN_INTRO");
+				if (SEEN_INTRO === "true") {
 					setInitialRoute("Login");
-				} else {
-					setInitialRoute("Intro");
+				}
+
+				// Check if the user has a prefered color theme"
+				const DARK_MODE = await AsyncStorage.getItem("DARK_MODE");
+				if (DARK_MODE === "true") {
+					setDarkMode(true);
 				}
 			} catch (e) {
 				// We might want to provide this error information to an error reporting service
@@ -46,5 +51,5 @@ export default function useCachedResources() {
 		loadResourcesAndDataAsync();
 	}, []);
 
-	return { isLoadingComplete, initialRoute };
+	return { isLoadingComplete, initialRoute, darkMode };
 }
