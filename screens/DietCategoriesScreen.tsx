@@ -19,7 +19,10 @@ const DietCategoriesScreen: React.FC<DietCategoriesProps> = ({ navigation, route
 		products?.forEach((product: Product) => {
 			mealCalorieCount += product.kcal;
 		});
-		return mealCalorieCount;
+		if (isFinite(mealCalorieCount)) {
+			return mealCalorieCount;
+		}
+		return 0;
 	};
 
 	const totalMealCaloriePercentage = (products: Array<Product>) => {
@@ -28,7 +31,11 @@ const DietCategoriesScreen: React.FC<DietCategoriesProps> = ({ navigation, route
 			productCalorieCount += product.kcal;
 		});
 		const perc = (productCalorieCount / totalDailyCalories) * 100; // calculate percentage
-		return Math.round(perc * 10) / 10; // rounds to one decimal
+		const roundedPercentage = Math.round(perc * 10) / 10; // rounds to one decimal
+		if (isFinite(roundedPercentage)) {
+			return roundedPercentage;
+		}
+		return 0;
 	};
 
 	return (
@@ -40,7 +47,7 @@ const DietCategoriesScreen: React.FC<DietCategoriesProps> = ({ navigation, route
 						title={meal.name}
 						description={`${totalMealCalories(meal.products)} kalorier`}
 						icon='fire'
-						percentage={totalMealCaloriePercentage(meal.products)}
+						percentage={`${totalMealCaloriePercentage(meal.products)}`}
 						onPress={() => navigation.navigate("DietCategory", { meal: meal })}
 					/>
 				))
