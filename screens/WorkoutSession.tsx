@@ -209,6 +209,8 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 				placeholder='Kommentar..'
 				placeholderTextColor={colors.text}
 				returnKeyType='done'
+				style={{ backgroundColor: colors.onSurface }}
+				outlineColor={colors.onSurface}
 				styleInput={{ backgroundColor: colors.onSurface, fontSize: 16 }}
 				multiline
 				numberOfLines={4}
