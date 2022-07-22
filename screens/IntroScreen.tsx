@@ -5,7 +5,7 @@ import {
 	Linking,
 	TouchableOpacity,
 } from "react-native";
-import login_background from "../assets/images/login_background.jpg";
+import intro_background from "../assets/images/intro_background.jpg";
 import { useTheme } from "react-native-paper";
 import Button from "../components/common/Button";
 import Constants from "expo-constants";
@@ -20,7 +20,7 @@ const IntroScreen: React.FC<IntroProps> = ({ navigation }) => {
 
 	return (
 		<View style={{ flex: 1 }}>
-			<ImageBackground source={login_background} style={{ flex: 1 }}>
+			<ImageBackground source={intro_background} style={{ flex: 1 }}>
 				<View style={[styles.innerContainer, { backgroundColor: colors.darkestfade }]}>
 					<Headline style={{ color: colors.white, fontSize: 50, lineHeight: 50 }}>
 						Vägen mot en hälsosam livsstil
