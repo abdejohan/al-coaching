@@ -64,9 +64,10 @@ export default {
 		],
 		extra: {
 			apiUrl: process.env.API_URL,
-			coachSite: process.env.COACH_SITE,
+			coachSiteUrl: process.env.COACH_SITE_URL,
 			coachName: process.env.COACH_NAME,
 			chatAppID: process.env.CHAT_APP_ID,
+			privacyPolicyUrl: process.env.PRIVACY_POLICY_URL,
 		},
 	},
 };

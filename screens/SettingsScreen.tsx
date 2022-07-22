@@ -21,6 +21,7 @@ import * as Linking from "expo-linking";
 import * as Notifications from "expo-notifications";
 import { Headline, Subheading, Caption } from "../typography";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Constants from "expo-constants";
 
 interface SettingsProps {
 	navigation: any;
@@ -289,6 +290,7 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 					Policy och villkor
 				</Text>
 				<ListItemSetting
+					onPress={() => Linking.openURL(Constants!.manifest!.extra!.privacyPolicyUrl)}
 					title='Sekretesspolicy'
 					rightIcon={
 						<View style={{ marginRight: 15 }}>
@@ -299,17 +301,19 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 						<Ionicons name='document-text-outline' size={24} color={colors.primary} />
 					}
 				/>
-				<ListItemSetting
-					title='Användarvillkor'
-					rightIcon={
-						<View style={{ marginRight: 15 }}>
-							<FontAwesome5 name='chevron-right' size={22} color={colors.onSurface} />
-						</View>
-					}
-					leftIcon={
-						<Ionicons name='document-text-outline' size={24} color={colors.primary} />
-					}
-				/>
+				{false && (
+					<ListItemSetting
+						title='Användarvillkor'
+						rightIcon={
+							<View style={{ marginRight: 15 }}>
+								<FontAwesome5 name='chevron-right' size={22} color={colors.onSurface} />
+							</View>
+						}
+						leftIcon={
+							<Ionicons name='document-text-outline' size={24} color={colors.primary} />
+						}
+					/>
+				)}
 			</View>
 		</ScrollView>
 	);

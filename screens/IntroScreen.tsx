@@ -34,7 +34,7 @@ const IntroScreen: React.FC<IntroProps> = ({ navigation }) => {
 						Logga in
 					</Button>
 					<TouchableOpacity
-						onPress={() => Linking.openURL(Constants!.manifest!.extra!.apiUrl)}
+						onPress={() => Linking.openURL(Constants!.manifest!.extra!.coachSiteUrl)}
 						style={{ padding: 10 }}>
 						<Text style={{ color: colors.white, textAlign: "center" }}>
 							Ansök om coaching
