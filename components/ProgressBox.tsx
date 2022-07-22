@@ -14,7 +14,7 @@ interface ProgressBoxProps {
 const ProgressBox: React.FC<ProgressBoxProps> = (props) => {
 	const { title, sizes, customStyle } = props;
 	const { colors } = useTheme();
-	const [data, setData] = useState<Array<number>>([1, 1]);
+	const [data, setData] = useState<Array<number>>([0, 0]);
 	const [progress, setProgress] = useState<number>(0);
 	const [progressBoxWidth, setProgressBoxWidth] = useState<number>(80);
 

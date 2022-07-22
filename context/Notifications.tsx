@@ -118,18 +118,13 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 
 		// This listener is fired whenever a notification is received while the app is foregrounded
 		notificationListener.current = Notifications.addNotificationReceivedListener(
-			(incomingNotification) => {
-				console.log(incomingNotification);
-				setNotification(incomingNotification);
-			}
+			(incomingNotification) => setNotification(incomingNotification)
 		);
 		// This listener is fired whenever a user taps on or interacts
 		// with a notification (works when app is foregrounded, backgrounded, or killed)
 		responseListener.current = Notifications.addNotificationResponseReceivedListener(
 			(incomingNotification) => {
-				console.log(" -------- incomingNotification --------");
 				setNotificationResponse(incomingNotification);
-				console.log(incomingNotification);
 			}
 		);
 

@@ -34,12 +34,10 @@ const DietPlanScreen: React.FC<DietProps> = ({ navigation, route }) => {
 	});
 
 	useEffect(() => {
-		console.log("///////////////////////");
 		if (dietPlanData) {
 			const withoutFirstAndLast = dietPlanData.diet.days.slice(1, -1);
 			const parsedDietPlanData = JSON.parse(withoutFirstAndLast);
 			setDietPlan(parsedDietPlanData);
-			console.log(parsedDietPlanData);
 		}
 	}, [dietPlanData]);
 
