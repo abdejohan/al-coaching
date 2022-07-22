@@ -28,6 +28,7 @@ import { useContext } from "react";
 import AuthContext from "../context/Auth";
 import NotificationsContext from "../context/Notifications";
 import Constants from "expo-constants";
+import DietPlanScreen from "../screens/DietPlanScreen";
 
 const LoggedInStack = createNativeStackNavigator<LoggedInStackParmList>();
 export default function LoggedInNavigator() {
@@ -65,6 +66,14 @@ export default function LoggedInNavigator() {
 			<LoggedInStack.Screen
 				name='DietCategory'
 				component={DietCategoryScreen}
+				options={{
+					headerLeft: () => backIcon(),
+					title: "Kostschema",
+				}}
+			/>
+			<LoggedInStack.Screen
+				name='DietPlan'
+				component={DietPlanScreen}
 				options={{
 					headerLeft: () => backIcon(),
 					title: "Kostschema",
@@ -336,7 +345,7 @@ function DietTabNavigator() {
 				name='Diet'
 				component={DietScreen}
 				options={{
-					title: "Kostschema",
+					title: "Kostscheman",
 				}}
 			/>
 		</DietTabStack.Navigator>
