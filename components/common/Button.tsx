@@ -7,7 +7,7 @@ interface ButtonProps {
 	disable?: boolean;
 	mode?: "text" | "outlined" | "contained" | undefined;
 	style?: TextStyle;
-	onPress: any;
+	onPress?: any;
 	loading?: boolean;
 	color?: string;
 	backgroundColor?: string;

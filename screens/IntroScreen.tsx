@@ -20,31 +20,30 @@ const IntroScreen: React.FC<IntroProps> = ({ navigation }) => {
 	const { colors } = useTheme();
 
 	return (
-		<View style={{ flex: 1 }}>
+		<ImageBackground source={intro_background} style={{ flex: 1 }}>
 			<StatusBar style='light' />
-			<ImageBackground source={intro_background} style={{ flex: 1 }}>
-				<View style={[styles.innerContainer, { backgroundColor: colors.darkestfade }]}>
-					<Headline style={{ color: colors.white, fontSize: 50, lineHeight: 50 }}>
-						Vägen mot en hälsosam livsstil
-					</Headline>
-					<Headline style={{ color: colors.white, fontFamily: "ubuntu-light" }}>
-						Tillsammans når vi de träningsmål du inte trodde var möjliga
-					</Headline>
-					<Button
-						onPress={() => navigation.navigate("Login")}
-						style={{ marginBottom: 10, marginTop: 20 }}>
-						Logga in
-					</Button>
-					<TouchableOpacity
-						onPress={() => Linking.openURL(Constants!.manifest!.extra!.coachSiteUrl)}
-						style={{ padding: 10 }}>
-						<Text style={{ color: colors.white, textAlign: "center" }}>
-							Ansök om coaching
-						</Text>
-					</TouchableOpacity>
-				</View>
-			</ImageBackground>
-		</View>
+			<View style={[styles.innerContainer, { backgroundColor: colors.darkestfade }]}>
+				<Headline style={{ color: colors.white, fontSize: 50, lineHeight: 50 }}>
+					Alla som har ett mål når ett vägskäl
+				</Headline>
+				<Headline style={{ color: colors.white, fontFamily: "ubuntu-light" }}>
+					Man kan välja höger och ge upp, eller vänster och ta en omväg men ändå nå målet
+					något senare.
+				</Headline>
+				<Button
+					onPress={() => navigation.navigate("Login")}
+					style={{ marginBottom: 10, marginTop: 20 }}>
+					Logga in
+				</Button>
+				<TouchableOpacity
+					onPress={() => Linking.openURL(Constants!.manifest!.extra!.coachSiteUrl)}
+					style={{ padding: 10 }}>
+					<Text style={{ color: colors.white, textAlign: "center" }}>
+						Ansök om coaching
+					</Text>
+				</TouchableOpacity>
+			</View>
+		</ImageBackground>
 	);
 };
 

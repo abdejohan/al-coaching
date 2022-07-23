@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Dimensions, View, ImageBackground, Alert } from "react-native";
+import { StyleSheet, View, ImageBackground, Alert } from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
 import Button from "./common/Button";
 import slider_background1 from "../assets/images/slider_background1.jpg";
@@ -13,42 +13,54 @@ interface SliderProps {
 	navigation?: any;
 }
 
+const slides = [
+	{
+		key: 1,
+		title: "Varmt välkommen",
+		text: "Bra där, ditt första steg mot ett hälsosammare liv. Dagen innan du börjar kommer du erhålla dina upplägg.",
+		image: slider_background1,
+	},
+	{
+		key: 2,
+		title: "Du är viktig",
+		text: "Dina upplägg byggs i samråd med dig och de svar du angivit vid hälsodelegationen.",
+		image: slider_background2,
+	},
+	{
+		key: 3,
+		title: "En investering för livet",
+		text: "Var smart nu, använd mig. Ställ frågor och bruka din tiden väl.",
+		image: slider_background3,
+	},
+];
+
 const IntroSlider: React.FC<SliderProps> = ({ navigation }) => {
 	const { colors } = useTheme();
-	const slides = [
-		{
-			key: 1,
-			title: "Din hälsoapp",
-			text: `Du kommer inom 3 dagar ha erhållit ditt skräddarsydda kost och träningsschema i appen. Detta är personligt anpassat efter dig och dina behov och ska inte.`,
-			image: slider_background1,
-		},
-		{
-			key: 2,
-			title: "Din hälsoapp",
-			text: "Du kommer inom 3 dagar ha erhållit ditt skräddarsydda kost och träningsschema i appen. Detta är personligt anpassat efter dig och dina behov och ska inte.",
-			image: slider_background2,
-		},
-		{
-			key: 3,
-			title: "Din hälsoapp",
-			text: `Du kommer inom 3 dagar ha erhållit ditt skräddarsydda kost och träningsschema i appen. Detta är personligt anpassat efter dig och dina behov och ska inte.`,
-			image: slider_background3,
-		},
-	];
 
 	const renderItem = ({ item }: any) => {
 		return (
-			<View style={{ flex: 1, backgroundColor: colors.black }}>
-				<ImageBackground style={styles.backgroundImage} source={item.image} />
-				<View style={[styles.container, { backgroundColor: colors.darkfade }]}>
-					<Headline style={{ color: colors.white, fontSize: 50, lineHeight: 50 }}>
+			<ImageBackground style={{ flex: 1 }} source={item.image}>
+				<View style={[styles.container, { backgroundColor: colors.darkestfade }]}>
+					<Headline
+						style={{
+							color: colors.white,
+							fontSize: 50,
+							lineHeight: 50,
+							textAlign: "center",
+						}}>
 						{item.title}
 					</Headline>
-					<Subheading style={{ color: colors.white, fontSize: 16, textAlign: "center" }}>
+					<Subheading
+						style={{
+							color: colors.white,
+							fontSize: 16,
+							textAlign: "center",
+							paddingHorizontal: 40,
+						}}>
 						{item.text}
 					</Subheading>
 				</View>
-			</View>
+			</ImageBackground>
 		);
 	};
 
@@ -56,7 +68,6 @@ const IntroSlider: React.FC<SliderProps> = ({ navigation }) => {
 		try {
 			await AsyncStorage.setItem("SEEN_INTRO", "true");
 		} catch (e) {
-			Alert.alert("something went wrong, try again later. :(");
 		} finally {
 			navigation.navigate("Start");
 		}
@@ -83,18 +94,9 @@ export default IntroSlider;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 40,
+		paddingHorizontal: 20,
 		justifyContent: "flex-end",
 		alignItems: "center",
 		paddingBottom: 200,
-	},
-	backgroundImage: {
-		position: "absolute",
-		flex: 1,
-		left: 0,
-		top: 0,
-
-		width: Dimensions.get("window").width,
-		height: Dimensions.get("window").height,
 	},
 });
