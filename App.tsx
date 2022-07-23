@@ -60,7 +60,7 @@ const App: React.FC = () => {
 				<NotificationsContextProvider>
 					<WeeklyReportContextProvider>
 						<ThemeProvider>
-							<StatusBar />
+							<StatusBar style='light' />
 							<Navigation initialRoute={initialRoute} />
 							{!networkConnection && <NoConnection />}
 						</ThemeProvider>

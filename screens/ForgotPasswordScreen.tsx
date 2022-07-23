@@ -10,6 +10,7 @@ import InputValidation from "../components/InputValidation";
 import { ValidInput } from "../types/types";
 import { useDialog } from "../hooks/useDialog";
 import { Headline, Subheading, Paragraph, Text } from "../typography";
+import { StatusBar } from "expo-status-bar";
 
 interface ForgotPasswordProps {
 	navigation: any;
@@ -42,6 +43,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordProps> = ({ navigation }) => 
 
 	return (
 		<ImageBackground source={login_background} style={{ flex: 1 }}>
+			<StatusBar style='light' />
 			<KeyboardAwareScrollView
 				style={{ backgroundColor: colors.darkestfade }}
 				contentContainerStyle={styles.scrollContentContainer}>

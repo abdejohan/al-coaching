@@ -5,6 +5,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import login_background from "../assets/images/login_background.jpg";
 import AuthContext from "../context/Auth";
 import PasswordLogin from "../components/PasswordLogin";
+import { StatusBar } from "expo-status-bar";
 
 interface LoginProps {
 	navigation: any;
@@ -25,6 +26,7 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
 
 	return (
 		<ImageBackground source={login_background} style={{ flex: 1 }}>
+			<StatusBar style='light' />
 			<KeyboardAwareScrollView
 				style={{ backgroundColor: colors.darkestfade }}
 				contentContainerStyle={styles.scrollContentContainer}>

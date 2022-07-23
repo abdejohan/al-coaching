@@ -10,6 +10,7 @@ import { useTheme } from "react-native-paper";
 import Button from "../components/common/Button";
 import Constants from "expo-constants";
 import { Headline, Text } from "../typography";
+import { StatusBar } from "expo-status-bar";
 
 interface IntroProps {
 	navigation: any;
@@ -20,6 +21,7 @@ const IntroScreen: React.FC<IntroProps> = ({ navigation }) => {
 
 	return (
 		<View style={{ flex: 1 }}>
+			<StatusBar style='light' />
 			<ImageBackground source={intro_background} style={{ flex: 1 }}>
 				<View style={[styles.innerContainer, { backgroundColor: colors.darkestfade }]}>
 					<Headline style={{ color: colors.white, fontSize: 50, lineHeight: 50 }}>
