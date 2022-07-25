@@ -19,12 +19,10 @@ type LoggedInStackParmList = {
 	Settings: undefined;
 	Subscription: undefined;
 	IntroSlider: undefined;
-	Recipe: undefined;
 	WorkoutOverview: undefined;
 	WorkoutSession: undefined;
-	DietCategories: undefined;
 	DietPlan: undefined;
-	DietCategory: undefined;
+	Ingredients: undefined;
 	Modal: undefined;
 	NotFound: undefined;
 	Chat: undefined;
@@ -58,10 +56,9 @@ type WorkoutTabParmList = {
 };
 
 type DietTabParmList = {
-	Diet: undefined;
-	DietCategories: undefined;
-	DietCategory: undefined;
-	Recipe: undefined;
+	DietPlans: undefined;
+	DietPlan: undefined;
+	Ingredients: undefined;
 	Modal: undefined;
 	NotFound: undefined;
 };

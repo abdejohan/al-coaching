@@ -9,7 +9,7 @@ interface DietProps {
 	navigation: any;
 }
 
-const DietScreen: React.FC<DietProps> = ({ navigation }) => {
+const DietPlansScreen: React.FC<DietProps> = ({ navigation }) => {
 	const { useAxios } = useAxiosAuthenticated();
 	const { colors } = useTheme();
 	const [{ data: dietPlans, loading: dietLoading, error: dietError }] = useAxios({
@@ -63,7 +63,7 @@ const DietScreen: React.FC<DietProps> = ({ navigation }) => {
 	);
 };
 
-export default DietScreen;
+export default DietPlansScreen;
 
 const styles = StyleSheet.create({
 	container: {

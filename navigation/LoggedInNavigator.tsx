@@ -6,10 +6,8 @@ import WorkoutScreen from "../screens/WorkoutScreen";
 import WorkoutOverviewScreen from "../screens/WorkoutOverviewScreen";
 import WorkoutSession from "../screens/WorkoutSession";
 import CheckInScreen from "../screens/CheckInScreen";
-import DietScreen from "../screens/DietScreen";
-import DietCategoriesScreen from "../screens/DietCategoriesScreen";
-import DietCategoryScreen from "../screens/DietCategoryScreen";
-import RecipeScreen from "../screens/RecipeScreen";
+import DietPlansScreen from "../screens/DietPlansScreen";
+import IngredientsScreen from "../screens/IngredientsScreen";
 import ChatScreen from "../screens/ChatScreen";
 import { IconButton, TouchableRipple, useTheme } from "react-native-paper";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -56,16 +54,8 @@ export default function LoggedInNavigator() {
 				options={{ headerShown: false }}
 			/>
 			<LoggedInStack.Screen
-				name='DietCategories'
-				component={DietCategoriesScreen}
-				options={{
-					headerLeft: () => backIcon(),
-					title: "Måltider",
-				}}
-			/>
-			<LoggedInStack.Screen
-				name='DietCategory'
-				component={DietCategoryScreen}
+				name='Ingredients'
+				component={IngredientsScreen}
 				options={{
 					headerLeft: () => backIcon(),
 					title: "Kostschema",
@@ -77,15 +67,6 @@ export default function LoggedInNavigator() {
 				options={{
 					headerLeft: () => backIcon(),
 					title: "Kostschema",
-				}}
-			/>
-			<LoggedInStack.Screen
-				name='Recipe'
-				component={RecipeScreen}
-				options={{
-					title: "Recept",
-					headerBackVisible: false,
-					headerShown: false,
 				}}
 			/>
 			<LoggedInStack.Screen
@@ -342,8 +323,8 @@ function DietTabNavigator() {
 				headerStyle: { backgroundColor: colors.background },
 			}}>
 			<DietTabStack.Screen
-				name='Diet'
-				component={DietScreen}
+				name='DietPlans'
+				component={DietPlansScreen}
 				options={{
 					title: "Kostscheman",
 				}}
