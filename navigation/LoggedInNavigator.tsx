@@ -58,7 +58,7 @@ export default function LoggedInNavigator() {
 				component={IngredientsScreen}
 				options={{
 					headerLeft: () => backIcon(),
-					title: "Kostschema",
+					title: "Ingredienser",
 				}}
 			/>
 			<LoggedInStack.Screen
@@ -66,7 +66,7 @@ export default function LoggedInNavigator() {
 				component={DietPlanScreen}
 				options={{
 					headerLeft: () => backIcon(),
-					title: "Kostschema",
+					title: "Måltider",
 				}}
 			/>
 			<LoggedInStack.Screen

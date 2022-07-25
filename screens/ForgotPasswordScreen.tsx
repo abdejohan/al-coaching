@@ -4,7 +4,7 @@ import { Caption, useTheme, TextInput } from "react-native-paper";
 import Button from "../components/common/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
-import login_background from "../assets/images/login_background.jpg";
+import intro_background from "../assets/images/intro_background.jpg";
 import { useNavigation } from "@react-navigation/native";
 import InputValidation from "../components/InputValidation";
 import { ValidInput } from "../types/types";
@@ -42,7 +42,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordProps> = ({ navigation }) => 
 	};
 
 	return (
-		<ImageBackground source={login_background} style={{ flex: 1 }}>
+		<ImageBackground source={intro_background} style={{ flex: 1 }}>
 			<StatusBar style='light' />
 			<KeyboardAwareScrollView
 				style={{ backgroundColor: colors.darkestfade }}

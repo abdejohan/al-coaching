@@ -1,8 +1,8 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Divider, useTheme } from "react-native-paper";
 import ListItemBasic from "../components/common/ListItemBasic";
-import { Paragraph, Subheading } from "../typography";
+import { Paragraph, Subheading, Text } from "../typography";
 
 interface DietCategoryProps {
 	navigation: any;
@@ -21,7 +21,12 @@ const IngredientsScreen: React.FC<DietCategoryProps> = ({ navigation, route }) =
 	const { colors, roundness } = useTheme();
 
 	return (
-		<View style={{ paddingHorizontal: 20, backgroundColor: colors.background, flex: 1 }}>
+		<ScrollView
+			contentContainerStyle={{ padding: 20, paddingBottom: 200 }}
+			style={{
+				backgroundColor: colors.background,
+				flex: 1,
+			}}>
 			{meals ? (
 				<>
 					<View style={{ borderRadius: roundness, backgroundColor: colors.surface }}>
@@ -69,7 +74,7 @@ const IngredientsScreen: React.FC<DietCategoryProps> = ({ navigation, route }) =
 					/>
 				</View>
 			)}
-		</View>
+		</ScrollView>
 	);
 };
 
