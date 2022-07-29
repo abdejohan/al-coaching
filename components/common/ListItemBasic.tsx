@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TextStyle, View } from "react-native";
 import { List, useTheme } from "react-native-paper";
 import { Paragraph } from "../../typography";
 
@@ -7,6 +7,7 @@ interface ListItemBasicProps {
 	title: string;
 	sets?: string;
 	disabled?: boolean;
+	titleZtyle: TextStyle;
 	onPress?: () => void;
 	description?: string | (() => ReactElement);
 	descriptionLeft?: string | (() => ReactElement);
@@ -14,7 +15,7 @@ interface ListItemBasicProps {
 }
 
 const ListItemBasic: React.FC<ListItemBasicProps> = (props) => {
-	const { disabled, descriptionRight, descriptionLeft } = props;
+	const { disabled, descriptionRight, descriptionLeft, titleZtyle } = props;
 	const { colors } = useTheme();
 
 	return (
@@ -26,7 +27,7 @@ const ListItemBasic: React.FC<ListItemBasicProps> = (props) => {
 					marginVertical: descriptionLeft || descriptionRight ? 3 : 0,
 				}}
 				titleStyle={{
-					justifyContent: "center",
+					...titleZtyle,
 					color: colors.highlightText,
 					fontFamily: "ubuntu-medium",
 					textDecorationLine: disabled ? "line-through" : "none",
