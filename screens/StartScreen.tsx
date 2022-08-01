@@ -39,6 +39,7 @@ const StartScreen: React.FC<StartProps> = ({ navigation, route }) => {
 		initialRoute === "Intro" && navigation.navigate("IntroSlider");
 	}, [initialRoute]);
 
+	// This will update the charts values if the weekly report has successfully been submitted
 	useEffect(() => {
 		if (status === "success") {
 			fetchSizes().catch((error) => Alert.alert("Sizes " + error.response.data.error));
@@ -80,9 +81,7 @@ const StartScreen: React.FC<StartProps> = ({ navigation, route }) => {
 					/>
 				)}
 			</View>
-			{{
-				/*user?.weekly_update_sent === 0*/
-			} && (
+			{user?.weekly_update_sent === 0 && (
 				<View style={{ marginBottom: 10, width: "100%" }}>
 					<TouchableOpacity onPress={() => navigation.navigate("CheckIn")}>
 						<ImageBackground

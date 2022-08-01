@@ -30,6 +30,7 @@ type ContextType = {
 	isLoggingOut: boolean;
 	login: (response: LoginResponse) => void;
 	updateUser: () => void;
+	initialRoute: string;
 };
 
 const AuthContext = React.createContext<ContextType>({
@@ -41,6 +42,7 @@ const AuthContext = React.createContext<ContextType>({
 	setDarkMode: () => {},
 	login: () => {},
 	updateUser: () => {},
+	initialRoute: "Intro",
 });
 
 export const AuthContextProvider: FunctionComponent = (props: any) => {

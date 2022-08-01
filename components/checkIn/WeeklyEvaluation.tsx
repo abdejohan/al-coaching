@@ -26,7 +26,7 @@ const WeeklyEvaluation: React.FC = () => {
 					flexDirection: "column",
 				}}>
 				<Headline style={{ color: colors.highlightText, marginBottom: 20 }}>
-					*Fattas titel*
+					Föregående vecka
 				</Headline>
 				<Divider style={{ backgroundColor: colors.primary, marginBottom: 20 }} />
 				<Subheading style={{ color: colors.highlightText }}>

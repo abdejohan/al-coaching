@@ -165,7 +165,9 @@ const Measures: React.FC = () => {
 			</View>
 			{/* BELOW HERE IS THE UPLOAD IMAGES ELEMENTS */}
 			<View style={{ marginBottom: 20 }}>
-				<Subheading style={{ marginBottom: 20 }}>Bilder (Frivilligt)</Subheading>
+				<Subheading style={{ marginBottom: 20 }}>
+					Bilder (Frivilligt, men fördelaktigt)
+				</Subheading>
 				<View
 					onLayout={(event) => {
 						const { width } = event.nativeEvent.layout;

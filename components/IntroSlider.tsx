@@ -29,7 +29,7 @@ const slides = [
 	{
 		key: 3,
 		title: "En investering för livet",
-		text: "Var smart nu, använd mig. Ställ frågor och bruka din tiden väl.",
+		text: "Var smart nu, använd mig. Ställ frågor och bruka din tid väl.",
 		image: slider_background3,
 	},
 ];
