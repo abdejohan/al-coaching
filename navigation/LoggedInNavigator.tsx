@@ -27,6 +27,7 @@ import AuthContext from "../context/Auth";
 import NotificationsContext from "../context/Notifications";
 import Constants from "expo-constants";
 import DietPlanScreen from "../screens/DietPlanScreen";
+import MealsScreen from "../screens/MealsScreen";
 
 const LoggedInStack = createNativeStackNavigator<LoggedInStackParmList>();
 export default function LoggedInNavigator() {
@@ -56,18 +57,26 @@ export default function LoggedInNavigator() {
 			<LoggedInStack.Screen
 				name='Ingredients'
 				component={IngredientsScreen}
-				options={{
+				options={({ route }: any) => ({
 					headerLeft: () => backIcon(),
-					title: "Ingredienser",
-				}}
+					title: route?.params?.name,
+				})}
+			/>
+			<LoggedInStack.Screen
+				name='Meals'
+				component={MealsScreen}
+				options={({ route }: any) => ({
+					headerLeft: () => backIcon(),
+					title: route?.params?.name,
+				})}
 			/>
 			<LoggedInStack.Screen
 				name='DietPlan'
 				component={DietPlanScreen}
-				options={{
+				options={({ route }: any) => ({
 					headerLeft: () => backIcon(),
-					title: "Måltider",
-				}}
+					title: route?.params?.name,
+				})}
 			/>
 			<LoggedInStack.Screen
 				name='WorkoutOverview'

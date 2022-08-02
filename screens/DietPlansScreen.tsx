@@ -33,7 +33,12 @@ const DietPlansScreen: React.FC<DietProps> = ({ navigation }) => {
 					<ListItem
 						key={index}
 						title={dietPlan?.name}
-						onPress={() => navigation.navigate("DietPlan", { dietPlanId: dietPlan.id })}
+						onPress={() =>
+							navigation.navigate("DietPlan", {
+								dietPlanId: dietPlan.id,
+								name: dietPlan?.name,
+							})
+						}
 					/>
 				))}
 			{!dietPlans && !dietLoading && (

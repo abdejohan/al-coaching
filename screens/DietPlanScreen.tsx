@@ -55,7 +55,9 @@ const DietPlanScreen: React.FC<DietProps> = ({ navigation, route }) => {
 						key={index}
 						title={day?.name}
 						icon='fire'
-						onPress={() => navigation.navigate("Ingredients", { meals: day.meals })}
+						onPress={() =>
+							navigation.navigate("Meals", { meals: day.meals, name: day.name })
+						}
 					/>
 				))}
 			{!dietPlanData && !dietLoading && (
