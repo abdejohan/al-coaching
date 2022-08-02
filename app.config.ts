@@ -5,7 +5,7 @@ export default {
 		owner: "coach-apps",
 		name: "AL Coaching",
 		slug: "al-coaching",
-		version: "1.4.8",
+		version: "1.5.0",
 		orientation: "portrait",
 		icon: "./assets/images/icon.png",
 		scheme: "myapp",
@@ -22,7 +22,7 @@ export default {
 		},
 		assetBundlePatterns: ["**/*"],
 		ios: {
-			supportsTablet: true,
+			supportsTablet: false,
 			usesIcloudStorage: true,
 			buildNumber: "1",
 			googleServicesFile: "./GoogleService-Info.plist",
