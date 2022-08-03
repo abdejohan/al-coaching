@@ -20,7 +20,7 @@ const CircleChart: React.FC<CircleChartProps> = (props) => {
 	const { colors, roundness } = useTheme();
 	const screenWidth = Dimensions.get("window").width;
 	const [weightDifference, setWeightDifference] = useState<number>(0);
-	const [infoText, setInfoText] = useState<string>("");
+	const [infoText, setInfoText] = useState<string>("Du har gått ner");
 	const [displayChart, setDisplayChart] = useState<boolean>(false);
 	const [progress, setProgress] = useState<number>(0);
 

@@ -105,7 +105,7 @@ export const AuthContextProvider: FunctionComponent = (props: any) => {
 		useAxios.clearCache();
 		await SecureStore.deleteItemAsync(AsyncKeys.authToken);
 		await SecureStore.deleteItemAsync(AsyncKeys.expoToken); // delete to prevent notifications from being sent
-		await AsyncStorage.clear();
+		// await AsyncStorage.clear();
 		await saveTokenToStore(null);
 		setIsLoggingOut(false);
 	}, [saveTokenToStore]);
