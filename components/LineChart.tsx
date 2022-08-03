@@ -34,7 +34,7 @@ const LineChart: React.FC<LineChartProps> = (props) => {
 		<View style={[styles.container, { backgroundColor: colors.surface }]}>
 			<FadedView display delay={500} duration={1000}>
 				<Subheading style={{ alignSelf: "flex-start" }}>Nuvarande vikt</Subheading>
-				{sizes && !sizes?.error && (
+				{sizes && !sizes?.error ? (
 					<View style={{ flexDirection: "row" }}>
 						<Count
 							duration={1500}
@@ -48,6 +48,26 @@ const LineChart: React.FC<LineChartProps> = (props) => {
 									? sizes[0]?.weight[0]?.value
 									: user?.start_weight
 							}
+							style={{
+								color: colors.highlightText,
+								fontFamily: "ubuntu-medium",
+								fontSize: 22,
+								lineHeight: 22,
+								textAlignVertical: "center",
+								top: Platform.OS === "android" ? 0 : 2,
+							}}
+						/>
+						<Headline style={{ alignSelf: "flex-start", color: colors.highlightText }}>
+							{" "}
+							kg
+						</Headline>
+					</View>
+				) : (
+					<View style={{ flexDirection: "row" }}>
+						<Count
+							duration={1500}
+							start={user?.current_weight ? user?.current_weight - 3 : 0}
+							stop={user?.current_weight ? user?.current_weight : 0}
 							style={{
 								color: colors.highlightText,
 								fontFamily: "ubuntu-medium",
