@@ -23,7 +23,7 @@ const LineChart: React.FC<LineChartProps> = (props) => {
 	// This useEffect sets the data array for the line chart, and the current user weight
 	// Values from API comes as strings and are converted to numbers
 	useEffect(() => {
-		if (sizes) {
+		if (sizes && !sizes?.error) {
 			const weightArray = sizes.filter((sizeSet: Array<object>) => "weight" in sizeSet);
 			const weightValues = weightArray[0].weight.map((sizeArray: any) => sizeArray.value);
 			weightValues.length > 1 && setDataArray(weightValues);
@@ -34,7 +34,7 @@ const LineChart: React.FC<LineChartProps> = (props) => {
 		<View style={[styles.container, { backgroundColor: colors.surface }]}>
 			<FadedView display delay={500} duration={1000}>
 				<Subheading style={{ alignSelf: "flex-start" }}>Nuvarande vikt</Subheading>
-				{sizes && (
+				{sizes && !sizes?.error && (
 					<View style={{ flexDirection: "row" }}>
 						<Count
 							duration={1500}

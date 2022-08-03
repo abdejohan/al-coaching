@@ -19,7 +19,7 @@ const ProgressBox: React.FC<ProgressBoxProps> = (props) => {
 	const [progressBoxWidth, setProgressBoxWidth] = useState<number>(80);
 
 	useEffect(() => {
-		if (sizes) {
+		if (sizes && !sizes?.error) {
 			sizes?.forEach((sizeSet: any) => {
 				if ("biceps" in sizeSet && title === "Biceps") {
 					const bicepValues = sizeSet.biceps.map((sizeArray: any) => sizeArray.value);
