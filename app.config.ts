@@ -5,7 +5,7 @@ export default {
 		owner: "coach-apps",
 		name: "AL Coaching",
 		slug: "al-coaching",
-		version: "1.5.0",
+		version: "1.5.4",
 		orientation: "portrait",
 		icon: "./assets/images/icon.png",
 		scheme: "myapp",
