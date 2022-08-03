@@ -22,6 +22,7 @@ import * as Notifications from "expo-notifications";
 import { Headline, Subheading, Caption } from "../typography";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
+import avatar_placeholder from "../assets/images/avatar_placeholder.png";
 
 interface SettingsProps {
 	navigation: any;
@@ -151,7 +152,7 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 					/>
 				) : (
 					<Image
-						source={require("../assets/images/avatar_placeholder.png")}
+						source={avatar_placeholder}
 						style={{ ...styles.image, borderRadius: roundness }}
 					/>
 				)}

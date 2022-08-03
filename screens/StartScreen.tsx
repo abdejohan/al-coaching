@@ -12,6 +12,7 @@ import AuthContext from "../context/Auth";
 import CircleChart from "../components/CircleChart";
 import LineChart from "../components/LineChart";
 import ProgressBox from "../components/ProgressBox";
+import avatar_placeholder from "../assets/images/avatar_placeholder.png";
 import { useTheme, IconButton } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import check_in_background from "../assets/images/check_in_background.jpg";
@@ -76,7 +77,7 @@ const StartScreen: React.FC<StartProps> = ({ navigation, route }) => {
 					/>
 				) : (
 					<Image
-						source={require("../assets/images/avatar_placeholder.png")}
+						source={avatar_placeholder}
 						style={{ width: 50, height: 50, borderRadius: roundness }}
 					/>
 				)}
