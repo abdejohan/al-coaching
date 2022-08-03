@@ -40,7 +40,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 	const [userComment, setUserComment] = useState<string>("");
 	const { colors } = useTheme();
 	const { useAxios } = useAxiosAuthenticated();
-	const [, postWorkoutResults] = useAxios(
+	const [{ loading: postWorkoutResultsLoading }, postWorkoutResults] = useAxios(
 		{
 			url: "/track/exercise",
 			method: "POST",
@@ -127,7 +127,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 						<Ionicons name='ios-chevron-back-outline' size={24} color='black' />
 					</Button>
 					<Button
-						disable={!allSetsAreValid}
+						disable={postWorkoutResultsLoading}
 						style={{ flex: 1, marginBottom: 20 }}
 						onPress={() =>
 							postWorkoutResults({
@@ -147,11 +147,17 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 												workoutDayID: workoutDayID,
 										  });
 								})
-								.catch((error) => Alert.alert(`Något gick fel. Försök igen!`))
+								.catch((error) => {
+									console.log(error);
+									Alert.alert(`Något gick fel. Försök igen!`);
+								})
 						}>
-						{workoutIndex + 1 === Object.keys(workouts).length
-							? "Slutför träningspass!"
-							: "Klar, nästa övning"}
+						{!postWorkoutResultsLoading
+							? workoutIndex + 1 === Object.keys(workouts).length
+								? "Slutför träningspass!"
+								: "Klar, nästa övning"
+							: null}
+						{postWorkoutResultsLoading && "Sparar.."}
 					</Button>
 				</View>
 			}>
