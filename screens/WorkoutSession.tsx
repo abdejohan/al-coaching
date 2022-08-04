@@ -1,7 +1,7 @@
 import { Alert, StyleSheet, View } from "react-native";
 import { Divider, useTheme } from "react-native-paper";
 import HeroScrollView from "../components/common/HeroScrollView";
-import placeholder_image from "../assets/images/placeholder_image.png";
+import placeholder_image from "../assets/images/placeholder_image.jpg";
 import { Ionicons } from "@expo/vector-icons";
 import ListItemInput from "../components/common/ListItemInput";
 import Button from "../components/common/Button";
@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
 import InputValidation from "../components/InputValidation";
 import { Paragraph, Subheading } from "../typography";
+import { StatusBar } from "expo-status-bar";
 
 interface WorkoutSessionProps {
 	navigation: any;
@@ -104,30 +105,69 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 	}, [workoutSets]);
 
 	return (
-		<HeroScrollView
-			video={
-				workouts[workoutIndex].video
-					? workouts[workoutIndex]?.video?.substring(
-							workouts[workoutIndex]?.video.length - 11
-					  )
-					: null
-			}
-			image={!workouts[workoutIndex].video ? placeholder_image : null}
-			title={workouts[workoutIndex].name}
-			button={
-				<>
-					<Button
-						disable={!allSetsAreValid || postWorkoutResultsLoading}
-						onPress={() =>
-							postWorkoutResults({
-								data: {
-									exercise_id: workoutDayID,
-									scheme_day_id: workouts[workoutIndex].id,
-									saved_sets: workoutSets,
-									comment: userComment,
-								},
-							})
-								.then(() => {
+		<>
+			<StatusBar hidden />
+			<HeroScrollView
+				video={
+					workouts[workoutIndex].video
+						? workouts[workoutIndex]?.video?.substring(
+								workouts[workoutIndex]?.video.length - 11
+						  )
+						: null
+				}
+				image={!workouts[workoutIndex].video ? placeholder_image : null}
+				title={workouts[workoutIndex].name}
+				button={
+					<>
+						<Button
+							disable={!allSetsAreValid || postWorkoutResultsLoading}
+							onPress={() =>
+								postWorkoutResults({
+									data: {
+										exercise_id: workoutDayID,
+										scheme_day_id: workouts[workoutIndex].id,
+										saved_sets: workoutSets,
+										comment: userComment,
+									},
+								})
+									.then(() => {
+										workoutIndex + 1 === Object.keys(workouts).length
+											? navigation.goBack()
+											: navigation.navigate("WorkoutSession", {
+													workouts,
+													newWorkoutIndex: workoutIndex + 1,
+													workoutDayID: workoutDayID,
+											  });
+									})
+									.catch((error) => Alert.alert(`Något gick fel. Försök igen!`))
+							}>
+							{!postWorkoutResultsLoading
+								? workoutIndex + 1 === Object.keys(workouts).length
+									? "Slutför träningspass!"
+									: "Klar, nästa övning"
+								: null}
+							{postWorkoutResultsLoading && "Sparar.."}
+						</Button>
+						<View style={{ flexDirection: "row" }}>
+							<Button
+								style={{
+									backgroundColor: "lightgrey",
+									marginRight: 10,
+									marginBottom: 20,
+									height: 52,
+								}}
+								onPress={() => navigation.goBack()}>
+								<Ionicons name='ios-chevron-back-outline' size={24} color='black' />
+							</Button>
+							<Button
+								style={{
+									flexGrow: 2,
+									backgroundColor: colors.onSurface,
+									marginLeft: 10,
+									marginBottom: 20,
+									height: 52,
+								}}
+								onPress={() => {
 									workoutIndex + 1 === Object.keys(workouts).length
 										? navigation.goBack()
 										: navigation.navigate("WorkoutSession", {
@@ -135,110 +175,74 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 												newWorkoutIndex: workoutIndex + 1,
 												workoutDayID: workoutDayID,
 										  });
-								})
-								.catch((error) => Alert.alert(`Något gick fel. Försök igen!`))
-						}>
-						{!postWorkoutResultsLoading
-							? workoutIndex + 1 === Object.keys(workouts).length
-								? "Slutför träningspass!"
-								: "Klar, nästa övning"
-							: null}
-						{postWorkoutResultsLoading && "Sparar.."}
-					</Button>
-					<View style={{ flexDirection: "row" }}>
-						<Button
-							style={{
-								backgroundColor: "lightgrey",
-								marginRight: 10,
-								marginBottom: 20,
-								height: 52,
-							}}
-							onPress={() => navigation.goBack()}>
-							<Ionicons name='ios-chevron-back-outline' size={24} color='black' />
-						</Button>
-						<Button
-							style={{
-								flexGrow: 2,
-								backgroundColor: colors.onSurface,
-								marginLeft: 10,
-								marginBottom: 20,
-								height: 52,
-							}}
-							onPress={() => {
-								workoutIndex + 1 === Object.keys(workouts).length
-									? navigation.goBack()
-									: navigation.navigate("WorkoutSession", {
-											workouts,
-											newWorkoutIndex: workoutIndex + 1,
-											workoutDayID: workoutDayID,
-									  });
-							}}>
-							Hoppa över
-						</Button>
-					</View>
-				</>
-			}>
-			<View style={styles.subheader}>
-				<Ionicons
-					name='barbell-outline'
-					style={{
-						marginRight: 5,
-						transform: [{ rotate: "135deg" }],
-					}}
-					color={colors.primary}
-					size={14}
-				/>
-				<Paragraph>{`Övning ${workoutIndex + 1} av ${
-					Object.keys(workouts).length
-				}`}</Paragraph>
-			</View>
-			<Divider style={{ marginBottom: 15 }} />
-			<View style={styles.gridTitles}>
-				<Paragraph style={{ fontFamily: "ubuntu-medium", color: colors.highlightText }}>
-					Upplägg
-				</Paragraph>
-				<View style={styles.inputContainer}>
-					<Paragraph>Reps</Paragraph>
-					<Paragraph>Vikt</Paragraph>
-				</View>
-			</View>
-			{workouts[workoutIndex].sets.map((set: Set, index: number) => (
-				<View key={index} style={{ marginBottom: 1 }}>
-					<ListItemInput
-						key={uniqeKey}
-						weightsValue={(value: number) => addWeightToSets(value, index)}
-						repetitionsValue={(value: number) => addRepsToSets(value, index)}
-						title={`Set ${set.set_id}`}
-						description={`${set.reps} Reps \u00B7 Vila: ${set.seconds}`}
-						descriptionStyle={{ fontSize: 14, marginLeft: -15 }}
-						comment={set.comment ? set.comment : `Denna övning saknar kommentar.`}
+								}}>
+								Hoppa över
+							</Button>
+						</View>
+					</>
+				}>
+				<View style={styles.subheader}>
+					<Ionicons
+						name='barbell-outline'
+						style={{
+							marginRight: 5,
+							transform: [{ rotate: "135deg" }],
+						}}
+						color={colors.primary}
+						size={14}
 					/>
-					<Divider />
+					<Paragraph>{`Övning ${workoutIndex + 1} av ${
+						Object.keys(workouts).length
+					}`}</Paragraph>
 				</View>
-			))}
-			<Subheading
-				style={{
-					fontSize: 16,
-					marginTop: 20,
-					color: colors.highlightText,
-					fontFamily: "ubuntu-medium",
-				}}>
-				Kommentar
-			</Subheading>
-			<InputValidation
-				value={userComment}
-				onValidation={(valid: boolean, text) => setUserComment(text)}
-				maxLength={255}
-				placeholder='Kommentar..'
-				placeholderTextColor={colors.text}
-				returnKeyType='done'
-				style={{ backgroundColor: colors.onSurface }}
-				outlineColor={colors.onSurface}
-				styleInput={{ backgroundColor: colors.onSurface, fontSize: 16 }}
-				multiline
-				numberOfLines={4}
-			/>
-		</HeroScrollView>
+				<Divider style={{ marginBottom: 15 }} />
+				<View style={styles.gridTitles}>
+					<Paragraph style={{ fontFamily: "ubuntu-medium", color: colors.highlightText }}>
+						Upplägg
+					</Paragraph>
+					<View style={styles.inputContainer}>
+						<Paragraph>Reps</Paragraph>
+						<Paragraph>Vikt</Paragraph>
+					</View>
+				</View>
+				{workouts[workoutIndex].sets.map((set: Set, index: number) => (
+					<View key={index} style={{ marginBottom: 1 }}>
+						<ListItemInput
+							key={uniqeKey}
+							weightsValue={(value: number) => addWeightToSets(value, index)}
+							repetitionsValue={(value: number) => addRepsToSets(value, index)}
+							title={`Set ${set.set_id}`}
+							description={`${set.reps} Reps \u00B7 Vila: ${set.seconds}`}
+							descriptionStyle={{ fontSize: 14, marginLeft: -15 }}
+							comment={set.comment ? set.comment : `Denna övning saknar kommentar.`}
+						/>
+						<Divider />
+					</View>
+				))}
+				<Subheading
+					style={{
+						fontSize: 16,
+						marginTop: 20,
+						color: colors.highlightText,
+						fontFamily: "ubuntu-medium",
+					}}>
+					Kommentar
+				</Subheading>
+				<InputValidation
+					value={userComment}
+					onValidation={(valid: boolean, text) => setUserComment(text)}
+					maxLength={255}
+					placeholder='Kommentar..'
+					placeholderTextColor={colors.text}
+					returnKeyType='done'
+					style={{ backgroundColor: colors.onSurface }}
+					outlineColor={colors.onSurface}
+					styleInput={{ backgroundColor: colors.onSurface, fontSize: 16 }}
+					multiline
+					numberOfLines={4}
+				/>
+			</HeroScrollView>
+		</>
 	);
 };
 

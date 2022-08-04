@@ -31,6 +31,8 @@ const ParallaxScrollView: React.FC<ParallaxScrollViewProps> = (props) => {
 					{
 						...StyleSheet.absoluteFillObject,
 						height: imageHeight,
+						width: "100%",
+						resizeMode: "cover",
 						alignSelf: "center",
 					},
 					{

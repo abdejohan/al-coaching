@@ -1,11 +1,12 @@
 import { Dimensions, StyleSheet, View } from "react-native";
-import placeholder_image from "../assets/images/placeholder_image.png";
+import placeholder_image from "../assets/images/placeholder_image.jpg";
 import { Divider, useTheme } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "../components/common/Button";
 import ListItemBasic from "../components/common/ListItemBasic";
 import { Headline, Paragraph } from "../typography";
 import ParallaxScrollView from "../animations/ParallaxScrollView";
+import { StatusBar } from "expo-status-bar";
 
 interface WorkoutOverviewProps {
 	navigation: any;
@@ -19,6 +20,7 @@ const WorkoutOverviewScreen: React.FC<WorkoutOverviewProps> = ({ navigation, rou
 
 	return (
 		<View style={{ backgroundColor: colors.onSurface, flex: 1 }}>
+			<StatusBar hidden />
 			<ParallaxScrollView
 				contentContainerStyle={{ padding: 20 }}
 				imageSource={placeholder_image}>
