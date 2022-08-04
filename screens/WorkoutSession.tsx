@@ -115,20 +115,9 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 			image={!workouts[workoutIndex].video ? placeholder_image : null}
 			title={workouts[workoutIndex].name}
 			button={
-				<View style={{ flexDirection: "row" }}>
+				<>
 					<Button
-						style={{
-							backgroundColor: "lightgrey",
-							marginRight: 10,
-							marginBottom: 20,
-							height: 50,
-						}}
-						onPress={() => navigation.goBack()}>
-						<Ionicons name='ios-chevron-back-outline' size={24} color='black' />
-					</Button>
-					<Button
-						disable={postWorkoutResultsLoading}
-						style={{ flex: 1, marginBottom: 20 }}
+						disable={!allSetsAreValid || postWorkoutResultsLoading}
 						onPress={() =>
 							postWorkoutResults({
 								data: {
@@ -156,7 +145,38 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 							: null}
 						{postWorkoutResultsLoading && "Sparar.."}
 					</Button>
-				</View>
+					<View style={{ flexDirection: "row" }}>
+						<Button
+							style={{
+								backgroundColor: "lightgrey",
+								marginRight: 10,
+								marginBottom: 20,
+								height: 52,
+							}}
+							onPress={() => navigation.goBack()}>
+							<Ionicons name='ios-chevron-back-outline' size={24} color='black' />
+						</Button>
+						<Button
+							style={{
+								flexGrow: 2,
+								backgroundColor: colors.onSurface,
+								marginLeft: 10,
+								marginBottom: 20,
+								height: 52,
+							}}
+							onPress={() => {
+								workoutIndex + 1 === Object.keys(workouts).length
+									? navigation.goBack()
+									: navigation.navigate("WorkoutSession", {
+											workouts,
+											newWorkoutIndex: workoutIndex + 1,
+											workoutDayID: workoutDayID,
+									  });
+							}}>
+							Hoppa över
+						</Button>
+					</View>
+				</>
 			}>
 			<View style={styles.subheader}>
 				<Ionicons
