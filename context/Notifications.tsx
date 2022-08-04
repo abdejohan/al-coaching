@@ -15,6 +15,7 @@ import { PermissionStatus, Subscription } from "expo-modules-core";
 import AuthContext from "./Auth";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
 import { Notification, NotificationResponse } from "expo-notifications";
+import * as RootNavigation from "../navigation/RootNavigation";
 
 type ContextType = {
 	expoPushToken: string | null;
@@ -91,28 +92,29 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 		[token]
 	);
 
+	/** Check what type of notification is being received when app is in FOREGROUND **/
+	/** If its a chat notification, and the current route is not 'Chat'; we increment the chat badge **/
 	useEffect(() => {
-		if (
-			notification &&
-			notification.request.content.data.type === "CHAT" &&
-			currentRoute !== "Chat"
-		) {
-			setChatBadgeCount(chatBadgeCount + 1);
-			setNotification(undefined);
+		if (notification) {
+			const { type } = notification.request.content.data;
+			if (type === "CHAT" && currentRoute !== "Chat")
+				setChatBadgeCount(chatBadgeCount + 1);
 		}
 	}, [notification]);
 
+	/** Check what type of notification it is when user taps the notification, works in FOREGROUND, BACKGROUND, KILLED **/
+	/** If its a chat notification, and the current route is not 'Chat'; we reset the chat badge and route the user to chat screen **/
 	useEffect(() => {
-		if (
-			notificationResponse &&
-			notificationResponse.notification.request.content.data.type === "CHAT" &&
-			currentRoute !== "Chat"
-		) {
-			setChatBadgeCount(chatBadgeCount + 1);
-			setNotificationResponse(undefined);
+		if (notificationResponse) {
+			const { type } = notificationResponse.notification.request.content.data;
+			if (type === "CHAT" && currentRoute !== "Chat") {
+				RootNavigation.navigate("Chat");
+				setChatBadgeCount(0);
+			}
 		}
 	}, [notificationResponse]);
 
+	/** Android specific settings for how to display notifications */
 	useEffect(() => {
 		if (Platform.OS === "android") {
 			Notifications.setNotificationChannelAsync("default", {
@@ -141,7 +143,7 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 		};
 	}, []);
 
-	// This checkes if the user has allowed us to send notifications, and if so we will initialize the listeners
+	// This checkes if the user has allowed us to send notifications, and if so we will fetch and save device token
 	useEffect(() => {
 		if (Device.isDevice && token !== null && user !== undefined) {
 			const checkPermissionToFetchDeviceToken = async () => {
