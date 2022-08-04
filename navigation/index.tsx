@@ -23,11 +23,10 @@ import SendResetMailScreen from "../screens/SendResetMailScreen";
 import IntroScreen from "../screens/IntroScreen";
 import LoggedInNavigator from "./LoggedInNavigator";
 import NotificationsContext from "../context/Notifications";
-
+import { navigationRef } from "./RootNavigation";
 export default function Navigation(props: any) {
 	const { initialRoute } = props;
 	const colorScheme = useColorScheme();
-	const navigationRef = useNavigationContainerRef();
 	const { setCurrentRoute } = useContext(NotificationsContext);
 
 	return (
