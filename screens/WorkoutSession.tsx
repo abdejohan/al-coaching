@@ -147,10 +147,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 												workoutDayID: workoutDayID,
 										  });
 								})
-								.catch((error) => {
-									console.log(error);
-									Alert.alert(`Något gick fel. Försök igen!`);
-								})
+								.catch((error) => Alert.alert(`Något gick fel. Försök igen!`))
 						}>
 						{!postWorkoutResultsLoading
 							? workoutIndex + 1 === Object.keys(workouts).length

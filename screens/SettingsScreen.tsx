@@ -106,7 +106,11 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 				const { status } = await Notifications.requestPermissionsAsync();
 				setPermissionStatus(status);
 				if (status === "granted") {
-					// TODO: SAve and store the devide token on server and in async storage
+					const expoToken = (await Notifications.getExpoPushTokenAsync()).data;
+					if (typeof expoToken === "string")
+						editClient({ data: { device_token: expoToken } });
+				} else {
+					setAllowNotifications(false);
 				}
 			};
 			handleNotifications();
@@ -125,6 +129,7 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 	const handleAppStateChange = async (nextAppState: AppStateStatus) => {
 		if (nextAppState === "active") {
 			const { status } = await Notifications.getPermissionsAsync();
+			if (status === "granted") setAllowNotifications(true);
 			setPermissionStatus(status);
 		}
 	};
