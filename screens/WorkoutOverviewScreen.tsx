@@ -56,7 +56,6 @@ const WorkoutOverviewScreen: React.FC<WorkoutOverviewProps> = ({ navigation, rou
 							backgroundColor: "lightgrey",
 							marginRight: 10,
 							marginBottom: 20,
-							height: 53,
 						}}
 						onPress={() => navigation.goBack()}>
 						<Ionicons name='ios-chevron-back-outline' size={24} color='black' />
@@ -68,7 +67,7 @@ const WorkoutOverviewScreen: React.FC<WorkoutOverviewProps> = ({ navigation, rou
 								workoutDayID: workoutDay.id,
 							})
 						}
-						style={{ height: 53, flex: 1 }}>
+						style={{ flex: 1 }}>
 						Påbörja träningspass
 					</Button>
 				</View>

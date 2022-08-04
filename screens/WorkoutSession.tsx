@@ -148,24 +148,27 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 								: null}
 							{postWorkoutResultsLoading && "Sparar.."}
 						</Button>
-						<View style={{ flexDirection: "row" }}>
+						<View style={{ flexDirection: "row", marginBottom: 20 }}>
 							<Button
 								style={{
-									backgroundColor: "lightgrey",
 									marginRight: 10,
 									marginBottom: 20,
-									height: 52,
+									backgroundColor: "lightgrey",
 								}}
 								onPress={() => navigation.goBack()}>
-								<Ionicons name='ios-chevron-back-outline' size={24} color='black' />
+								<Ionicons
+									name='ios-chevron-back-outline'
+									size={24}
+									color={colors.black}
+								/>
 							</Button>
 							<Button
+								color={colors.black}
 								style={{
 									flexGrow: 2,
-									backgroundColor: colors.onSurface,
+									backgroundColor: "lightgrey",
 									marginLeft: 10,
 									marginBottom: 20,
-									height: 52,
 								}}
 								onPress={() => {
 									workoutIndex + 1 === Object.keys(workouts).length
