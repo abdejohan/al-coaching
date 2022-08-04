@@ -101,7 +101,7 @@ const UpcomingWeek: React.FC = () => {
 			</Subheading>
 			<InputValidation
 				errorMessages={["Ange ett svar."]}
-				validationRule={"min1"}
+				validationRule={"text"}
 				value={challengesForNextWeek?.text}
 				onValidation={(valid: boolean, text) => setChallengesForNextWeek({ valid, text })}
 				maxLength={255}

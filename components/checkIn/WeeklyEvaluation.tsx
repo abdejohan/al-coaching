@@ -57,7 +57,7 @@ const WeeklyEvaluation: React.FC = () => {
 				</Subheading>
 				<InputValidation
 					errorMessages={["Ange ett svar."]}
-					validationRule={"min1"}
+					validationRule={"text"}
 					value={completedChallenges?.text}
 					onValidation={(valid: boolean, text) => setCompletedChallenges({ valid, text })}
 					maxLength={255}
@@ -71,7 +71,7 @@ const WeeklyEvaluation: React.FC = () => {
 				</Subheading>
 				<InputValidation
 					errorMessages={["Ange ett svar."]}
-					validationRule={"min1"}
+					validationRule={"text"}
 					value={didThingsGoAsPlanned?.text}
 					onValidation={(valid: boolean, text) =>
 						setDidThingsGoAsPlanned({ valid, text })

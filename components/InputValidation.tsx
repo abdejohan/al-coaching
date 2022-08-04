@@ -63,6 +63,7 @@ const InputValidation: React.FC<Props> = (props) => {
 		min5: "^.{5,}$", // min 8 char
 		min40: "^.{40,}$", // min 40 char
 		min1: "^.{1,}$", // min 1 char
+		text: "[sS]*.{1,}$", // min 1 char
 		onlyDigits: `^[0-9]+$`,
 		weightOrHeight: `^[1-9]\\d*(\\.\\d+)?$`,
 		null: "^$|",
