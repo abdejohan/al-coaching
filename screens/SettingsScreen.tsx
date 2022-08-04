@@ -38,13 +38,12 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 		updateUser,
 		setDarkMode,
 	} = useContext(AuthContext);
-	const { askForPermission } = useContext(NotificationsContext);
+	const { askForPermission, permissionStatus, setPermissionStatus } =
+		useContext(NotificationsContext);
 	const [allowNotifications, setAllowNotifications] = useState(
-		user?.send_notifications === 1 ? true : false
+		permissionStatus === "granted"
 	);
 	const [darkmode, setDarkmode] = useState(globaldarkMode ? true : false);
-	const [nativeNotificationPermission, setNativeNotificationPermission] =
-		useState<boolean>(true);
 	const { DialogBox, showDialog, hideDialog } = useDialog();
 	const { takeImage, pickImage } = useImagePicker();
 	const [, editClient] = useAxios(
@@ -65,13 +64,13 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 
 	const uploadAvatar = async (img: string | undefined | null) => {
 		if (typeof img === "string") {
-			await editClient({ data: { avatar: `data:image/jpeg;base64, ${img}` } }).catch(
-				(error) => Alert.alert("Kunde inte spara bilden, försök igen.")
+			await editClient({ data: { avatar: `data:image/jpeg;base64, ${img}` } }).catch(() =>
+				Alert.alert("Kunde inte spara bilden, försök igen.")
 			);
 			updateUser();
 		}
 		if (img === undefined || img === null) {
-			await editClient({ data: { avatar: null } }).catch((e) =>
+			await editClient({ data: { avatar: null } }).catch(() =>
 				Alert.alert("Kunde inte ta bort bilden, försök igen.")
 			);
 			updateUser();
@@ -92,51 +91,42 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 	}, [darkmode]);
 
 	useEffect(() => {
-		const checkPermissionBeforeEditingClient = async () => {
-			if (allowNotifications) {
-				const { status } = await Notifications.getPermissionsAsync();
-				if (status === "granted") {
-					await editClient({ data: { send_notifications: 1 } });
-				} else {
-					const permissionStatus = await askForPermission();
-					if (permissionStatus === "granted") {
-						checkPermissionBeforeEditingClient();
-					} else {
-						setAllowNotifications(false);
-						setNativeNotificationPermission(false);
-					}
-				}
+		const handleInitialNotificationValue = async () => {
+			const { status } = await Notifications.getPermissionsAsync();
+			setPermissionStatus(status);
+			if (status === "granted") {
+				setAllowNotifications(true);
 			}
-			if (!allowNotifications) {
-				await editClient({ data: { send_notifications: 0 } });
-			}
-			updateUser();
 		};
-		checkPermissionBeforeEditingClient();
+		handleInitialNotificationValue();
+	}, []);
+
+	useEffect(() => {
+		if (allowNotifications && permissionStatus === "undetermined") {
+			const handleNotifications = async () => {
+				const status = await askForPermission();
+				setPermissionStatus(status);
+				if (status === "granted") {
+					// TODO: SAve and store the devide token on server and in async storage
+				}
+			};
+			handleNotifications();
+		}
 	}, [allowNotifications]);
 
 	// Sets event listener for app state
 	useEffect(() => {
-		if (!nativeNotificationPermission) {
-			const subscription = AppState.addEventListener("change", handleAppStateChange);
-			return () => {
-				subscription.remove();
-			};
-		}
-	}, [nativeNotificationPermission]);
+		const subscription = AppState.addEventListener("change", handleAppStateChange);
+		return () => {
+			subscription.remove();
+		};
+	}, [permissionStatus]);
 
 	// Will check if permission changed after user returns to app after changing notifications settings in native app settings
-	const handleAppStateChange = (nextAppState: AppStateStatus) => {
-		if (nextAppState === "active" && !nativeNotificationPermission) {
-			checkPermissionOnFocus();
-		}
-	};
-
-	// Checks the current permission status
-	const checkPermissionOnFocus = async () => {
-		const { status } = await Notifications.getPermissionsAsync();
-		if (status === "granted") {
-			setNativeNotificationPermission(true);
+	const handleAppStateChange = async (nextAppState: AppStateStatus) => {
+		if (nextAppState === "active") {
+			const { status } = await Notifications.getPermissionsAsync();
+			setPermissionStatus(status);
 		}
 	};
 
@@ -217,7 +207,7 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 					title='Notiser'
 					rightIcon={
 						<Switch
-							disabled={!nativeNotificationPermission}
+							disabled={permissionStatus === "denied"}
 							thumbColor={colors.surface}
 							trackColor={{ true: colors.primary, false: colors.background }}
 							value={allowNotifications}
@@ -226,10 +216,29 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 					}
 					leftIcon={<FontAwesome5 name='bell' size={22} color={colors.primary} />}
 				/>
-				{!nativeNotificationPermission && (
+				{permissionStatus === "denied" && (
 					<View style={{ paddingBottom: 10 }}>
 						<Caption style={{ fontSize: 12, lineHeight: 16, paddingLeft: 5 }}>
 							För att tillåta notiser behöver du ändra i dina{" "}
+							<TouchableOpacity onPress={() => Linking.openSettings()}>
+								<Caption
+									style={{
+										fontSize: 12,
+										lineHeight: 16,
+										top: 3,
+										color: "lightblue",
+										textDecorationLine: "underline",
+									}}>
+									inställningar.
+								</Caption>
+							</TouchableOpacity>
+						</Caption>
+					</View>
+				)}
+				{permissionStatus === "granted" && !allowNotifications && (
+					<View style={{ paddingBottom: 10 }}>
+						<Caption style={{ fontSize: 12, lineHeight: 16, paddingLeft: 5 }}>
+							För att stäng av notiser helt behöver du ändra i dina{" "}
 							<TouchableOpacity onPress={() => Linking.openSettings()}>
 								<Caption
 									style={{

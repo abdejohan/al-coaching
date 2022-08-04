@@ -18,7 +18,9 @@ import { Notification, NotificationResponse } from "expo-notifications";
 
 type ContextType = {
 	expoPushToken: string | null;
+	permissionStatus: string | null;
 	askForPermission(): Promise<PermissionStatus.GRANTED | undefined>;
+	setPermissionStatus: (status: string) => void;
 	chatBadgeCount: number;
 	setChatBadgeCount: (count: number) => void;
 	currentRoute: string | null;
@@ -27,9 +29,11 @@ type ContextType = {
 
 const NotificationsContext = createContext<ContextType>({
 	expoPushToken: null,
+	permissionStatus: null,
 	askForPermission: async () => undefined,
 	chatBadgeCount: 0,
 	setChatBadgeCount: () => {},
+	setPermissionStatus: () => {},
 	currentRoute: null,
 	setCurrentRoute: () => {},
 });
@@ -46,6 +50,7 @@ Notifications.setNotificationHandler({
 export const NotificationsContextProvider: FunctionComponent = ({ children }) => {
 	const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
 	const [currentRoute, setCurrentRoute] = useState<string | null>(null);
+	const [permissionStatus, setPermissionStatus] = useState<string | null>(null);
 	const [chatBadgeCount, setChatBadgeCount] = useState<number>(0);
 	const [notification, setNotification] = useState<Notification>();
 	const [notificationResponse, setNotificationResponse] =
@@ -139,6 +144,7 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 		if (Device.isDevice && token !== null && user !== undefined) {
 			const checkPermissionToFetchDeviceToken = async () => {
 				const { status } = await Notifications.getPermissionsAsync();
+				setPermissionStatus(status);
 				if (status === "granted") {
 					const fetchedExpoToken = (await Notifications.getExpoPushTokenAsync()).data;
 					saveExpoTokenToStore(fetchedExpoToken);
@@ -156,6 +162,8 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 			setChatBadgeCount,
 			currentRoute,
 			setCurrentRoute,
+			permissionStatus,
+			setPermissionStatus,
 		}),
 		[
 			askForPermission,
@@ -164,6 +172,8 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 			setChatBadgeCount,
 			currentRoute,
 			setCurrentRoute,
+			permissionStatus,
+			setPermissionStatus,
 		]
 	);
 
