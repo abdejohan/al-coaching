@@ -38,8 +38,7 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 		updateUser,
 		setDarkMode,
 	} = useContext(AuthContext);
-	const { askForPermission, permissionStatus, setPermissionStatus } =
-		useContext(NotificationsContext);
+	const { permissionStatus, setPermissionStatus } = useContext(NotificationsContext);
 	const [allowNotifications, setAllowNotifications] = useState(
 		permissionStatus === "granted"
 	);
@@ -104,7 +103,7 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 	useEffect(() => {
 		if (allowNotifications && permissionStatus === "undetermined") {
 			const handleNotifications = async () => {
-				const status = await askForPermission();
+				const { status } = await Notifications.requestPermissionsAsync();
 				setPermissionStatus(status);
 				if (status === "granted") {
 					// TODO: SAve and store the devide token on server and in async storage

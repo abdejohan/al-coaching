@@ -18,9 +18,8 @@ import { Notification, NotificationResponse } from "expo-notifications";
 
 type ContextType = {
 	expoPushToken: string | null;
-	permissionStatus: string | null;
-	askForPermission(): Promise<PermissionStatus.GRANTED | undefined>;
-	setPermissionStatus: (status: string) => void;
+	permissionStatus: PermissionStatus | undefined;
+	setPermissionStatus: (status: PermissionStatus) => void;
 	chatBadgeCount: number;
 	setChatBadgeCount: (count: number) => void;
 	currentRoute: string | null;
@@ -29,8 +28,7 @@ type ContextType = {
 
 const NotificationsContext = createContext<ContextType>({
 	expoPushToken: null,
-	permissionStatus: null,
-	askForPermission: async () => undefined,
+	permissionStatus: undefined,
 	chatBadgeCount: 0,
 	setChatBadgeCount: () => {},
 	setPermissionStatus: () => {},
@@ -38,19 +36,10 @@ const NotificationsContext = createContext<ContextType>({
 	setCurrentRoute: () => {},
 });
 
-/** HOW NOTIFICATIONS WILL BE HANDLED WHEN APP IS FOREGROUND (OPEN)  */
-Notifications.setNotificationHandler({
-	handleNotification: async () => ({
-		shouldShowAlert: true,
-		shouldPlaySound: true,
-		shouldSetBadge: false,
-	}),
-});
-
 export const NotificationsContextProvider: FunctionComponent = ({ children }) => {
 	const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
 	const [currentRoute, setCurrentRoute] = useState<string | null>(null);
-	const [permissionStatus, setPermissionStatus] = useState<string | null>(null);
+	const [permissionStatus, setPermissionStatus] = useState<PermissionStatus>();
 	const [chatBadgeCount, setChatBadgeCount] = useState<number>(0);
 	const [notification, setNotification] = useState<Notification>();
 	const [notificationResponse, setNotificationResponse] =
@@ -68,6 +57,30 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 		{ manual: true }
 	);
 
+	if (
+		notification &&
+		notification.request.content.data.type === "CHAT" &&
+		currentRoute === "Chat"
+	) {
+		/** HOW NOTIFICATIONS WILL BE HANDLED WHEN APP IS FOREGROUND (OPEN)  */
+		Notifications.setNotificationHandler({
+			handleNotification: async () => ({
+				shouldShowAlert: false,
+				shouldPlaySound: false,
+				shouldSetBadge: false,
+			}),
+		});
+	} else {
+		/** HOW NOTIFICATIONS WILL BE HANDLED WHEN APP IS FOREGROUND (OPEN)  */
+		Notifications.setNotificationHandler({
+			handleNotification: async () => ({
+				shouldShowAlert: true,
+				shouldPlaySound: true,
+				shouldSetBadge: false,
+			}),
+		});
+	}
+
 	const saveExpoTokenToStore = useCallback(
 		async (t: string | null) => {
 			if (typeof t === "string" && user) {
@@ -77,17 +90,6 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 		},
 		[token]
 	);
-
-	const askForPermission = useCallback(async (): Promise<
-		PermissionStatus.GRANTED | undefined
-	> => {
-		const { status } = await Notifications.requestPermissionsAsync();
-		if (status === "granted") {
-			return status;
-		} else {
-			return undefined;
-		}
-	}, []);
 
 	useEffect(() => {
 		if (
@@ -157,7 +159,6 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 	const state = useMemo(
 		() => ({
 			expoPushToken,
-			askForPermission,
 			chatBadgeCount,
 			setChatBadgeCount,
 			currentRoute,
@@ -166,7 +167,6 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 			setPermissionStatus,
 		}),
 		[
-			askForPermission,
 			expoPushToken,
 			chatBadgeCount,
 			setChatBadgeCount,
