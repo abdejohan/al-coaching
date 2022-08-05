@@ -164,7 +164,8 @@ const Measures: React.FC = () => {
 				/>
 			</View>
 			{/* BELOW HERE IS THE UPLOAD IMAGES ELEMENTS */}
-			<View style={{ marginBottom: 20 }}>
+			<Divider style={{ backgroundColor: colors.primary, marginTop: 5 }} />
+			<View style={{ marginVertical: 20 }}>
 				<Subheading style={{ marginBottom: 20 }}>
 					Bilder (Frivilligt, men fördelaktigt)
 				</Subheading>
@@ -181,7 +182,6 @@ const Measures: React.FC = () => {
 							width: "100%",
 							height: uploadImageWidth,
 							borderWidth: 1,
-							borderStyle: "dashed",
 							borderColor: colors.highlightText,
 							borderRadius: 5,
 						}}
@@ -227,7 +227,6 @@ const Measures: React.FC = () => {
 							width: "100%",
 							height: uploadImageWidth,
 							borderWidth: 1,
-							borderStyle: "dashed",
 							borderColor: colors.highlightText,
 							borderRadius: 5,
 						}}
@@ -275,7 +274,6 @@ const Measures: React.FC = () => {
 							width: "100%",
 							height: uploadImageWidth,
 							borderWidth: 1,
-							borderStyle: "dashed",
 							borderColor: colors.highlightText,
 							borderRadius: 5,
 						}}

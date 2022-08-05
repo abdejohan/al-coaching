@@ -42,7 +42,7 @@ const UpcomingWeek: React.FC = () => {
 			</Headline>
 			<Divider style={{ backgroundColor: colors.primary, marginBottom: 20 }} />
 
-			<Subheading style={{ color: colors.highlightText }}>
+			<Subheading style={{ color: colors.highlightText, marginBottom: 5 }}>
 				Har du planerat din kommande vecka? *
 			</Subheading>
 			<RadioButton
@@ -56,7 +56,7 @@ const UpcomingWeek: React.FC = () => {
 				onPress={() => setHavePlansForNextWeek("Nej, inte än.")}
 			/>
 			{/* BELLOW THIS IS THE MULTI-SELECT WEEKDAY OPTION */}
-			<Subheading style={{ color: colors.highlightText, marginTop: 20 }}>
+			<Subheading style={{ color: colors.highlightText, marginTop: 20, marginBottom: 5 }}>
 				Vilka dagar ska du träna kommande veckan? *
 			</Subheading>
 			<RadioButtonMulti

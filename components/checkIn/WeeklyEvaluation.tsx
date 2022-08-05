@@ -29,7 +29,7 @@ const WeeklyEvaluation: React.FC = () => {
 					Föregående vecka
 				</Headline>
 				<Divider style={{ backgroundColor: colors.primary, marginBottom: 20 }} />
-				<Subheading style={{ color: colors.highlightText }}>
+				<Subheading style={{ color: colors.highlightText, marginBottom: 5 }}>
 					Hur har veckan gått? *
 				</Subheading>
 				<RadioButton
