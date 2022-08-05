@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, TextStyle, ReturnKeyType, KeyboardType, ViewStyle } from "react-native";
+import {
+	View,
+	TextStyle,
+	ReturnKeyType,
+	KeyboardType,
+	ViewStyle,
+	Platform,
+} from "react-native";
 import { useTheme, TextInput } from "react-native-paper";
 import { autoCapitalizeTypes, autoCompleteTypes, ValidInput } from "../types/types";
 import { Headline, Text } from "../typography";
@@ -7,15 +14,15 @@ import { Headline, Text } from "../typography";
 interface Props {
 	inputLabel?: string;
 	right?: any;
-	styleInput?: TextStyle;
 	validationContainerStyle?: ViewStyle;
 	multiline?: boolean;
 	value?: string;
 	maxLength?: number;
 	textAlign?: string;
-	numberOfLines?: number;
-	validationRule?: Array<string> | string;
-	errorMessages?: Array<string>;
+	minHeight?: number;
+	numberOfLines?: number | undefined;
+	validationRule?: string;
+	errorMessage?: string;
 	blurOnSubmit?: boolean;
 	returnKeyType?: ReturnKeyType;
 	keyboardType?: KeyboardType;
@@ -26,6 +33,7 @@ interface Props {
 	autoCapitalize?: autoCapitalizeTypes;
 	autoCorrect?: boolean;
 	autoCompleteType?: autoCompleteTypes;
+	autoComplete?: any;
 	outlineColor?: any;
 	left?: any;
 	theme?: any;
@@ -33,7 +41,7 @@ interface Props {
 	placeholder?: any;
 	placeholderTextColor?: any;
 	mode?: any;
-	style?: any;
+	style?: TextStyle;
 	activeOutlineColor?: any;
 }
 
@@ -43,17 +51,15 @@ const InputValidation: React.FC<Props> = (props) => {
 		inputLabel,
 		validationRule,
 		onValidation,
-		styleInput,
 		onChangeText,
-		errorMessages,
+		errorMessage,
+		numberOfLines,
 		right,
 		validationContainerStyle,
-		style,
 	} = props;
-	const [selectedField, setSelctedField] = useState<boolean>(false);
-	const [validationsArray, setValidationsArray] = useState<Array<boolean> | boolean>(
-		true
-	);
+	const [isValidated, setIsValidated] = useState<boolean>(false);
+	const [interactedWithField, setInteractedWithField] = useState<boolean>(false);
+
 	const regExRules = {
 		name: "^.{2,}$", // min 2 char
 		email: `^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$`,
@@ -63,7 +69,7 @@ const InputValidation: React.FC<Props> = (props) => {
 		min5: "^.{5,}$", // min 8 char
 		min40: "^.{40,}$", // min 40 char
 		min1: "^.{1,}$", // min 1 char
-		text: "[sS]*.{1,}$", // min 1 char
+		text: `(.|\n){1,}$`, // min 1 char
 		onlyDigits: `^[0-9]+$`,
 		weightOrHeight: `^[1-9]\\d*(\\.\\d+)?$`,
 		null: "^$|",
@@ -73,22 +79,9 @@ const InputValidation: React.FC<Props> = (props) => {
 	const handleValidation = (value: string) => {
 		if (!validationRule) return true;
 		// string pattern, one validation rule
-		if (typeof validationRule === "string") {
+		if (Object.keys(regExRules).includes(validationRule)) {
 			const condition = new RegExp(regExRules[validationRule], "g");
 			return condition.test(value);
-		}
-		// array patterns, multiple validation rules
-		if (typeof validationRule === "object") {
-			const patternArray: Array<string> = [];
-			validationRule.forEach((rule) => {
-				if (regExRules[rule]) {
-					patternArray.push(regExRules[rule]);
-				}
-			});
-			const conditions = patternArray.map(
-				(rule: string | RegExp) => new RegExp(rule, "g")
-			);
-			return conditions.map((condition) => condition.test(value));
 		}
 		return true;
 	};
@@ -96,7 +89,7 @@ const InputValidation: React.FC<Props> = (props) => {
 	// this validates the input everytime the input is changed
 	const onChange = (text: string) => {
 		const isValid = handleValidation(text);
-		setValidationsArray(isValid);
+		setIsValidated(isValid);
 		return (
 			onValidation && onValidation(isValid, text), onChangeText && onChangeText(text)
 		);
@@ -108,8 +101,11 @@ const InputValidation: React.FC<Props> = (props) => {
 			<TextInput
 				mode='outlined'
 				outlineColor={colors.background}
-				onFocus={() => setSelctedField(false)}
-				onBlur={() => setSelctedField(true)}
+				numberOfLines={Platform.OS === "ios" ? undefined : numberOfLines}
+				minHeight={
+					Platform.OS === "ios" && numberOfLines ? 20 * numberOfLines : undefined
+				}
+				onBlur={() => setInteractedWithField(true)}
 				underlineColor='transparent'
 				onChangeText={(text) => onChange(text)}
 				right={right}
@@ -117,21 +113,20 @@ const InputValidation: React.FC<Props> = (props) => {
 				style={{ backgroundColor: colors.surface, ...props.style }}
 			/>
 			<View style={{ flexDirection: "row", minHeight: 14 }}>
-				{validationRule &&
-					selectedField &&
-					errorMessages?.map((errorMessage, index) => (
-						<Text
-							key={errorMessage}
-							style={{
-								color:
-									validationsArray === true ||
-									(validationsArray && validationsArray[index] === true)
-										? "transparent"
-										: colors.error,
-							}}>
-							{`\u00B7 ${errorMessage}`}
-						</Text>
-					))}
+				{validationRule && (
+					<Text
+						key={errorMessage}
+						style={{
+							paddingLeft: 5,
+							color: interactedWithField
+								? isValidated
+									? "transparent"
+									: colors.error
+								: "transparent",
+						}}>
+						{`\u00B7 ${errorMessage}`}
+					</Text>
+				)}
 			</View>
 		</View>
 	);

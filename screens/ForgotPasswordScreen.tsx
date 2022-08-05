@@ -63,10 +63,10 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordProps> = ({ navigation }) => 
 					value={email?.text}
 					autoCorrect={false}
 					onValidation={(valid: boolean, text) => setEmail({ valid, text })}
-					validationRule={"email"}
+					validationRule='email'
 					outlineColor={colors.white}
 					textAlign={"center"}
-					errorMessages={["Ange en korrekt mailadress."]}
+					errorMessage='Ange en korrekt mailadress.'
 					returnKeyType='done'
 					left={<TextInput.Icon color={colors.white} name='account-outline' />}
 					style={{

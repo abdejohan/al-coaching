@@ -100,15 +100,14 @@ const UpcomingWeek: React.FC = () => {
 				dem? *
 			</Subheading>
 			<InputValidation
-				errorMessages={["Ange ett svar."]}
-				validationRule={"text"}
+				errorMessage='Ange ett svar.'
+				validationRule='text'
 				value={challengesForNextWeek?.text}
 				onValidation={(valid: boolean, text) => setChallengesForNextWeek({ valid, text })}
 				maxLength={255}
 				returnKeyType='done'
 				multiline
-				numberOfLines={4}
-				styleInput={{ height: 140 }}
+				numberOfLines={6}
 			/>
 		</KeyboardAwareScrollView>
 	);

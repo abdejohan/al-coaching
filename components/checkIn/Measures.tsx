@@ -51,10 +51,10 @@ const Measures: React.FC = () => {
 				<InputValidation
 					value={weight?.text}
 					onValidation={(valid: boolean, text) => setWeight({ valid, text })}
-					validationRule={"weightOrHeight"}
+					validationRule='weightOrHeight'
 					maxLength={6}
-					textAlign={"center"}
-					errorMessages={["Ange ett svar."]}
+					textAlign='center'
+					errorMessage='Ange ett svar.'
 					returnKeyType='done'
 					keyboardType='number-pad'
 					validationContainerStyle={{ minWidth: 130 }}
@@ -71,10 +71,10 @@ const Measures: React.FC = () => {
 				<InputValidation
 					value={biceps?.text}
 					onValidation={(valid: boolean, text) => setBiceps({ valid, text })}
-					validationRule={"weightOrHeight"}
+					validationRule='weightOrHeight'
 					maxLength={6}
-					textAlign={"center"}
-					errorMessages={["Ange ett svar."]}
+					textAlign='center'
+					errorMessage='Ange ett svar.'
 					returnKeyType='done'
 					keyboardType='number-pad'
 					validationContainerStyle={{ minWidth: 130 }}
@@ -91,10 +91,10 @@ const Measures: React.FC = () => {
 				<InputValidation
 					value={glutes?.text}
 					onValidation={(valid: boolean, text) => setGlutes({ valid, text })}
-					validationRule={"weightOrHeight"}
+					validationRule='weightOrHeight'
 					maxLength={6}
-					textAlign={"center"}
-					errorMessages={["Ange ett svar."]}
+					textAlign='center'
+					errorMessage='Ange ett svar.'
 					returnKeyType='done'
 					keyboardType='number-pad'
 					validationContainerStyle={{ minWidth: 130 }}
@@ -111,10 +111,10 @@ const Measures: React.FC = () => {
 				<InputValidation
 					value={waist?.text}
 					onValidation={(valid: boolean, text) => setWaist({ valid, text })}
-					validationRule={"weightOrHeight"}
+					validationRule='weightOrHeight'
 					maxLength={6}
-					textAlign={"center"}
-					errorMessages={["Ange ett svar."]}
+					textAlign='center'
+					errorMessage='Ange ett svar.'
 					returnKeyType='done'
 					keyboardType='number-pad'
 					validationContainerStyle={{ minWidth: 130 }}
@@ -131,10 +131,10 @@ const Measures: React.FC = () => {
 				<InputValidation
 					value={thighs?.text}
 					onValidation={(valid: boolean, text) => setThighs({ valid, text })}
-					validationRule={"weightOrHeight"}
+					validationRule='weightOrHeight'
 					maxLength={6}
-					textAlign={"center"}
-					errorMessages={["Ange ett svar."]}
+					textAlign='center'
+					errorMessage='Ange ett svar.'
 					returnKeyType='done'
 					keyboardType='number-pad'
 					validationContainerStyle={{ minWidth: 130 }}
@@ -155,8 +155,8 @@ const Measures: React.FC = () => {
 					onValidation={(valid: boolean, text) => setWeeklySteps({ valid, text })}
 					validationRule={"onlyDigits"}
 					maxLength={10}
-					textAlign={"center"}
-					errorMessages={["Ange ett svar."]}
+					textAlign='center'
+					errorMessage='Ange ett svar.'
 					returnKeyType='done'
 					keyboardType='number-pad'
 					validationContainerStyle={{ minWidth: 130 }}

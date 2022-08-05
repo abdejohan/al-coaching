@@ -51,8 +51,8 @@ const PasswordLogin: React.FC<PasswordLoginProps> = ({ navigation }) => {
 			<View>
 				<InputValidation
 					onValidation={(valid: boolean, text) => setEmail({ valid, text })}
-					validationRule={"email"}
-					errorMessages={["Ange en giltig emailadress."]}
+					validationRule='email'
+					errorMessage='Ange en giltig emailadress.'
 					autoComplete='email'
 					autoCorrect={false}
 					mode='outlined'
@@ -75,8 +75,8 @@ const PasswordLogin: React.FC<PasswordLoginProps> = ({ navigation }) => {
 				/>
 				<InputValidation
 					onValidation={(valid: boolean, text) => setPassword({ valid, text })}
-					validationRule={"min5"}
-					errorMessages={["För kort."]}
+					validationRule='min5'
+					errorMessage='För kort.'
 					// keyboardType="visible-password"
 					// returnKeyLabel="logga in"
 					autoCapitalize='none'

@@ -56,22 +56,21 @@ const WeeklyEvaluation: React.FC = () => {
 					Utmaningar du klarat av? *
 				</Subheading>
 				<InputValidation
-					errorMessages={["Ange ett svar."]}
-					validationRule={"text"}
+					errorMessage='Ange ett svar.'
+					validationRule='text'
 					value={completedChallenges?.text}
 					onValidation={(valid: boolean, text) => setCompletedChallenges({ valid, text })}
 					maxLength={255}
 					returnKeyType='done'
 					multiline
-					numberOfLines={4}
-					styleInput={{ height: 140 }}
+					numberOfLines={6}
 				/>
 				<Subheading style={{ color: colors.highlightText, marginTop: 20 }}>
 					Följde du din plan? Om inte, vad hände? *
 				</Subheading>
 				<InputValidation
-					errorMessages={["Ange ett svar."]}
-					validationRule={"text"}
+					errorMessage='Ange ett svar.'
+					validationRule='text'
 					value={didThingsGoAsPlanned?.text}
 					onValidation={(valid: boolean, text) =>
 						setDidThingsGoAsPlanned({ valid, text })
@@ -79,8 +78,7 @@ const WeeklyEvaluation: React.FC = () => {
 					maxLength={255}
 					returnKeyType='done'
 					multiline
-					numberOfLines={4}
-					styleInput={{ height: 140 }}
+					numberOfLines={6}
 				/>
 			</View>
 		</KeyboardAwareScrollView>
