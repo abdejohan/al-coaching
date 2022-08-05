@@ -48,6 +48,24 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 		},
 		{ manual: true }
 	);
+	/**
+	 const [
+		 { data: historyData, loading: historyLoading, error: historyError },
+		 fetchHistory,
+		] = useAxios({
+		url: "/track/history",
+		data: { exercise_id: workoutDayID, scheme_day_id: 297 },
+	});
+
+	useEffect(() => {
+		if (historyData) {
+			console.log(historyData);
+		}
+		if (historyError) {
+			console.log(historyError.response?.data);
+		}
+	}, [historyData, historyError]);
+	*/
 
 	// newWorkoutIndex is the index of the current workout
 	// and comes from the previously displayed screen
@@ -240,7 +258,6 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 					returnKeyType='done'
 					style={{ backgroundColor: colors.onSurface }}
 					outlineColor={colors.onSurface}
-					styleInput={{ backgroundColor: colors.onSurface, fontSize: 16 }}
 					multiline
 					numberOfLines={4}
 				/>
