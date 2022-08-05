@@ -32,7 +32,9 @@ const IngredientsScreen: React.FC<DietCategoryProps> = ({ navigation, route }) =
 								style={{ padding: 10, marginRight: 10 }}
 								title={ingredient?.name}
 								descriptionLeft={`${ingredient?.gram}g`} // dot: \u00B7
-								descriptionRight={`${ingredient?.kcal} kcal`}
+								descriptionRight={`${Math.round(
+									(ingredient?.kcal / 100) * ingredient?.gram
+								)} kcal`}
 							/>
 							{ingredients?.length !== index + 1 && (
 								<Divider style={{ width: "93%", alignSelf: "center" }} />
