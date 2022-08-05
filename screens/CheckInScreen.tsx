@@ -3,13 +3,22 @@ import AppIntroSlider from "react-native-app-intro-slider";
 import Button from "../components/common/Button";
 import { useTheme, ProgressBar } from "react-native-paper";
 import { useContext, useEffect, useRef, useState } from "react";
-import { checkInSlider } from "../resources";
 import WeeklyReport from "../context/WeeklyReport";
 import { Paragraph } from "../typography";
 
 interface SliderProps {
 	navigation?: any;
 }
+
+import Measures from "../components/checkIn/Measures";
+import UpcomingWeek from "../components/checkIn/UpcomingWeek";
+import WeeklyEvaluation from "../components/checkIn/WeeklyEvaluation";
+
+const checkInSlider = [
+	{ key: 1, component: <Measures /> },
+	{ key: 2, component: <WeeklyEvaluation /> },
+	{ key: 3, component: <UpcomingWeek /> },
+];
 
 const CheckInScreen: React.FC<SliderProps> = ({ navigation }) => {
 	const { notAllFieldsAreValid, setNotAllFieldAreValid, submitWeeklyReport } =
