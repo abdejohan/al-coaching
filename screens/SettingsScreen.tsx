@@ -23,6 +23,7 @@ import { Headline, Subheading, Caption } from "../typography";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 import avatar_placeholder from "../assets/images/avatar_placeholder.png";
+import * as Device from "expo-device";
 
 interface SettingsProps {
 	navigation: any;
@@ -107,8 +108,9 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 				setPermissionStatus(status);
 				if (status === "granted") {
 					const expoToken = (await Notifications.getExpoPushTokenAsync()).data;
-					if (typeof expoToken === "string")
+					if (typeof expoToken === "string" && Device.isDevice && user !== undefined) {
 						editClient({ data: { device_token: expoToken } });
+					}
 				} else {
 					setAllowNotifications(false);
 				}
@@ -129,7 +131,13 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 	const handleAppStateChange = async (nextAppState: AppStateStatus) => {
 		if (nextAppState === "active") {
 			const { status } = await Notifications.getPermissionsAsync();
-			if (status === "granted") setAllowNotifications(true);
+			if (status === "granted") {
+				const expoToken = (await Notifications.getExpoPushTokenAsync()).data;
+				if (typeof expoToken === "string" && Device.isDevice && user !== undefined) {
+					editClient({ data: { device_token: expoToken } });
+				}
+				setAllowNotifications(true);
+			}
 			setPermissionStatus(status);
 		}
 	};
