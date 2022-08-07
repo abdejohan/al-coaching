@@ -43,10 +43,10 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 	const [permissionStatus, setPermissionStatus] = useState<PermissionStatus>();
 	const [chatBadgeCount, setChatBadgeCount] = useState<number>(0);
 	const [notification, setNotification] = useState<Notification>();
-	const [notificationResponse, setNotificationResponse] =
-		useState<NotificationResponse>();
+	const lastNotificationResponse = Notifications.useLastNotificationResponse();
+	// const [notificationResponse, setNotificationResponse] = useState<NotificationResponse>();
+	//const responseListener = useRef<Subscription>();
 	const notificationListener = useRef<Subscription>();
-	const responseListener = useRef<Subscription>();
 	const { token, user } = useContext(AuthContext);
 	const { useAxios } = useAxiosAuthenticated();
 	const [, editClient] = useAxios(
@@ -59,6 +59,7 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 	);
 
 	if (
+		user &&
 		notification &&
 		notification.request.content.data.type === "CHAT" &&
 		currentRoute === "Chat"
@@ -105,14 +106,19 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 	/** Check what type of notification it is when user taps the notification, works in FOREGROUND, BACKGROUND, KILLED **/
 	/** If its a chat notification, and the current route is not 'Chat'; we reset the chat badge and route the user to chat screen **/
 	useEffect(() => {
-		if (notificationResponse) {
-			const { type } = notificationResponse.notification.request.content.data;
+		if (
+			user &&
+			lastNotificationResponse &&
+			lastNotificationResponse.actionIdentifier ===
+				Notifications.DEFAULT_ACTION_IDENTIFIER
+		) {
+			const { type } = lastNotificationResponse.notification.request.content.data;
 			if (type === "CHAT" && currentRoute !== "Chat") {
 				RootNavigation.navigate("Chat");
 				setChatBadgeCount(0);
 			}
 		}
-	}, [notificationResponse]);
+	}, [lastNotificationResponse]);
 
 	/** Android specific settings for how to display notifications */
 	useEffect(() => {
@@ -129,17 +135,9 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 		notificationListener.current = Notifications.addNotificationReceivedListener(
 			(incomingNotification) => setNotification(incomingNotification)
 		);
-		// This listener is fired whenever a user taps on or interacts
-		// with a notification (works when app is foregrounded, backgrounded, or killed)
-		responseListener.current = Notifications.addNotificationResponseReceivedListener(
-			(incomingNotification) => {
-				setNotificationResponse(incomingNotification);
-			}
-		);
 
 		return () => {
 			Notifications.removeNotificationSubscription(notificationListener.current!);
-			Notifications.removeNotificationSubscription(responseListener.current!);
 		};
 	}, []);
 
