@@ -32,10 +32,12 @@ type Set = {
 };
 
 const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) => {
-	const { workouts, newWorkoutIndex, workoutDayID } = route.params;
+	const { workouts, newWorkoutIndex, workoutDayID, incomingWorkoutIndex } = route.params;
 	// url: "/track/exercise/history", 	data: { exercise_id: workoutDayID, scheme_day_id: workouts[workoutIndex].id,
 	const [workoutSets, setWorkoutSets] = useState<Array<SaveSet>>([]);
-	const [workoutIndex, setWorkoutIndex] = useState<number>(0);
+	const [workoutIndex, setWorkoutIndex] = useState<number>(
+		incomingWorkoutIndex ? incomingWorkoutIndex : 0
+	);
 	const [allSetsAreValid, setAllSetsAreValid] = useState<boolean>(false);
 	const [uniqeKey, setUniqeKey] = useState<number>(0);
 	const [userComment, setUserComment] = useState<string>("");
@@ -136,9 +138,19 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 				image={!workouts[workoutIndex].video ? placeholder_image : null}
 				title={workouts[workoutIndex].name}
 				button={
-					<>
+					<View style={{ flexDirection: "row", marginBottom: 20 }}>
 						<Button
-							disable={!allSetsAreValid || postWorkoutResultsLoading}
+							style={{
+								marginRight: 10,
+								marginBottom: 20,
+								backgroundColor: "lightgrey",
+							}}
+							onPress={() => navigation.goBack()}>
+							<Ionicons name='ios-chevron-back-outline' size={24} color={colors.black} />
+						</Button>
+						<Button
+							style={{ flexGrow: 1 }}
+							disable={postWorkoutResultsLoading}
 							onPress={() =>
 								postWorkoutResults({
 									data: {
@@ -157,7 +169,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 													workoutDayID: workoutDayID,
 											  });
 									})
-									.catch((error) => Alert.alert(`Något gick fel. Försök igen!`))
+									.catch(() => Alert.alert(`Något gick fel. Försök igen!`))
 							}>
 							{!postWorkoutResultsLoading
 								? workoutIndex + 1 === Object.keys(workouts).length
@@ -166,41 +178,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 								: null}
 							{postWorkoutResultsLoading && "Sparar.."}
 						</Button>
-						<View style={{ flexDirection: "row", marginBottom: 20 }}>
-							<Button
-								style={{
-									marginRight: 10,
-									marginBottom: 20,
-									backgroundColor: "lightgrey",
-								}}
-								onPress={() => navigation.goBack()}>
-								<Ionicons
-									name='ios-chevron-back-outline'
-									size={24}
-									color={colors.black}
-								/>
-							</Button>
-							<Button
-								color={colors.black}
-								style={{
-									flexGrow: 2,
-									backgroundColor: "lightgrey",
-									marginLeft: 10,
-									marginBottom: 20,
-								}}
-								onPress={() => {
-									workoutIndex + 1 === Object.keys(workouts).length
-										? navigation.goBack()
-										: navigation.navigate("WorkoutSession", {
-												workouts,
-												newWorkoutIndex: workoutIndex + 1,
-												workoutDayID: workoutDayID,
-										  });
-								}}>
-								Hoppa över
-							</Button>
-						</View>
-					</>
+					</View>
 				}>
 				<View style={styles.subheader}>
 					<Ionicons

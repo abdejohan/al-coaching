@@ -40,6 +40,13 @@ const WorkoutOverviewScreen: React.FC<WorkoutOverviewProps> = ({ navigation, rou
 							titleZtyle={{ marginLeft: -7 }}
 							key={index}
 							title={workout.name}
+							onPress={() => {
+								navigation.navigate("WorkoutSession", {
+									workouts: workoutDay.workouts,
+									workoutDayID: workoutDay.id,
+									incomingWorkoutIndex: index,
+								});
+							}}
 						/>
 						{index + 1 !== workoutDay.workouts.length && <Divider />}
 					</View>
