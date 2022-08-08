@@ -12,6 +12,7 @@ import ChatScreen from "../screens/ChatScreen";
 import { IconButton, TouchableRipple, useTheme } from "react-native-paper";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useNavigation } from "@react-navigation/native";
+import * as Notifications from "expo-notifications";
 import {
 	BottomTabParamList,
 	DietTabParmList,
@@ -22,7 +23,7 @@ import {
 import IntroSlider from "../components/IntroSlider";
 import SettingsScreen from "../screens/SettingsScreen";
 import SubscriptionScreen from "../screens/SubscriptionScreen";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AuthContext from "../context/Auth";
 import NotificationsContext from "../context/Notifications";
 import Constants from "expo-constants";
@@ -32,6 +33,21 @@ import MealsScreen from "../screens/MealsScreen";
 const LoggedInStack = createNativeStackNavigator<LoggedInStackParmList>();
 export default function LoggedInNavigator() {
 	const { colors } = useTheme();
+	const { user } = useContext(AuthContext);
+	const lastNotificationResponse = Notifications.useLastNotificationResponse();
+	const { handleTappedNotifications } = useContext(NotificationsContext);
+
+	/** checks for tapped notifications here to be sure that the navigation is ready and user is logged in before trying to route  **/
+	useEffect(() => {
+		if (
+			user &&
+			lastNotificationResponse &&
+			lastNotificationResponse.actionIdentifier ===
+				Notifications.DEFAULT_ACTION_IDENTIFIER
+		) {
+			handleTappedNotifications(lastNotificationResponse);
+		}
+	}, [lastNotificationResponse]);
 
 	return (
 		<LoggedInStack.Navigator

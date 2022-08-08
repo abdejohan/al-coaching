@@ -6,12 +6,13 @@ import React, {
 	useMemo,
 	useContext,
 	createContext,
+	useCallback,
 } from "react";
 import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
 import { PermissionStatus, Subscription } from "expo-modules-core";
 import AuthContext from "./Auth";
-import { Notification } from "expo-notifications";
+import { Notification, NotificationResponse } from "expo-notifications";
 import * as RootNavigation from "../navigation/RootNavigation";
 
 type ContextType = {
@@ -21,6 +22,7 @@ type ContextType = {
 	setChatBadgeCount: (count: number) => void;
 	currentRoute: string | null;
 	setCurrentRoute: (route: string) => void;
+	handleTappedNotifications: (notification: NotificationResponse) => void;
 };
 
 const NotificationsContext = createContext<ContextType>({
@@ -30,6 +32,7 @@ const NotificationsContext = createContext<ContextType>({
 	setPermissionStatus: () => {},
 	currentRoute: null,
 	setCurrentRoute: () => {},
+	handleTappedNotifications: () => {},
 });
 
 export const NotificationsContextProvider: FunctionComponent = ({ children }) => {
@@ -37,7 +40,6 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 	const [permissionStatus, setPermissionStatus] = useState<PermissionStatus>();
 	const [chatBadgeCount, setChatBadgeCount] = useState<number>(0);
 	const [notification, setNotification] = useState<Notification>();
-	const lastNotificationResponse = Notifications.useLastNotificationResponse();
 	const notificationListener = useRef<Subscription>();
 	const { token, user } = useContext(AuthContext);
 
@@ -78,20 +80,19 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 
 	/** Check what type of notification it is when user taps the notification, works in FOREGROUND, BACKGROUND, KILLED **/
 	/** If its a chat notification, and the current route is not 'Chat'; we reset the chat badge and route the user to chat screen **/
-	useEffect(() => {
-		if (
-			user &&
-			lastNotificationResponse &&
-			lastNotificationResponse.actionIdentifier ===
-				Notifications.DEFAULT_ACTION_IDENTIFIER
-		) {
-			const { type } = lastNotificationResponse.notification.request.content.data;
-			if (type === "CHAT" && currentRoute !== "Chat") {
-				RootNavigation.navigate("Chat");
-				setChatBadgeCount(0);
+	/** BE CAREFUL USING THIS BEFORE NAVIGATION IS READY (WILL NOT NAVIGATE). ALSO MIGHT WANT TO MAKE SURE 'USER' IS NOT NULL. **/
+	const handleTappedNotifications = useCallback(
+		(notification: NotificationResponse) => {
+			if (notification) {
+				const { type } = notification.notification.request.content.data;
+				if (type === "CHAT" && currentRoute !== "Chat") {
+					RootNavigation.navigate("Chat");
+					setChatBadgeCount(0);
+				}
 			}
-		}
-	}, [lastNotificationResponse]);
+		},
+		[notification]
+	);
 
 	/** Android specific settings for how to display notifications */
 	useEffect(() => {
@@ -131,6 +132,7 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 			setCurrentRoute,
 			permissionStatus,
 			setPermissionStatus,
+			handleTappedNotifications,
 		}),
 		[
 			chatBadgeCount,
@@ -139,6 +141,7 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 			setCurrentRoute,
 			permissionStatus,
 			setPermissionStatus,
+			handleTappedNotifications,
 		]
 	);
 

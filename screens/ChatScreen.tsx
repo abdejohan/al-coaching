@@ -40,7 +40,7 @@ const ChatScreen: React.FC = () => {
 	conversationBuilder.setParticipant(other);
 
 	return (
-		<View style={{ flex: 1, backgroundColor: colors.white }}>
+		<View style={{ flex: 1, backgroundColor: colors.background }}>
 			{!displayChat && (
 				<View
 					style={{
