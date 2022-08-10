@@ -81,18 +81,15 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 	/** Check what type of notification it is when user taps the notification, works in FOREGROUND, BACKGROUND, KILLED **/
 	/** If its a chat notification, and the current route is not 'Chat'; we reset the chat badge and route the user to chat screen **/
 	/** BE CAREFUL USING THIS BEFORE NAVIGATION IS READY (WILL NOT NAVIGATE). ALSO MIGHT WANT TO MAKE SURE 'USER' IS NOT NULL. **/
-	const handleTappedNotifications = useCallback(
-		(notification: NotificationResponse) => {
-			if (notification) {
-				const { type } = notification.notification.request.content.data;
-				if (type === "CHAT" && currentRoute !== "Chat") {
-					RootNavigation.navigate("Chat");
-					setChatBadgeCount(0);
-				}
+	const handleTappedNotifications = useCallback((notification: NotificationResponse) => {
+		if (notification) {
+			const { type } = notification.notification.request.content.data;
+			if (type === "CHAT" && currentRoute !== "Chat") {
+				RootNavigation.navigate("Chat");
+				setChatBadgeCount(0);
 			}
-		},
-		[notification]
-	);
+		}
+	}, []);
 
 	/** Android specific settings for how to display notifications */
 	useEffect(() => {
