@@ -9,7 +9,15 @@ import {
 	AppState,
 	AppStateStatus,
 } from "react-native";
-import { useTheme, IconButton, Switch, Button, Divider, Text } from "react-native-paper";
+import {
+	useTheme,
+	IconButton,
+	Switch,
+	Button,
+	Divider,
+	Text,
+	ActivityIndicator,
+} from "react-native-paper";
 import AuthContext from "../context/Auth";
 import NotificationsContext from "../context/Notifications";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
@@ -37,6 +45,7 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 		darkMode: globaldarkMode,
 		logout,
 		updateUser,
+		userLoading,
 		setDarkMode,
 	} = useContext(AuthContext);
 	const { permissionStatus, setPermissionStatus } = useContext(NotificationsContext);
@@ -46,7 +55,7 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 	const [darkmode, setDarkmode] = useState(globaldarkMode ? true : false);
 	const { DialogBox, showDialog, hideDialog } = useDialog();
 	const { takeImage, pickImage } = useImagePicker();
-	const [, editClient] = useAxios(
+	const [{ loading: avatarLoading }, editClient] = useAxios(
 		{
 			url: "/client/edit",
 			method: "POST",
@@ -54,27 +63,26 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 		{ manual: true }
 	);
 
-	const notificationSwitch = async () => {
+	const notificationSwitch = () => {
 		setAllowNotifications(!allowNotifications);
 	};
 
-	const darkmodeSwitch = async () => {
+	const darkmodeSwitch = () => {
 		setDarkmode(!darkmode);
 	};
 
 	const uploadAvatar = async (img: string | undefined | null) => {
 		if (typeof img === "string") {
-			await editClient({ data: { avatar: `data:image/jpeg;base64, ${img}` } }).catch(() =>
-				Alert.alert("Kunde inte spara bilden, försök igen.")
-			);
-			updateUser();
+			await editClient({ data: { avatar: `data:image/jpeg;base64, ${img}` } })
+				.then(() => updateUser())
+				.catch(() => Alert.alert("Kunde inte spara bilden, försök igen."));
 		}
-		if (img === undefined || img === null) {
-			await editClient({ data: { avatar: null } }).catch(() =>
-				Alert.alert("Kunde inte ta bort bilden, försök igen.")
-			);
-			updateUser();
-		}
+	};
+
+	const removeAvatar = async () => {
+		await editClient({ data: { avatar: null } })
+			.then(() => updateUser())
+			.catch(() => Alert.alert("Kunde inte ta bort bilden, försök igen."));
 	};
 
 	useEffect(() => {
@@ -147,65 +155,63 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 			contentContainerStyle={styles.innerContainer}
 			style={[styles.container, { backgroundColor: colors.background }]}>
 			<View>
-				{typeof user?.avatar === "string" ? (
-					<Image
-						source={{ uri: user?.avatar }}
-						style={{ ...styles.image, borderRadius: roundness }}
-					/>
+				{avatarLoading || userLoading ? (
+					<ActivityIndicator size='small' style={{ ...styles.image }} />
 				) : (
-					<Image
-						source={avatar_placeholder}
-						style={{ ...styles.image, borderRadius: roundness }}
-					/>
-				)}
-				<IconButton
-					icon='pencil'
-					size={13}
-					rippleColor='transparent'
-					style={{
-						position: "absolute",
-						right: -3,
-						top: -3,
-						margin: 0,
-						backgroundColor: colors.background,
-					}}
-					onPress={showDialog}
-				/>
-				<DialogBox>
-					<Button
-						mode='text'
-						onPress={() => {
-							hideDialog();
-							pickImage().then((img) => uploadAvatar(img?.base64));
-						}}
-						style={{ margin: 0 }}>
-						välj foto
-					</Button>
-					<Divider />
 					<>
-						<Button
-							mode='text'
-							onPress={() => {
-								hideDialog();
-								takeImage().then((img) => uploadAvatar(img?.base64));
+						<Image
+							source={user?.avatar ? { uri: user?.avatar } : avatar_placeholder}
+							style={{ ...styles.image, borderRadius: roundness }}
+						/>
+						<IconButton
+							icon='pencil'
+							size={13}
+							rippleColor='transparent'
+							style={{
+								position: "absolute",
+								right: -3,
+								top: -3,
+								margin: 0,
+								backgroundColor: colors.background,
 							}}
-							style={{ margin: 0 }}>
-							Ta foto
-						</Button>
-						<Divider />
+							onPress={showDialog}
+						/>
+						<DialogBox>
+							<Button
+								mode='text'
+								onPress={() => {
+									hideDialog();
+									pickImage().then((img) => uploadAvatar(img?.base64));
+								}}
+								style={{ margin: 0 }}>
+								välj foto
+							</Button>
+							<Divider />
+							<>
+								<Button
+									mode='text'
+									onPress={() => {
+										hideDialog();
+										takeImage().then((img) => uploadAvatar(img?.base64));
+									}}
+									style={{ margin: 0 }}>
+									Ta foto
+								</Button>
+								<Divider />
+							</>
+							<Button
+								mode='text'
+								color={colors.error}
+								onPress={() => {
+									hideDialog();
+									user?.avatar && removeAvatar();
+								}}
+								style={{ margin: 0 }}>
+								Ta bort foto
+							</Button>
+						</DialogBox>
 					</>
-					<Button
-						mode='text'
-						color={colors.error}
-						onPress={() => {
-							hideDialog();
-							// If an avatar exists; try and delete it (prevents unnecessary api calls)
-							typeof user?.avatar === "string" && uploadAvatar(undefined);
-						}}
-						style={{ margin: 0 }}>
-						Ta bort foto
-					</Button>
-				</DialogBox>
+				)}
 			</View>
 			<Headline
 				style={{

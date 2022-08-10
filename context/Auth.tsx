@@ -31,6 +31,7 @@ type ContextType = {
 	login: (response: LoginResponse) => void;
 	updateUser: () => void;
 	initialRoute: string;
+	userLoading: boolean;
 };
 
 const AuthContext = React.createContext<ContextType>({
@@ -43,6 +44,7 @@ const AuthContext = React.createContext<ContextType>({
 	login: () => {},
 	updateUser: () => {},
 	initialRoute: "Intro",
+	userLoading: false,
 });
 
 export const AuthContextProvider: FunctionComponent = (props: any) => {
@@ -51,7 +53,7 @@ export const AuthContextProvider: FunctionComponent = (props: any) => {
 	const [token, setToken] = useState<string | null>(null);
 	const [user, setUser] = useState<User | null>(null);
 	const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
-	const [, fetchUser] = useAxios<LoginWithTokenResponse>(
+	const [{ loading: userLoading }, fetchUser] = useAxios<LoginWithTokenResponse>(
 		{},
 		{ manual: true, useCache: false }
 	);
@@ -133,8 +135,19 @@ export const AuthContextProvider: FunctionComponent = (props: any) => {
 			logout,
 			login,
 			updateUser,
+			userLoading,
 		}),
-		[token, isLoggingOut, logout, login, initialRoute, updateUser, darkMode, setDarkMode]
+		[
+			token,
+			isLoggingOut,
+			logout,
+			login,
+			initialRoute,
+			updateUser,
+			darkMode,
+			setDarkMode,
+			userLoading,
+		]
 	);
 
 	return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>;
