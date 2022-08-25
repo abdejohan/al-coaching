@@ -46,15 +46,6 @@ type User = {
 	send_notifications: number;
 };
 
-type DecodedJwt = {
-	exp: number;
-	iat: number;
-	iss: string;
-	jti: string;
-	nbf: number;
-	prv: string;
-	sub: number;
-};
 
 type ValidInput = {
 	valid: boolean;
@@ -118,7 +109,6 @@ type autoCapitalizeTypes = "none" | "sentences" | "words" | "characters";
 type BlobProps = "Blob | Uint8Array | ArrayBuffer";
 
 export {
-	DecodedJwt,
 	ValidInput,
 	autoCapitalizeTypes,
 	autoCompleteTypes,

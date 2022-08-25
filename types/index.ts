@@ -9,7 +9,6 @@ import {
 
 import { LoginResponse, LoginWithTokenResponse } from "./api";
 
-import { DecodedJwt } from "./types";
 
 export {
 	RootStackParamList,
@@ -20,5 +19,4 @@ export {
 	LoggedInStackParmList,
 	DietTabParmList,
 	LoginWithTokenResponse,
-	DecodedJwt,
 };
