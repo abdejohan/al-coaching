@@ -5,7 +5,7 @@ export default {
 		owner: "coach-apps",
 		name: "AL Coaching",
 		slug: "al-coaching",
-		version: "1.5.4",
+		version: "1.5.6",
 		orientation: "portrait",
 		icon: "./assets/images/icon.png",
 		scheme: "myapp",
@@ -63,6 +63,9 @@ export default {
 			],
 		],
 		extra: {
+			eas: {
+				projectId: "d5fb7af7-116d-4936-9e78-2254bb8f4f56",
+			},
 			apiUrl: process.env.API_URL,
 			coachSiteUrl: process.env.COACH_SITE_URL,
 			coachName: process.env.COACH_NAME,
