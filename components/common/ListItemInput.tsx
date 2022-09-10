@@ -1,9 +1,6 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { View, StyleSheet, TextStyle } from "react-native";
 import { List, useTheme, TextInput, IconButton } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../../types";
 import { useDialog } from "../../hooks/useDialog";
 import { Paragraph } from "../../typography";
 interface ListItemProps {
@@ -20,42 +17,56 @@ interface ListItemProps {
 	left?: any;
 	leftIcon?: ReactElement;
 	rightIcon?: ReactElement;
+	repetitionPlaceholder?: string;
+	weightPlaceholder?: string;
 	right?: any;
 	comment?: string;
 	displayDivider?: boolean;
 	weightsValue?: ((value: number) => number) | any;
+	repetitionInput?: string;
+	weightInput?: string;
 	repetitionsValue?: ((value: number) => number) | any;
 }
 
 const ListItemInput: React.FC<ListItemProps> = (props) => {
-	const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-	const { colors, roundness } = useTheme();
-	const { DialogBox, showDialog, hideDialog } = useDialog();
 	const {
-		// id,
 		listItemStyle,
-		title,
 		description,
 		comment,
 		leftIcon,
-		rightIcon,
+		repetitionPlaceholder,
+		weightPlaceholder,
 		descriptionStyle,
-		date,
-		dateStyle,
 		onPress,
 		titleStyle,
-		iconStyle,
-		displayDivider = true,
 		repetitionsValue,
 		weightsValue,
 	} = props;
+	const [repetitionInput, setRepetitionInput] = useState<string>();
+	const [weightInput, setWeightInput] = useState<string>();
+	const { colors, roundness } = useTheme();
+	const { DialogBox, showDialog } = useDialog();
+
+	useEffect(() => {
+		if (repetitionPlaceholder) {
+			setRepetitionInput(repetitionPlaceholder);
+		}
+	}, [repetitionPlaceholder]);
+
+	useEffect(() => {
+		if (weightPlaceholder) {
+			setWeightInput(weightPlaceholder);
+		}
+	}, [weightPlaceholder]);
 
 	const setWeights = (value: string) => {
-		weightsValue(parseInt(value.replace(",", ".")));
+		weightsValue(value);
+		setWeightInput(value);
 	};
 
 	const setRepetitions = (value: string) => {
-		repetitionsValue(parseInt(value));
+		repetitionsValue(value);
+		setRepetitionInput(value);
 	};
 
 	return (
@@ -102,6 +113,7 @@ const ListItemInput: React.FC<ListItemProps> = (props) => {
 							<Paragraph>{comment}</Paragraph>
 						</DialogBox>
 						<TextInput
+							value={repetitionInput}
 							mode='outlined'
 							style={[
 								styles.input,
@@ -114,6 +126,7 @@ const ListItemInput: React.FC<ListItemProps> = (props) => {
 							maxLength={3}
 						/>
 						<TextInput
+							value={weightInput}
 							mode='outlined'
 							style={[styles.input, { backgroundColor: colors.onSurface }]}
 							outlineColor={colors.onSurface}

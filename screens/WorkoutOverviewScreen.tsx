@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import placeholder_image from "../assets/images/placeholder_image.jpg";
 import { Divider, useTheme } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,7 +16,6 @@ interface WorkoutOverviewProps {
 const WorkoutOverviewScreen: React.FC<WorkoutOverviewProps> = ({ navigation, route }) => {
 	const { colors } = useTheme();
 	const { workoutDay } = route.params;
-	const windowHeight = Dimensions.get("window").height;
 
 	return (
 		<View style={{ backgroundColor: colors.onSurface, flex: 1 }}>

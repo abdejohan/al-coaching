@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, ScrollView, View } from "react-native";
 import { ActivityIndicator, IconButton, useTheme, List, Text } from "react-native-paper";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
-import { Headline, Paragraph, Subheading } from "../typography";
+import { Paragraph, Subheading } from "../typography";
 
 interface WorkoutProps {
 	navigation: any;
