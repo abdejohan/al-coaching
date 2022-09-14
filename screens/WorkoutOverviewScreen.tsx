@@ -7,6 +7,8 @@ import ListItemBasic from "../components/common/ListItemBasic";
 import { Headline, Paragraph } from "../typography";
 import ParallaxScrollView from "../animations/ParallaxScrollView";
 import { StatusBar } from "expo-status-bar";
+// import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
+// import { useEffect } from "react";
 
 interface WorkoutOverviewProps {
 	navigation: any;
@@ -16,6 +18,38 @@ interface WorkoutOverviewProps {
 const WorkoutOverviewScreen: React.FC<WorkoutOverviewProps> = ({ navigation, route }) => {
 	const { colors } = useTheme();
 	const { workoutDay } = route.params;
+
+	/** find all category ids
+	 const { useAxios } = useAxiosAuthenticated();
+	 * 
+	 useEffect(() => {
+		 if (workoutDay.workouts[0]) {
+			 workoutDay.workouts.map((session) =>
+			 console.log("Category id: " + session.category)
+			 );
+			}
+		}, []);
+
+			useEffect(() => {
+		if (historyAllData) {
+			//console.log(historyAllData);
+		}
+		if (historyAllError) {
+			console.log(historyAllError);
+		}
+	}, [historyAllData]);
+	
+	// ENDPOINT FOR FETCHING WORKOUT HISTORY FOR A SPECIFIC EXERCISE
+	const [{ data: historyAllData, loading: historyAllLoading, error: historyAllError }] =
+	useAxios({
+		url: "/v2/exercise/track/history/all",
+		method: "POST",
+		data: {
+			scheme_day_id: workoutDay.id,
+			exercise_id: workoutDay.workouts[0].category,
+		},
+	});
+	*/
 
 	return (
 		<View style={{ backgroundColor: colors.onSurface, flex: 1 }}>
