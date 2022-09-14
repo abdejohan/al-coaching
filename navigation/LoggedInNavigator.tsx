@@ -29,6 +29,7 @@ import NotificationsContext from "../context/Notifications";
 import Constants from "expo-constants";
 import DietPlanScreen from "../screens/DietPlanScreen";
 import MealsScreen from "../screens/MealsScreen";
+import DealsScreen from "../screens/DealsScreen";
 
 const LoggedInStack = createNativeStackNavigator<LoggedInStackParmList>();
 export default function LoggedInNavigator() {
@@ -123,6 +124,16 @@ export default function LoggedInNavigator() {
 				options={{
 					headerLeft: () => backIcon(),
 					title: "Prenumeration",
+					headerTitleAlign: "center",
+					headerTitleStyle: { fontFamily: "ubuntu-light", color: colors.text },
+				}}
+			/>
+			<LoggedInStack.Screen
+				name='Deals'
+				component={DealsScreen}
+				options={{
+					headerLeft: () => backIcon(),
+					title: "Erbjudanden",
 					headerTitleAlign: "center",
 					headerTitleStyle: { fontFamily: "ubuntu-light", color: colors.text },
 				}}

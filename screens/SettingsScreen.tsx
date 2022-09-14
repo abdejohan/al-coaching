@@ -285,6 +285,16 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 					leftIcon={<FontAwesome5 name='moon' size={22} color={colors.primary} />}
 				/>
 				<ListItemSetting
+					onPress={() => navigation.navigate("Deals")}
+					title='Erbjudanden'
+					rightIcon={
+						<View style={{ marginRight: 15 }}>
+							<FontAwesome5 name='chevron-right' size={22} color={colors.onSurface} />
+						</View>
+					}
+					leftIcon={<MaterialIcons name='local-offer' size={24} color={colors.primary} />}
+				/>
+				<ListItemSetting
 					onPress={() => navigation.navigate("Subscription")}
 					title='Ansök om uppsägning'
 					rightIcon={
