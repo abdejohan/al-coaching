@@ -29,9 +29,9 @@ export default {
 			bundleIdentifier: "io.al.coaching",
 		},
 		android: {
-			package: "se.alcoaching.bebrightr",
+			package: "app.al.coaching",
 			googleServicesFile: "./google-services.json",
-			versionCode: 1,
+			versionCode: 30,
 			permissions: ["NOTIFICATIONS"],
 			useNextNotificationsApi: true,
 			adaptiveIcon: {
@@ -48,6 +48,14 @@ export default {
 			favicon: "./assets/images/favicon.png",
 		},
 		plugins: [
+			[
+				"expo-build-properties",
+				{
+					android: {
+						enableProguardInReleaseBuilds: true,
+					},
+				},
+			],
 			[
 				"expo-document-picker",
 				{
