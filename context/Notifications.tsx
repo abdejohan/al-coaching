@@ -14,6 +14,8 @@ import { PermissionStatus, Subscription } from "expo-modules-core";
 import AuthContext from "./Auth";
 import { Notification, NotificationResponse } from "expo-notifications";
 import * as RootNavigation from "../navigation/RootNavigation";
+import * as Device from "expo-device";
+import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
 
 type ContextType = {
 	permissionStatus: PermissionStatus | undefined;
@@ -42,6 +44,14 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 	const [notification, setNotification] = useState<Notification>();
 	const notificationListener = useRef<Subscription>();
 	const { token, user } = useContext(AuthContext);
+	const { useAxios } = useAxiosAuthenticated();
+	const [{}, editClient] = useAxios(
+		{
+			url: "/client/edit",
+			method: "POST",
+		},
+		{ manual: true }
+	);
 
 	if (
 		user &&
@@ -120,6 +130,22 @@ export const NotificationsContextProvider: FunctionComponent = ({ children }) =>
 		};
 		checkPermissionToFetchDeviceToken();
 	}, [token]);
+
+	// Save device token if access is granted
+	useEffect(() => {
+		const handleNotifications = async () => {
+			const { status } = await Notifications.getPermissionsAsync();
+			if (status === "granted") {
+				const expoToken = (await Notifications.getExpoPushTokenAsync()).data;
+				if (typeof expoToken === "string" && Device.isDevice && user !== undefined) {
+					editClient({ data: { device_token: expoToken } })
+						.then((res) => console.log("WORKED FINE: " + expoToken))
+						.catch((e) => console.log("did not work: " + expoToken));
+				}
+			}
+		};
+		handleNotifications();
+	}, []);
 
 	const state = useMemo(
 		() => ({
