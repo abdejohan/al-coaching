@@ -137,12 +137,12 @@ export const WeeklyReportContextProvider: FunctionComponent = ({ children }) => 
 		try {
 			const fields = {
 				/* START OF CHECK-IN PAGE 1 */
-				weight: weight?.text && parseInt(weight?.text),
-				biceps: biceps?.text && parseInt(biceps?.text),
-				glutes: glutes?.text && parseInt(glutes?.text),
-				waist: waist?.text && parseInt(waist?.text),
-				thighs: thighs?.text && parseInt(thighs?.text),
-				weeklySteps: weeklySteps?.text && parseInt(weeklySteps?.text),
+				weight: Number(weight?.text),
+				biceps: Number(biceps?.text),
+				glutes: Number(glutes?.text),
+				waist: Number(waist?.text),
+				thighs: Number(thighs?.text),
+				weeklySteps: Number(weeklySteps?.text),
 				frontImage: frontImage?.base64
 					? `data:image/jpg;base64,${frontImage?.base64}`
 					: undefined,
