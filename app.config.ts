@@ -5,7 +5,7 @@ export default {
 		owner: "coach-apps",
 		name: "AL Coaching",
 		slug: "al-coaching",
-		version: "1.6.0",
+		version: "1.6.1",
 		orientation: "portrait",
 		icon: "./assets/images/icon.png",
 		scheme: "myapp",
@@ -27,13 +27,20 @@ export default {
 			buildNumber: "1",
 			googleServicesFile: "./GoogleService-Info.plist",
 			bundleIdentifier: "io.al.coaching",
+			infoPlist: {
+				NSCameraUsageDescription:
+					"The app needs camera permission in order for you to take images of your fitness progress",
+				NSPhotoLibraryUsageDescription:
+					"The app needs camera roll permission in order to add photos you've already taken for upload",
+			},
 		},
 		android: {
 			package: "app.al.coaching",
 			googleServicesFile: "./google-services.json",
-			versionCode: 30,
+			versionCode: 31,
 			permissions: ["NOTIFICATIONS"],
 			useNextNotificationsApi: true,
+			softwareKeyboardLayoutMode: "pan",
 			adaptiveIcon: {
 				foregroundImage: "./assets/images/adaptive-icon.png",
 				backgroundColor: "#3DA6AF",

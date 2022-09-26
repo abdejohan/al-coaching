@@ -45,6 +45,7 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordProps> = ({ navigation }) => 
 		<ImageBackground source={intro_background} style={{ flex: 1 }}>
 			<StatusBar style='light' />
 			<KeyboardAwareScrollView
+				enableOnAndroid
 				style={{ backgroundColor: colors.darkestfade }}
 				contentContainerStyle={styles.scrollContentContainer}>
 				<Headline style={{ color: colors.white, marginBottom: 5 }}>
