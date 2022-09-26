@@ -80,7 +80,7 @@ const ProgressBox: React.FC<ProgressBoxProps> = (props) => {
 				</View>
 			</View>
 			<Headline style={{ color: colors.highlightText, lineHeight: 20 }}>
-				{data.slice(-1)[0]} cm
+				{Math.round(data?.slice(-1)[0] * 10) / 10} cm
 			</Headline>
 			<LineChart
 				style={{ height: 60, width: progressBoxWidth - 30 }}

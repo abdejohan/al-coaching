@@ -38,6 +38,7 @@ const LineChart: React.FC<LineChartProps> = (props) => {
 					<View style={{ flexDirection: "row" }}>
 						<Count
 							duration={1500}
+							decimal
 							start={
 								(sizes[0]?.weight[0]?.value
 									? sizes[0]?.weight[0]?.value

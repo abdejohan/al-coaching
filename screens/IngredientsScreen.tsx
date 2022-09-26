@@ -13,7 +13,7 @@ const calculateTotalNutrientValue = (ingredients: Array<any>, unit: string) => {
 	const sumOfNutrient = ingredients.reduce((accumulator, ingredient) => {
 		return accumulator + ingredient[unit];
 	}, 0);
-	return sumOfNutrient;
+	return Math.round(sumOfNutrient);
 };
 
 const IngredientsScreen: React.FC<DietCategoryProps> = ({ navigation, route }) => {

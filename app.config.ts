@@ -37,7 +37,7 @@ export default {
 		android: {
 			package: "app.al.coaching",
 			googleServicesFile: "./google-services.json",
-			versionCode: 31,
+			versionCode: 32,
 			permissions: ["NOTIFICATIONS"],
 			useNextNotificationsApi: true,
 			softwareKeyboardLayoutMode: "pan",
