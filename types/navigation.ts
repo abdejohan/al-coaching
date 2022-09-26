@@ -20,6 +20,7 @@ type LoggedInStackParmList = {
 	Subscription: undefined;
 	IntroSlider: undefined;
 	WorkoutOverview: undefined;
+	WorkoutSchemaScreen: undefined;
 	WorkoutSession: undefined;
 	DietPlan: undefined;
 	Deals: undefined;

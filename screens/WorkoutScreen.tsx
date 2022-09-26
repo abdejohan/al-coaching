@@ -27,7 +27,7 @@ const WorkoutScreen: React.FC<WorkoutProps> = ({ navigation }) => {
 			)}
 			{workoutData &&
 				!workoutLoading &&
-				workoutData[0]?.workout_days.map((day: any, index: number) => (
+				workoutData.map((workoutSchema: any, index: number) => (
 					<List.Item
 						key={index}
 						borderless
@@ -35,7 +35,7 @@ const WorkoutScreen: React.FC<WorkoutProps> = ({ navigation }) => {
 							styles.listItem,
 							{ borderRadius: roundness, backgroundColor: colors.surface },
 						]}
-						title={day.name}
+						title={workoutSchema.name}
 						titleStyle={{
 							fontSize: 16,
 							color: colors.highlightText,
@@ -46,20 +46,11 @@ const WorkoutScreen: React.FC<WorkoutProps> = ({ navigation }) => {
 							fontSize: 16,
 							fontFamily: "ubuntu-light",
 						}}
-						onPress={() => navigation.navigate("WorkoutOverview", { workoutDay: day })}
-						description={() => (
-							<View style={{ flexDirection: "row", marginLeft: -3 }}>
-								<Ionicons
-									size={13}
-									name='barbell-outline'
-									color={colors.primary}
-									style={{ transform: [{ rotate: "135deg" }], marginRight: 9 }}
-								/>
-								<Text style={{ fontFamily: "ubuntu-light", marginTop: 5 }}>
-									{day.workouts.length} övningar
-								</Text>
-							</View>
-						)}
+						onPress={() =>
+							navigation.navigate("WorkoutSchemaScreen", {
+								workoutSchema: workoutSchema.workout_days,
+							})
+						}
 						right={() => (
 							<View style={{ justifyContent: "center" }}>
 								<View

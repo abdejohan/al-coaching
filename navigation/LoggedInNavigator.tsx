@@ -30,6 +30,7 @@ import Constants from "expo-constants";
 import DietPlanScreen from "../screens/DietPlanScreen";
 import MealsScreen from "../screens/MealsScreen";
 import DealsScreen from "../screens/DealsScreen";
+import WorkoutSchemaScreen from "../screens/WorkoutSchemaScreen";
 
 const LoggedInStack = createNativeStackNavigator<LoggedInStackParmList>();
 export default function LoggedInNavigator() {
@@ -101,6 +102,13 @@ export default function LoggedInNavigator() {
 				options={{
 					headerBackVisible: false,
 					headerShown: false,
+				}}
+			/>
+			<LoggedInStack.Screen
+				name='WorkoutSchemaScreen'
+				component={WorkoutSchemaScreen}
+				options={{
+					title: "Träningsschema",
 				}}
 			/>
 			<LoggedInStack.Screen
@@ -330,7 +338,7 @@ function WorkoutTabNavigator() {
 			}}>
 			<WorkoutTabStack.Screen
 				name='Workout'
-				options={{ title: "Träningschema" }}
+				options={{ title: "Träningsscheman" }}
 				component={WorkoutScreen}
 			/>
 		</WorkoutTabStack.Navigator>
