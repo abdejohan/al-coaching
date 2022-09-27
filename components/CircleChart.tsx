@@ -19,39 +19,16 @@ const CircleChart: React.FC<CircleChartProps> = (props) => {
 	const { user } = useContext(AuthContext);
 	const { colors, roundness } = useTheme();
 	const screenWidth = Dimensions.get("window").width;
-	const [weightDifference, setWeightDifference] = useState<number>(0);
-	const [infoText, setInfoText] = useState<string>("Du har gått ner");
+	const [goalDifference, setGoalDifference] = useState<number>(0);
 	const [displayChart, setDisplayChart] = useState<boolean>(false);
-	const [progress, setProgress] = useState<number>(0);
 
 	useEffect(() => {
 		setDisplayChart(false);
 		if (user && sizes) {
-			setWeightDifference(
+			setGoalDifference(
 				Math.round(Math.abs(user?.start_weight - user?.goal_weight) * 10) / 10
 			);
-			if (Math.round(Math.abs(user?.start_weight - user?.goal_weight) * 10) / 10 > 0) {
-				// Will run if the user is looking to lose weight
-				const progress = user?.start_weight - sizes[0]?.weight[0]?.value;
-				if (typeof progress === "number" && progress >= 0) {
-					setInfoText("Du har gått ner");
-					// Calculate weight difference
-					setDisplayChart(true);
-					return setProgress(Math.round(progress * 10) / 10);
-				}
-				setDisplayChart(true);
-				return setProgress(0);
-			} else {
-				// Will run if the user is looking to gain weight
-				const progress = sizes[0]?.weight[0]?.value - user?.start_weight;
-				if (typeof progress === "number" && progress >= 0) {
-					setInfoText("Du har gått upp");
-					setDisplayChart(true);
-					return setProgress(Math.round(progress * 10) / 10);
-				}
-				setDisplayChart(true);
-				return setProgress(0);
-			}
+			setDisplayChart(true);
 		}
 	}, [sizes, user]);
 
@@ -71,17 +48,25 @@ const CircleChart: React.FC<CircleChartProps> = (props) => {
 				<Donut
 					duration={1000}
 					radius={screenWidth / 3.5}
-					max={weightDifference}
+					max={goalDifference}
 					strokeWidth={13}
 					color={colors.primary}
-					percentage={progress < weightDifference ? progress : weightDifference}>
+					percentage={
+						user!.progress_weight.amount > goalDifference
+							? goalDifference
+							: user!.progress_weight.amount
+					}>
 					<View style={[{ ...StyleSheet.absoluteFillObject }, styles.chartText]}>
-						<Text>{infoText}</Text>
+						<Text>
+							{user?.progress_weight?.status === 1
+								? "Du har gått upp"
+								: "Du har gått ner"}
+						</Text>
 						<View
 							style={{ flexDirection: "row", alignItems: "flex-end", marginBottom: 7 }}>
 							<Count
 								decimal
-								stop={progress < weightDifference ? progress : weightDifference}
+								stop={user!.progress_weight?.amount}
 								style={{
 									color: colors.highlightText,
 									fontSize: screenWidth / 8,
@@ -106,7 +91,7 @@ const CircleChart: React.FC<CircleChartProps> = (props) => {
 									color: colors.highlightText,
 									fontFamily: "ubuntu-medium",
 								}}>
-								{weightDifference}
+								{goalDifference}
 							</Text>
 						</Text>
 					</View>
