@@ -1,4 +1,4 @@
-import { View, Image, TouchableOpacity } from "react-native";
+import { View, Image, TouchableOpacity, Platform } from "react-native";
 import { Divider, TextInput, useTheme } from "react-native-paper";
 import InputValidation from "../InputValidation";
 import { useImagePicker } from "../../hooks/useImagePicker";
@@ -57,7 +57,9 @@ const Measures: React.FC = () => {
 					textAlign='center'
 					errorMessage='Ange ett svar.'
 					returnKeyType='done'
-					keyboardType='number-pad'
+					keyboardType={
+						Platform.OS === "android" ? "number-pad" : "numbers-and-punctuation"
+					}
 					validationContainerStyle={{ minWidth: 130 }}
 					right={<TextInput.Affix text='kg' />}
 				/>
@@ -77,7 +79,9 @@ const Measures: React.FC = () => {
 					textAlign='center'
 					errorMessage='Ange ett svar.'
 					returnKeyType='done'
-					keyboardType='number-pad'
+					keyboardType={
+						Platform.OS === "android" ? "number-pad" : "numbers-and-punctuation"
+					}
 					validationContainerStyle={{ minWidth: 130 }}
 					right={<TextInput.Affix text='cm' />}
 				/>
@@ -97,7 +101,9 @@ const Measures: React.FC = () => {
 					textAlign='center'
 					errorMessage='Ange ett svar.'
 					returnKeyType='done'
-					keyboardType='number-pad'
+					keyboardType={
+						Platform.OS === "android" ? "number-pad" : "numbers-and-punctuation"
+					}
 					validationContainerStyle={{ minWidth: 130 }}
 					right={<TextInput.Affix text='cm' />}
 				/>
@@ -117,7 +123,9 @@ const Measures: React.FC = () => {
 					textAlign='center'
 					errorMessage='Ange ett svar.'
 					returnKeyType='done'
-					keyboardType='number-pad'
+					keyboardType={
+						Platform.OS === "android" ? "number-pad" : "numbers-and-punctuation"
+					}
 					validationContainerStyle={{ minWidth: 130 }}
 					right={<TextInput.Affix text='cm' />}
 				/>
@@ -137,7 +145,9 @@ const Measures: React.FC = () => {
 					textAlign='center'
 					errorMessage='Ange ett svar.'
 					returnKeyType='done'
-					keyboardType='number-pad'
+					keyboardType={
+						Platform.OS === "android" ? "number-pad" : "numbers-and-punctuation"
+					}
 					validationContainerStyle={{ minWidth: 130 }}
 					right={<TextInput.Affix text='cm' />}
 				/>
