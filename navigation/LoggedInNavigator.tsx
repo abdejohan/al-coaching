@@ -176,7 +176,7 @@ const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 function BottomTabNavigator() {
 	const { colors, roundness } = useTheme();
 	//const colorScheme = useColorScheme();
-	const { user } = useContext(AuthContext);
+	const { user, darkMode } = useContext(AuthContext);
 	const { chatBadgeCount } = useContext(NotificationsContext);
 
 	return (
@@ -206,8 +206,7 @@ function BottomTabNavigator() {
 							justifyContent: "center",
 							alignItems: "center",
 							borderRadius: roundness,
-							borderTopColor:
-								user?.color_mode === "dark" ? colors.darkfade : colors.onSurface,
+							borderTopColor: darkMode ? colors.darkfade : colors.onSurface,
 							borderTopWidth: 0.5,
 							backgroundColor: colors.surface,
 						}}
@@ -219,10 +218,8 @@ function BottomTabNavigator() {
 					marginRight: 5,
 					borderRadius: roundness,
 				},
-				tabBarActiveTintColor:
-					user?.color_mode === "dark" ? colors.highlightText : colors.primary,
+				tabBarActiveTintColor: darkMode ? colors.highlightText : colors.primary,
 				tabBarInactiveTintColor: colors.text,
-
 				tabBarActiveBackgroundColor: colors.background,
 				tabBarInactiveBackgroundColor: colors.surface,
 				tabBarShowLabel: false,

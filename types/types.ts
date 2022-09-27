@@ -5,7 +5,6 @@ type User = {
 	authToken: null;
 	avatar: null;
 	checkinday: number;
-	color_mode: string;
 	comment: null;
 	created_at: string;
 	current_weight: number;
@@ -16,6 +15,10 @@ type User = {
 	experiences: string;
 	form_saved: number;
 	gender: string;
+	progress_weight: {
+		amount: number;
+		status: number;
+	};
 	goal: string;
 	goal_weight: number;
 	height: number;
@@ -43,9 +46,7 @@ type User = {
 	trial_ends_at: any;
 	updated_at: string;
 	weekly_update_sent: number;
-	send_notifications: number;
 };
-
 
 type ValidInput = {
 	valid: boolean;
