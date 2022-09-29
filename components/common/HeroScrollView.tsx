@@ -1,4 +1,11 @@
-import { StyleSheet, View, Image, Dimensions, ImageSourcePropType } from "react-native";
+import {
+	StyleSheet,
+	View,
+	Image,
+	Dimensions,
+	ImageSourcePropType,
+	RefreshControl,
+} from "react-native";
 import { Title, useTheme } from "react-native-paper";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
@@ -18,14 +25,13 @@ interface HeroScrollProps {
 	modal?: string;
 	faded?: boolean;
 	children?: any;
+	refreshControl?: RefreshControl;
 }
 
 const HeroScrollView: React.FC<HeroScrollProps> = (props) => {
 	const { children, title, description, image, video, button, faded } = props;
-	const [contentHeight, setContentHeight] = useState<number>(0);
 	const { colors } = useTheme();
 	const isFocused = useIsFocused();
-	const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
 	return (
 		<KeyboardAwareScrollView
@@ -51,7 +57,6 @@ const HeroScrollView: React.FC<HeroScrollProps> = (props) => {
 				/>
 			)}
 			<View
-				onLayout={(event) => setContentHeight(event.nativeEvent.layout.height)}
 				style={{
 					bottom: 35,
 					borderTopStartRadius: video ? 0 : 35,
