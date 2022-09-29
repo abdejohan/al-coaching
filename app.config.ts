@@ -5,7 +5,7 @@ export default {
 		owner: "coach-apps",
 		name: "AL Coaching",
 		slug: "al-coaching",
-		version: "1.6.2",
+		version: "1.6.3",
 		orientation: "portrait",
 		icon: "./assets/images/icon.png",
 		scheme: "myapp",
@@ -37,7 +37,7 @@ export default {
 		android: {
 			package: "app.al.coaching",
 			googleServicesFile: "./google-services.json",
-			versionCode: 32,
+			versionCode: 33,
 			permissions: ["NOTIFICATIONS"],
 			useNextNotificationsApi: true,
 			softwareKeyboardLayoutMode: "pan",
@@ -45,11 +45,6 @@ export default {
 				foregroundImage: "./assets/images/adaptive-icon.png",
 				backgroundColor: "#3DA6AF",
 			},
-		},
-		androidStatusBar: {
-			barStyle: "light-content",
-			//backgroundColor: "#121212",
-			translucent: true,
 		},
 		web: {
 			favicon: "./assets/images/favicon.png",
