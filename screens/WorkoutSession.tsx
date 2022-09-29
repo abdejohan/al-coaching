@@ -1,11 +1,11 @@
-import { Alert, RefreshControl, StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import { Divider, useTheme } from "react-native-paper";
 import HeroScrollView from "../components/common/HeroScrollView";
 import placeholder_image from "../assets/images/placeholder_image.jpg";
 import { Ionicons } from "@expo/vector-icons";
 import ListItemInput from "../components/common/ListItemInput";
 import Button from "../components/common/Button";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
 import InputValidation from "../components/InputValidation";
 import { Paragraph, Subheading } from "../typography";
@@ -32,7 +32,6 @@ type Set = {
 };
 
 const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) => {
-	const [refreshing, setRefreshing] = useState(false);
 	const { workouts, newWorkoutIndex, workoutDayID, incomingWorkoutIndex } = route.params;
 	const [workoutSets, setWorkoutSets] = useState<Array<SaveSet>>([]);
 	const [workoutIndex, setWorkoutIndex] = useState<number>(
@@ -51,10 +50,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 	);
 
 	// ENDPOINT FOR FETCHING WORKOUT HISTORY FOR A SPECIFIC EXERCISE
-	const [
-		{ data: historyData, loading: historyLoading, error: historyError },
-		fetchWorkoutHistory,
-	] = useAxios({
+	const [{ data: historyData, loading: historyLoading, error: historyError }] = useAxios({
 		url: "/v2/exercise/track/history/latest",
 		method: "POST",
 		data: {
@@ -63,13 +59,6 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 			workout: workouts[workoutIndex].category,
 		},
 	});
-
-	const onRefresh = useCallback(() => {
-		setRefreshing(true);
-		fetchWorkoutHistory()
-			.then(() => setRefreshing(false))
-			.catch(() => {});
-	}, []);
 
 	// newWorkoutIndex is the index of the current workout
 	// and comes from the previously displayed screen
@@ -129,16 +118,6 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 		<>
 			<StatusBar hidden />
 			<HeroScrollView
-				refreshControl={
-					<RefreshControl
-						titleColor={colors.primary}
-						colors={[colors.primary]}
-						tintColor={colors.primary}
-						progressBackgroundColor={colors.surface}
-						refreshing={refreshing}
-						onRefresh={onRefresh}
-					/>
-				}
 				video={
 					workouts[workoutIndex].video
 						? workouts[workoutIndex]?.video?.substring(
