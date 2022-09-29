@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, ScrollView, View } from "react-native";
-import { ActivityIndicator, IconButton, useTheme, List, Text } from "react-native-paper";
+import { useCallback, useState } from "react";
+import { StyleSheet, ScrollView, View, RefreshControl } from "react-native";
+import { IconButton, useTheme, List } from "react-native-paper";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
 import { Paragraph, Subheading } from "../typography";
 
@@ -9,22 +10,36 @@ interface WorkoutProps {
 }
 
 const WorkoutScreen: React.FC<WorkoutProps> = ({ navigation }) => {
+	const [refreshing, setRefreshing] = useState(false);
 	const { colors, roundness } = useTheme();
 	const { useAxios } = useAxiosAuthenticated();
-	const [{ data: workoutData, loading: workoutLoading, error: workoutError }] = useAxios({
+	const [
+		{ data: workoutData, loading: workoutLoading, error: workoutError },
+		fetchWorkoutSchemas,
+	] = useAxios({
 		url: "/v2/workout/list",
 	});
 
+	const onRefresh = useCallback(() => {
+		setRefreshing(true);
+		fetchWorkoutSchemas()
+			.then(() => setRefreshing(false))
+			.catch(() => {});
+	}, []);
+
 	return (
-		<ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
-			{workoutLoading && (
-				<ActivityIndicator
-					animating={workoutLoading}
-					color={colors.primary}
-					size='large'
-					style={{ marginTop: 100 }}
+		<ScrollView
+			style={[styles.container, { backgroundColor: colors.background }]}
+			refreshControl={
+				<RefreshControl
+					titleColor={colors.primary}
+					colors={[colors.primary]}
+					tintColor={colors.primary}
+					progressBackgroundColor={colors.surface}
+					refreshing={refreshing}
+					onRefresh={onRefresh}
 				/>
-			)}
+			}>
 			{workoutData &&
 				!workoutLoading &&
 				workoutData.map((workoutSchema: any, index: number) => (

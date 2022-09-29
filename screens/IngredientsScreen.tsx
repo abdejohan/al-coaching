@@ -1,8 +1,7 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView, View } from "react-native";
 import { Divider, useTheme } from "react-native-paper";
 import ListItemBasic from "../components/common/ListItemBasic";
-import { Paragraph, Subheading, Text } from "../typography";
+import { Subheading } from "../typography";
 
 interface DietCategoryProps {
 	navigation: any;

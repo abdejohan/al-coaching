@@ -1,32 +1,46 @@
-import { StyleSheet, ScrollView, View } from "react-native";
-import { ActivityIndicator, useTheme } from "react-native-paper";
+import { StyleSheet, ScrollView, View, RefreshControl } from "react-native";
+import { useTheme } from "react-native-paper";
 import ListItem from "../components/common/ListItem";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Paragraph, Subheading } from "../typography";
+import { useCallback, useState } from "react";
 
 interface DietProps {
 	navigation: any;
 }
 
 const DietPlansScreen: React.FC<DietProps> = ({ navigation }) => {
+	const [refreshing, setRefreshing] = useState(false);
 	const { useAxios } = useAxiosAuthenticated();
 	const { colors } = useTheme();
-	const [{ data: dietPlans, loading: dietLoading, error: dietError }] = useAxios({
-		method: "GET",
-		url: "/diet/list/get",
-	});
+	const [{ data: dietPlans, loading: dietLoading, error: dietError }, fetchDietPlans] =
+		useAxios({
+			method: "GET",
+			url: "/diet/list/get",
+		});
+
+	const onRefresh = useCallback(() => {
+		setRefreshing(true);
+		fetchDietPlans()
+			.then(() => setRefreshing(false))
+			.catch(() => {});
+	}, []);
 
 	return (
-		<ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
-			{dietLoading && (
-				<ActivityIndicator
-					animating={dietLoading}
-					color={colors.primary}
-					size='large'
-					style={{ marginTop: 100 }}
+		<ScrollView
+			style={[styles.container, { backgroundColor: colors.background }]}
+			refreshControl={
+				<RefreshControl
+					titleColor={colors.primary}
+					colors={[colors.primary]}
+					tintColor={colors.primary}
+					progressBackgroundColor={colors.surface}
+					refreshing={refreshing}
+					onRefresh={onRefresh}
 				/>
-			)}
+			}>
+			{/** DISPLAYS THE LIST.ITEMS IF DATA EXISTS. */}
 			{dietPlans &&
 				!dietLoading &&
 				dietPlans?.map((dietPlan: any, index: number) => (
@@ -41,6 +55,7 @@ const DietPlansScreen: React.FC<DietProps> = ({ navigation }) => {
 						}
 					/>
 				))}
+			{/** DISPLAYS "NO DIET PLANS" MESSAGE. */}
 			{!dietPlans && !dietLoading && (
 				<View style={{ paddingTop: 50 }}>
 					<Subheading style={{ textAlign: "center", fontSize: 16, marginBottom: 5 }}>

@@ -1,8 +1,8 @@
-import { StyleSheet, ScrollView, View } from "react-native";
-import { ActivityIndicator, useTheme } from "react-native-paper";
+import { StyleSheet, ScrollView, View, RefreshControl } from "react-native";
+import { useTheme } from "react-native-paper";
 import ListItem from "../components/common/ListItem";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Meal } from "../types/types";
 import { Paragraph } from "../typography";
 import AuthContext from "../context/Auth";
@@ -20,16 +20,18 @@ type DietPlan = {
 };
 
 const DietPlanScreen: React.FC<DietProps> = ({ navigation, route }) => {
+	const [refreshing, setRefreshing] = useState(false);
 	const { useAxios } = useAxiosAuthenticated();
 	const [dietPlanDays, setDietPlanDays] = useState<any>();
 	const { colors } = useTheme();
 	const { dietPlanId } = route.params;
 	const { user } = useContext(AuthContext);
-	const [{ data: dietPlanData, loading: dietLoading, error: dietError }] = useAxios({
-		method: "POST",
-		url: "/diet/get",
-		data: { id: dietPlanId },
-	});
+	const [{ data: dietPlanData, loading: dietLoading, error: dietError }, fetchDietPlan] =
+		useAxios({
+			method: "POST",
+			url: "/diet/get",
+			data: { id: dietPlanId },
+		});
 
 	useEffect(() => {
 		if (dietPlanData) {
@@ -38,16 +40,26 @@ const DietPlanScreen: React.FC<DietProps> = ({ navigation, route }) => {
 		}
 	}, [dietPlanData, dietError]);
 
+	const onRefresh = useCallback(() => {
+		setRefreshing(true);
+		fetchDietPlan()
+			.then(() => setRefreshing(false))
+			.catch(() => {});
+	}, []);
+
 	return (
-		<ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
-			{dietLoading && (
-				<ActivityIndicator
-					animating={dietLoading}
-					color={colors.primary}
-					size='large'
-					style={{ marginTop: 100 }}
+		<ScrollView
+			style={[styles.container, { backgroundColor: colors.background }]}
+			refreshControl={
+				<RefreshControl
+					titleColor={colors.primary}
+					colors={[colors.primary]}
+					tintColor={colors.primary}
+					progressBackgroundColor={colors.surface}
+					refreshing={refreshing}
+					onRefresh={onRefresh}
 				/>
-			)}
+			}>
 			{dietPlanData &&
 				!dietLoading &&
 				dietPlanDays?.map((day: any, index: string) => (
