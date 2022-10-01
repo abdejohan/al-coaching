@@ -109,6 +109,7 @@ export default function LoggedInNavigator() {
 				component={WorkoutSchemaScreen}
 				options={{
 					title: "Träningsschema",
+					headerLeft: () => backIcon(),
 				}}
 			/>
 			<LoggedInStack.Screen
