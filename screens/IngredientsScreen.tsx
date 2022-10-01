@@ -10,7 +10,9 @@ interface DietCategoryProps {
 
 const calculateTotalNutrientValue = (ingredients: Array<any>, unit: string) => {
 	const sumOfNutrient = ingredients.reduce((accumulator, ingredient) => {
-		return accumulator + ingredient[unit];
+		if (typeof ingredient[unit] === "number") {
+			return accumulator + (ingredient[unit] / 100) * ingredient.gram;
+		}
 	}, 0);
 	return Math.round(sumOfNutrient);
 };
