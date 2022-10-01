@@ -17,8 +17,8 @@ interface WorkoutSessionProps {
 }
 
 type SaveSet = {
-	saved_reps: number;
-	saved_weight: number;
+	saved_reps: string;
+	saved_weight: string;
 	set_id: number;
 	comment: string;
 };
@@ -97,7 +97,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 
 	// 1. Match InputField to the corresponding set
 	// 2. Add the new value to that set
-	const addRepsToSets = (value: number, index: number) => {
+	const addRepsToSets = (value: string, index: number) => {
 		setWorkoutSets(
 			workoutSets.map((set) =>
 				workoutSets.indexOf(set) === index ? { ...set, saved_reps: value } : set
@@ -106,7 +106,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 	};
 	// 1. Match InputField to the corresponding set
 	// 2. Add the new value to that set
-	const addWeightToSets = (value: number, index: number) => {
+	const addWeightToSets = (value: string, index: number) => {
 		setWorkoutSets(
 			workoutSets.map((set: SaveSet) =>
 				workoutSets.indexOf(set) === index ? { ...set, saved_weight: value } : set
@@ -195,16 +195,18 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 					<View key={index} style={{ marginBottom: 1 }}>
 						<ListItemInput
 							key={uniqeKey}
-							weightsValue={(value: number) => addWeightToSets(value, index)}
+							weightsValue={(value: string) => addWeightToSets(value, index)}
 							repetitionPlaceholder={
 								historyData?.performance?.saved_sets[index]?.saved_reps !== null &&
+								historyData?.performance?.saved_sets[index]?.saved_reps !== undefined &&
 								historyData?.performance?.saved_sets[index]?.saved_reps.toString()
 							}
 							weightPlaceholder={
 								historyData?.performance?.saved_sets[index]?.saved_weight !== null &&
+								historyData?.performance?.saved_sets[index]?.saved_weight !== undefined &&
 								historyData?.performance?.saved_sets[index]?.saved_weight.toString()
 							}
-							repetitionsValue={(value: number) => addRepsToSets(value, index)}
+							repetitionsValue={(value: string) => addRepsToSets(value, index)}
 							title={`Set ${set.set_id}`}
 							description={`${set.reps} Reps \u00B7 Vila: ${set.seconds}`}
 							descriptionStyle={{ fontSize: 14, marginLeft: -15 }}
