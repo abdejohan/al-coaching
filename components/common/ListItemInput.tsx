@@ -42,8 +42,8 @@ const ListItemInput: React.FC<ListItemProps> = (props) => {
 		repetitionsValue,
 		weightsValue,
 	} = props;
-	const [repetitionInput, setRepetitionInput] = useState<string>();
-	const [weightInput, setWeightInput] = useState<string>();
+	const [repetitionInput, setRepetitionInput] = useState<string>("");
+	const [weightInput, setWeightInput] = useState<string>("");
 	const { colors, roundness } = useTheme();
 	const { DialogBox, showDialog } = useDialog();
 

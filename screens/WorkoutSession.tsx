@@ -73,10 +73,10 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 	// Extract the sets from workout object and remove all unnecessary key/value pairs
 	useEffect(() => {
 		if (historyData?.performance?.saved_sets) {
-			const cleanSetsWithId = workouts[workoutIndex].sets.map(
+			const cleanSetsWithId = workouts[workoutIndex]?.sets?.map(
 				(set: Set, setIndex: number) => {
 					return {
-						set_id: set.set_id,
+						set_id: set?.set_id,
 						saved_reps: historyData?.performance?.saved_sets[setIndex]?.saved_reps,
 						saved_weight: historyData?.performance?.saved_sets[setIndex]?.saved_weight,
 					};
@@ -84,11 +84,11 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 			);
 			setWorkoutSets(cleanSetsWithId);
 		} else {
-			const cleanSetsWithId = workouts[workoutIndex].sets.map((set: Set) => {
+			const cleanSetsWithId = workouts[workoutIndex]?.sets?.map((set: Set) => {
 				return {
 					set_id: set.set_id,
-					saved_reps: null,
-					saved_weight: null,
+					saved_reps: "0",
+					saved_weight: "0",
 				};
 			});
 			setWorkoutSets(cleanSetsWithId);
