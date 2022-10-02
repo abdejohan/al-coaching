@@ -113,6 +113,7 @@ const ListItemInput: React.FC<ListItemProps> = (props) => {
 							<Paragraph>{comment}</Paragraph>
 						</DialogBox>
 						<TextInput
+							autoCorrect={false}
 							value={repetitionInput}
 							mode='outlined'
 							style={[
@@ -126,6 +127,7 @@ const ListItemInput: React.FC<ListItemProps> = (props) => {
 							maxLength={3}
 						/>
 						<TextInput
+							autoCorrect={false}
 							value={weightInput}
 							mode='outlined'
 							style={[styles.input, { backgroundColor: colors.onSurface }]}

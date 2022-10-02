@@ -37,14 +37,16 @@ export default {
 		android: {
 			package: "app.al.coaching",
 			googleServicesFile: "./google-services.json",
-			versionCode: 33,
+			versionCode: 34,
 			permissions: ["NOTIFICATIONS"],
 			useNextNotificationsApi: true,
 			softwareKeyboardLayoutMode: "pan",
-			adaptiveIcon: {
-				foregroundImage: "./assets/images/adaptive-icon.png",
-				backgroundColor: "#3DA6AF",
-			},
+			/**
+			 adaptiveIcon: {
+				 foregroundImage: "./assets/images/adaptive-icon.png",
+				 backgroundColor: "#3DA6AF",
+				},
+			*/
 		},
 		web: {
 			favicon: "./assets/images/favicon.png",
