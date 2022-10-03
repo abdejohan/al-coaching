@@ -1,15 +1,15 @@
 import { Alert, StyleSheet, View } from "react-native";
-import { Divider, useTheme } from "react-native-paper";
+import { Divider, useTheme, List, TextInput, IconButton } from "react-native-paper";
 import HeroScrollView from "../components/common/HeroScrollView";
 import placeholder_image from "../assets/images/placeholder_image.jpg";
 import { Ionicons } from "@expo/vector-icons";
-import ListItemInput from "../components/common/ListItemInput";
 import Button from "../components/common/Button";
 import { useEffect, useState } from "react";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
 import InputValidation from "../components/InputValidation";
 import { Paragraph, Subheading } from "../typography";
 import { StatusBar } from "expo-status-bar";
+import { useDialog } from "../hooks/useDialog";
 
 interface WorkoutSessionProps {
 	navigation: any;
@@ -32,6 +32,7 @@ type Set = {
 };
 
 const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) => {
+	const { DialogBox, showDialog } = useDialog();
 	const { workouts, newWorkoutIndex, workoutDayID, incomingWorkoutIndex } = route.params;
 	const [workoutSets, setWorkoutSets] = useState<Array<SaveSet>>([]);
 	const [workoutIndex, setWorkoutIndex] = useState<number>(
@@ -39,7 +40,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 	);
 	const [uniqeKey, setUniqeKey] = useState<number>(0);
 	const [userComment, setUserComment] = useState<string>("");
-	const { colors } = useTheme();
+	const { colors, roundness } = useTheme();
 	const { useAxios } = useAxiosAuthenticated();
 	const [{ loading: postWorkoutResultsLoading }, postWorkoutResults] = useAxios(
 		{
@@ -66,53 +67,31 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 		if (newWorkoutIndex) {
 			setUniqeKey(newWorkoutIndex);
 			setUserComment("");
+			setWorkoutSets([]);
 			setWorkoutIndex(newWorkoutIndex);
 		}
 	}, [newWorkoutIndex]);
 
 	// Extract the sets from workout object and remove all unnecessary key/value pairs
 	useEffect(() => {
-		if (historyData?.performance?.saved_sets) {
-			const cleanSetsWithId = workouts[workoutIndex]?.sets?.map(
-				(set: Set, setIndex: number) => {
-					return {
-						set_id: set?.set_id,
-						saved_reps: historyData?.performance?.saved_sets[setIndex]?.saved_reps,
-						saved_weight: historyData?.performance?.saved_sets[setIndex]?.saved_weight,
-					};
-				}
-			);
-			setWorkoutSets(cleanSetsWithId);
-		} else {
-			const cleanSetsWithId = workouts[workoutIndex]?.sets?.map((set: Set) => {
-				return {
-					set_id: set.set_id,
-					saved_reps: "0",
-					saved_weight: "0",
-				};
-			});
-			setWorkoutSets(cleanSetsWithId);
+		if (historyData?.performance?.comment) {
+			setUserComment(historyData.performance.comment);
 		}
-	}, [workoutIndex, historyData]);
-
-	// 1. Match InputField to the corresponding set
-	// 2. Add the new value to that set
-	const addRepsToSets = (value: string, index: number) => {
-		setWorkoutSets(
-			workoutSets.map((set) =>
-				workoutSets.indexOf(set) === index ? { ...set, saved_reps: value } : set
-			)
+		const cleanSetsWithId = workouts[workoutIndex]?.sets?.map(
+			(set: Set, setIndex: number) => {
+				return {
+					set_id: set?.set_id,
+					saved_reps: historyData?.performance?.saved_sets[setIndex]?.saved_reps
+						? historyData?.performance?.saved_sets[setIndex]?.saved_reps
+						: "0",
+					saved_weight: historyData?.performance?.saved_sets[setIndex]?.saved_weight
+						? historyData?.performance?.saved_sets[setIndex]?.saved_weight
+						: "0",
+				};
+			}
 		);
-	};
-	// 1. Match InputField to the corresponding set
-	// 2. Add the new value to that set
-	const addWeightToSets = (value: string, index: number) => {
-		setWorkoutSets(
-			workoutSets.map((set: SaveSet) =>
-				workoutSets.indexOf(set) === index ? { ...set, saved_weight: value } : set
-			)
-		);
-	};
+		setWorkoutSets(cleanSetsWithId);
+	}, [historyData]);
 
 	return (
 		<>
@@ -160,7 +139,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 													workoutDayID: workoutDayID,
 											  });
 									})
-									.catch((error) => Alert.alert(`Något gick fel. Försök igen!`));
+									.catch(() => Alert.alert(`Något gick fel. Försök igen!`));
 							}}>
 							{!postWorkoutResultsLoading && "Nästa övning"}
 							{postWorkoutResultsLoading && "Sparar.."}
@@ -193,25 +172,95 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 				</View>
 				{workouts[workoutIndex]?.sets?.map((set: Set, index: number) => (
 					<View key={index} style={{ marginBottom: 1 }}>
-						<ListItemInput
-							key={uniqeKey}
-							weightsValue={(value: string) => addWeightToSets(value, index)}
-							repetitionPlaceholder={
-								historyData?.performance?.saved_sets[index]?.saved_reps !== null &&
-								historyData?.performance?.saved_sets[index]?.saved_reps !== undefined &&
-								historyData?.performance?.saved_sets[index]?.saved_reps.toString()
-							}
-							weightPlaceholder={
-								historyData?.performance?.saved_sets[index]?.saved_weight !== null &&
-								historyData?.performance?.saved_sets[index]?.saved_weight !== undefined &&
-								historyData?.performance?.saved_sets[index]?.saved_weight.toString()
-							}
-							repetitionsValue={(value: string) => addRepsToSets(value, index)}
-							title={`Set ${set.set_id}`}
-							description={`${set.reps} Reps \u00B7 Vila: ${set.seconds}`}
-							descriptionStyle={{ fontSize: 14, marginLeft: -15 }}
-							comment={set.comment ? set.comment : `Denna övning saknar kommentar.`}
-						/>
+						{/* NEW ADDED BLOCK FROM LIST.ITEM.INPUT */}
+						<View style={styles.container}>
+							<List.Item
+								style={[
+									styles.listItem,
+									{ borderRadius: roundness, backgroundColor: colors.surface },
+								]}
+								title={`Set ${set.set_id}`}
+								titleStyle={[
+									{
+										marginLeft: -15,
+										fontSize: 16,
+										color: colors.highlightText,
+										fontFamily: "ubuntu-medium",
+									},
+								]}
+								description={`${set.reps} Reps \u00B7 Vila: ${set.seconds}`}
+								descriptionStyle={{ fontSize: 14, marginLeft: -15, color: colors.text }}
+								key={uniqeKey}
+								right={() => (
+									<View
+										style={{
+											flexDirection: "row",
+											alignItems: "flex-end",
+											paddingBottom: 5,
+											marginRight: -10,
+										}}>
+										<IconButton
+											icon='information-outline'
+											size={22}
+											onPress={() => showDialog()}
+											style={[
+												styles.info,
+												{
+													borderRadius: roundness,
+													backgroundColor: colors.onSurface,
+												},
+											]}
+										/>
+										<DialogBox>
+											<Paragraph>
+												{set.comment ? set.comment : `Denna övning saknar kommentar.`}
+											</Paragraph>
+										</DialogBox>
+										<TextInput
+											autoCorrect={false}
+											value={workoutSets[index]?.saved_reps}
+											mode='outlined'
+											style={[
+												styles.input,
+												{ borderRadius: roundness, backgroundColor: colors.onSurface },
+											]}
+											outlineColor={colors.onSurface}
+											onChangeText={(text) => {
+												setWorkoutSets((workoutSets) => ({
+													...workoutSets,
+													[index]: {
+														...workoutSets[index],
+														saved_reps: text,
+													},
+												}));
+											}}
+											textAlign='center'
+											keyboardType='number-pad'
+											maxLength={3}
+										/>
+										<TextInput
+											autoCorrect={false}
+											value={workoutSets[index]?.saved_weight}
+											mode='outlined'
+											style={[styles.input, { backgroundColor: colors.onSurface }]}
+											outlineColor={colors.onSurface}
+											onChangeText={(text) => {
+												setWorkoutSets((workoutSets) => ({
+													...workoutSets,
+													[index]: {
+														...workoutSets[index],
+														saved_weight: text,
+													},
+												}));
+											}}
+											textAlign='center'
+											keyboardType='decimal-pad'
+											maxLength={5}
+										/>
+									</View>
+								)}
+							/>
+						</View>
 						<Divider />
 					</View>
 				))}
@@ -260,5 +309,43 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		width: 89,
 		marginRight: 19,
+	},
+	// NEW STUFF
+	container: {
+		width: "100%",
+	},
+	date: {
+		fontSize: 16,
+		position: "absolute",
+		marginLeft: 8,
+		top: 13,
+	},
+	listItem: {
+		height: 64,
+		justifyContent: "center",
+		padding: 0,
+		paddingVertical: 10,
+		paddingHorizontal: 10,
+		marginBottom: 10,
+	},
+	leftIcon: {
+		alignItems: "center",
+		justifyContent: "center",
+		width: 44,
+		height: 44,
+		padding: 10,
+		marginRight: 5,
+	},
+	info: {
+		width: 45,
+		height: 47,
+		marginLeft: 2,
+		margin: 0,
+	},
+	input: {
+		width: 60,
+		height: 45,
+		marginLeft: 2,
+		textAlign: "center",
 	},
 });
