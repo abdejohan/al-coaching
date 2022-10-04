@@ -5,7 +5,7 @@ export default {
 		owner: "coach-apps",
 		name: "AL Coaching",
 		slug: "al-coaching",
-		version: "1.6.3",
+		version: "1.6.4",
 		orientation: "portrait",
 		icon: "./assets/images/icon.png",
 		scheme: "myapp",
@@ -37,16 +37,14 @@ export default {
 		android: {
 			package: "app.al.coaching",
 			googleServicesFile: "./google-services.json",
-			versionCode: 34,
+			versionCode: 35,
 			permissions: ["NOTIFICATIONS"],
 			useNextNotificationsApi: true,
 			softwareKeyboardLayoutMode: "pan",
-			/**
-			 adaptiveIcon: {
-				 foregroundImage: "./assets/images/adaptive-icon.png",
-				 backgroundColor: "#3DA6AF",
-				},
-			*/
+			adaptiveIcon: {
+				foregroundImage: "./assets/images/icon.png",
+				backgroundColor: "#3DA6AF",
+			},
 		},
 		web: {
 			favicon: "./assets/images/favicon.png",
@@ -58,12 +56,6 @@ export default {
 					android: {
 						enableProguardInReleaseBuilds: true,
 					},
-				},
-			],
-			[
-				"expo-document-picker",
-				{
-					appleTeamId: "KAM5Y5YMZ9",
 				},
 			],
 			[

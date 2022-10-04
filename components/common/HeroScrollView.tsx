@@ -7,11 +7,9 @@ import {
 	RefreshControl,
 } from "react-native";
 import { Title, useTheme } from "react-native-paper";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-import { ReactElement, useState } from "react";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../../types";
+import { ReactElement } from "react";
 import YoutubePlayer from "react-native-youtube-iframe";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Paragraph } from "../../typography";
