@@ -1,5 +1,5 @@
-import { Alert, StyleSheet, View } from "react-native";
-import { Divider, useTheme, List, TextInput, IconButton } from "react-native-paper";
+import { Alert, StyleSheet, View, TextInput } from "react-native";
+import { Divider, useTheme, List, IconButton } from "react-native-paper";
 import HeroScrollView from "../components/common/HeroScrollView";
 import placeholder_image from "../assets/images/placeholder_image.jpg";
 import { Ionicons } from "@expo/vector-icons";
@@ -98,14 +98,14 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 			<StatusBar hidden />
 			<HeroScrollView
 				video={
-					workouts[workoutIndex].video
+					workouts[workoutIndex]?.video
 						? workouts[workoutIndex]?.video?.substring(
 								workouts[workoutIndex]?.video.length - 11
 						  )
 						: null
 				}
 				image={!workouts[workoutIndex].video ? placeholder_image : null}
-				title={workouts[workoutIndex].name}
+				title={workouts[workoutIndex]?.name}
 				button={
 					<View style={{ flexDirection: "row", marginBottom: 20 }}>
 						<Button
@@ -219,12 +219,14 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 										<TextInput
 											autoCorrect={false}
 											value={workoutSets[index]?.saved_reps}
-											mode='outlined'
 											style={[
 												styles.input,
-												{ borderRadius: roundness, backgroundColor: colors.onSurface },
+												{
+													borderRadius: roundness,
+													backgroundColor: colors.onSurface,
+													color: colors.text,
+												},
 											]}
-											outlineColor={colors.onSurface}
 											onChangeText={(text) => {
 												setWorkoutSets((workoutSets) => ({
 													...workoutSets,
@@ -241,9 +243,14 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 										<TextInput
 											autoCorrect={false}
 											value={workoutSets[index]?.saved_weight}
-											mode='outlined'
-											style={[styles.input, { backgroundColor: colors.onSurface }]}
-											outlineColor={colors.onSurface}
+											style={[
+												styles.input,
+												{
+													borderRadius: roundness,
+													backgroundColor: colors.onSurface,
+													color: colors.text,
+												},
+											]}
 											onChangeText={(text) => {
 												setWorkoutSets((workoutSets) => ({
 													...workoutSets,
@@ -338,7 +345,7 @@ const styles = StyleSheet.create({
 	},
 	info: {
 		width: 45,
-		height: 47,
+		height: 45,
 		marginLeft: 2,
 		margin: 0,
 	},
