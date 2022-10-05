@@ -52,14 +52,12 @@ const Measures: React.FC = () => {
 				<InputValidation
 					value={weight?.text}
 					onValidation={(valid: boolean, text) => setWeight({ valid, text })}
-					validationRule='weightOrHeight'
+					validationRule='min1'
 					maxLength={6}
 					textAlign='center'
 					errorMessage='Ange ett svar.'
 					returnKeyType='done'
-					keyboardType={
-						Platform.OS === "android" ? "number-pad" : "numbers-and-punctuation"
-					}
+					keyboardType='decimal-pad'
 					validationContainerStyle={{ minWidth: 130 }}
 					right={<TextInput.Affix text='kg' />}
 				/>
@@ -74,14 +72,12 @@ const Measures: React.FC = () => {
 				<InputValidation
 					value={biceps?.text}
 					onValidation={(valid: boolean, text) => setBiceps({ valid, text })}
-					validationRule='weightOrHeight'
+					validationRule='min1'
 					maxLength={6}
 					textAlign='center'
 					errorMessage='Ange ett svar.'
 					returnKeyType='done'
-					keyboardType={
-						Platform.OS === "android" ? "number-pad" : "numbers-and-punctuation"
-					}
+					keyboardType='decimal-pad'
 					validationContainerStyle={{ minWidth: 130 }}
 					right={<TextInput.Affix text='cm' />}
 				/>
@@ -96,14 +92,12 @@ const Measures: React.FC = () => {
 				<InputValidation
 					value={glutes?.text}
 					onValidation={(valid: boolean, text) => setGlutes({ valid, text })}
-					validationRule='weightOrHeight'
+					validationRule='min1'
 					maxLength={6}
 					textAlign='center'
 					errorMessage='Ange ett svar.'
 					returnKeyType='done'
-					keyboardType={
-						Platform.OS === "android" ? "number-pad" : "numbers-and-punctuation"
-					}
+					keyboardType='decimal-pad'
 					validationContainerStyle={{ minWidth: 130 }}
 					right={<TextInput.Affix text='cm' />}
 				/>
@@ -118,14 +112,12 @@ const Measures: React.FC = () => {
 				<InputValidation
 					value={waist?.text}
 					onValidation={(valid: boolean, text) => setWaist({ valid, text })}
-					validationRule='weightOrHeight'
+					validationRule='min1'
 					maxLength={6}
 					textAlign='center'
 					errorMessage='Ange ett svar.'
 					returnKeyType='done'
-					keyboardType={
-						Platform.OS === "android" ? "number-pad" : "numbers-and-punctuation"
-					}
+					keyboardType='decimal-pad'
 					validationContainerStyle={{ minWidth: 130 }}
 					right={<TextInput.Affix text='cm' />}
 				/>
@@ -140,14 +132,12 @@ const Measures: React.FC = () => {
 				<InputValidation
 					value={thighs?.text}
 					onValidation={(valid: boolean, text) => setThighs({ valid, text })}
-					validationRule='weightOrHeight'
+					validationRule='min1'
 					maxLength={6}
 					textAlign='center'
 					errorMessage='Ange ett svar.'
 					returnKeyType='done'
-					keyboardType={
-						Platform.OS === "android" ? "number-pad" : "numbers-and-punctuation"
-					}
+					keyboardType='decimal-pad'
 					validationContainerStyle={{ minWidth: 130 }}
 					right={<TextInput.Affix text='cm' />}
 				/>
