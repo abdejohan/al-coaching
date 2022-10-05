@@ -33,7 +33,6 @@ const HeroScrollView: React.FC<HeroScrollProps> = (props) => {
 
 	return (
 		<KeyboardAwareScrollView
-			enableOnAndroid
 			alwaysBounceHorizontal={false}
 			alwaysBounceVertical={false}
 			bounces={false}

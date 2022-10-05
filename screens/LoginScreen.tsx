@@ -28,7 +28,6 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
 		<ImageBackground source={login_background} style={{ flex: 1 }}>
 			<StatusBar style='light' />
 			<KeyboardAwareScrollView
-				enableOnAndroid
 				style={{ backgroundColor: colors.darkestfade }}
 				contentContainerStyle={styles.scrollContentContainer}>
 				<PasswordLogin navigation={navigation} />

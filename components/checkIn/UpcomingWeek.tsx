@@ -35,7 +35,6 @@ const UpcomingWeek: React.FC = () => {
 
 	return (
 		<KeyboardAwareScrollView
-			enableOnAndroid
 			style={{ marginBottom: 30 }}
 			contentContainerStyle={{ paddingHorizontal: 25 }}>
 			<Headline style={{ color: colors.highlightText, marginBottom: 20 }}>
