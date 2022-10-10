@@ -22,6 +22,7 @@ type LoggedInStackParmList = {
 	WorkoutOverview: undefined;
 	WorkoutSchemaScreen: undefined;
 	WorkoutSession: undefined;
+	AlternateWorkoutSession: undefined;
 	DietPlan: undefined;
 	Deals: undefined;
 	Meals: undefined;

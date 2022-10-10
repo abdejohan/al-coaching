@@ -31,6 +31,7 @@ import DietPlanScreen from "../screens/DietPlanScreen";
 import MealsScreen from "../screens/MealsScreen";
 import DealsScreen from "../screens/DealsScreen";
 import WorkoutSchemaScreen from "../screens/WorkoutSchemaScreen";
+import AlternateWorkoutSession from "../screens/AlternateWorkoutSession";
 
 const LoggedInStack = createNativeStackNavigator<LoggedInStackParmList>();
 export default function LoggedInNavigator() {
@@ -116,6 +117,16 @@ export default function LoggedInNavigator() {
 				name='WorkoutSession'
 				options={{ headerShown: false }}
 				component={WorkoutSession}
+			/>
+			<LoggedInStack.Screen
+				name='AlternateWorkoutSession'
+				options={{
+					title: "Övning",
+					headerTitleAlign: "center",
+					headerLeft: () => backIcon(),
+					headerTitleStyle: { fontFamily: "ubuntu-light", color: colors.text },
+				}}
+				component={AlternateWorkoutSession}
 			/>
 			<LoggedInStack.Screen
 				name='Settings'
