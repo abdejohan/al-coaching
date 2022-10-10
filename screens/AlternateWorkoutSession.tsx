@@ -1,24 +1,16 @@
-import {
-	Alert,
-	StyleSheet,
-	View,
-	TextInput,
-	TouchableOpacity,
-	Platform,
-} from "react-native";
+import { Alert, StyleSheet, View, TextInput, ScrollView } from "react-native";
 import { Divider, useTheme, List, IconButton } from "react-native-paper";
-import HeroScrollView from "../components/common/HeroScrollView";
-import placeholder_image from "../assets/images/placeholder_image.jpg";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "../components/common/Button";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
 import InputValidation from "../components/InputValidation";
-import { Paragraph, Subheading, Text } from "../typography";
+import { Headline, Paragraph, Subheading, Text } from "../typography";
 import { StatusBar } from "expo-status-bar";
 import { useDialog } from "../hooks/useDialog";
+import AuthContext from "../context/Auth";
 
-interface WorkoutSessionProps {
+interface AlternateWorkoutSessionProps {
 	navigation: any;
 	route: any;
 }
@@ -38,8 +30,12 @@ type Set = {
 	comment: string;
 };
 
-const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) => {
+const AlternateWorkoutSession: React.FC<AlternateWorkoutSessionProps> = ({
+	navigation,
+	route,
+}) => {
 	const { DialogBox, showDialog } = useDialog();
+	const { darkMode } = useContext(AuthContext);
 	const { workouts, newWorkoutIndex, workoutDayID, incomingWorkoutIndex } = route.params;
 	const [workoutSets, setWorkoutSets] = useState<Array<SaveSet>>([]);
 	const [workoutIndex, setWorkoutIndex] = useState<number>(
@@ -101,91 +97,39 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 	}, [historyData]);
 
 	return (
-		<>
-			<StatusBar hidden />
-			<HeroScrollView
-				video={
-					workouts[workoutIndex]?.video
-						? workouts[workoutIndex]?.video?.substring(
-								workouts[workoutIndex]?.video.length - 11
-						  )
-						: null
-				}
-				image={!workouts[workoutIndex].video ? placeholder_image : null}
-				title={workouts[workoutIndex]?.name}
-				button={
-					<View style={{ marginBottom: 20 }}>
-						<View style={{ flexDirection: "row" }}>
-							<Button
-								style={{
-									marginRight: 10,
-									backgroundColor: "lightgrey",
-								}}
-								onPress={() => navigation.goBack()}>
-								<Ionicons
-									name='ios-chevron-back-outline'
-									size={24}
-									color={colors.black}
-								/>
-							</Button>
-							<Button
-								style={{ flexGrow: 1 }}
-								disable={postWorkoutResultsLoading}
-								onPress={() => {
-									postWorkoutResults({
-										data: {
-											scheme_day_id: workoutDayID,
-											exercise_id: workouts[workoutIndex].id,
-											workout: workouts[workoutIndex].category,
-											saved_sets: workoutSets,
-											comment: userComment,
-										},
-									})
-										.then(() => {
-											workoutIndex + 1 === Object.keys(workouts).length
-												? navigation.goBack()
-												: navigation.navigate("WorkoutSession", {
-														workouts,
-														newWorkoutIndex: workoutIndex + 1,
-														workoutDayID: workoutDayID,
-												  });
-										})
-										.catch(() => Alert.alert(`Något gick fel. Försök igen!`));
-								}}>
-								{!postWorkoutResultsLoading && "Nästa övning"}
-								{postWorkoutResultsLoading && "Sparar.."}
-							</Button>
-						</View>
-						{Platform.OS === "android" && (
-							<View style={{ alignItems: "center" }}>
-								<TouchableOpacity
-									onPress={() =>
-										navigation.navigate("AlternateWorkoutSession", {
-											workouts,
-											workoutDayID,
-										})
-									}>
-									<Text>Problem att spara? Testa det här.</Text>
-								</TouchableOpacity>
-							</View>
-						)}
-					</View>
-				}>
-				<View style={styles.subheader}>
-					<Ionicons
-						name='barbell-outline'
-						style={{
-							marginRight: 5,
-							transform: [{ rotate: "135deg" }],
-						}}
-						color={colors.primary}
-						size={14}
-					/>
-					<Paragraph>{`Övning ${workoutIndex + 1} av ${
-						Object.keys(workouts).length
-					}`}</Paragraph>
-				</View>
-				<Divider style={{ marginBottom: 15 }} />
+		<ScrollView
+			style={{
+				backgroundColor: colors.background,
+				paddingHorizontal: 20,
+			}}>
+			<StatusBar hidden={false} style={darkMode ? "light" : "dark"} />
+			<View
+				style={{
+					borderRadius: roundness,
+					padding: 20,
+					marginBottom: 20,
+				}}>
+				<Headline style={{ marginBottom: 10 }}>
+					För er som inte kan skicka in övningsresultat utan att appen krashar.
+				</Headline>
+				<Text style={{ marginBottom: 5 }}>
+					Vi jobbar på att lösa problemet men för tillfället har vi svårt att återskapa
+					buggen hos oss. Det gör problemlösningen svårare men vi är säkra på att vi kan
+					hitta orsaken inom kort.
+				</Text>
+				<Text>
+					Under tiden erbjuder vi er denna sida för att testa skicka in övningsresultat.
+					Det finns ingen garanti att denna funkar bättre än den vanliga för alla. Hör
+					gärna av dig till din coach om problem kvarstår.
+				</Text>
+			</View>
+			<View
+				style={{
+					backgroundColor: colors.surface,
+					borderRadius: roundness,
+					padding: 20,
+					paddingBottom: 0,
+				}}>
 				<View style={styles.gridTitles}>
 					<Paragraph style={{ fontFamily: "ubuntu-medium", color: colors.highlightText }}>
 						Upplägg
@@ -198,7 +142,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 				{workouts[workoutIndex]?.sets?.map((set: Set, index: number) => (
 					<View key={index} style={{ marginBottom: 1 }}>
 						{/* NEW ADDED BLOCK FROM LIST.ITEM.INPUT */}
-						<View style={styles.container}>
+						<View>
 							<List.Item
 								style={[
 									styles.listItem,
@@ -296,6 +240,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 						<Divider />
 					</View>
 				))}
+
 				<Subheading
 					style={{
 						fontSize: 16,
@@ -317,19 +262,43 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 					multiline
 					numberOfLines={4}
 				/>
-			</HeroScrollView>
-		</>
+				<View style={{ flexDirection: "row" }}>
+					<Button
+						style={{
+							marginRight: 10,
+							backgroundColor: "lightgrey",
+						}}
+						onPress={() => navigation.goBack()}>
+						<Ionicons name='ios-chevron-back-outline' size={24} color={colors.black} />
+					</Button>
+					<Button
+						style={{ flexGrow: 1 }}
+						disable={postWorkoutResultsLoading}
+						onPress={() => {
+							postWorkoutResults({
+								data: {
+									scheme_day_id: workoutDayID,
+									exercise_id: workouts[workoutIndex].id,
+									workout: workouts[workoutIndex].category,
+									saved_sets: workoutSets,
+									comment: userComment,
+								},
+							})
+								.then(() => navigation.pop(2))
+								.catch(() => Alert.alert(`Något gick fel. Försök igen!`));
+						}}>
+						{!postWorkoutResultsLoading && "Spara"}
+						{postWorkoutResultsLoading && "Sparar.."}
+					</Button>
+				</View>
+			</View>
+		</ScrollView>
 	);
 };
 
-export default WorkoutSession;
+export default AlternateWorkoutSession;
 
 const styles = StyleSheet.create({
-	subheader: {
-		flexDirection: "row",
-		alignItems: "center",
-		marginBottom: 20,
-	},
 	gridTitles: {
 		flexDirection: "row",
 		alignItems: "center",
@@ -342,16 +311,6 @@ const styles = StyleSheet.create({
 		width: 89,
 		marginRight: 19,
 	},
-	// NEW STUFF
-	container: {
-		width: "100%",
-	},
-	date: {
-		fontSize: 16,
-		position: "absolute",
-		marginLeft: 8,
-		top: 13,
-	},
 	listItem: {
 		height: 64,
 		justifyContent: "center",
@@ -359,14 +318,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 		paddingHorizontal: 10,
 		marginBottom: 10,
-	},
-	leftIcon: {
-		alignItems: "center",
-		justifyContent: "center",
-		width: 44,
-		height: 44,
-		padding: 10,
-		marginRight: 5,
 	},
 	info: {
 		width: 45,
