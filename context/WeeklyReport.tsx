@@ -89,7 +89,12 @@ const WeeklyReport = React.createContext<ContextType>({
 	setChallengesForNextWeek: () => {},
 });
 
-export const WeeklyReportContextProvider: FunctionComponent = ({ children }) => {
+interface WeeklyReportProps {
+	children: any;
+}
+export const WeeklyReportContextProvider: FunctionComponent<WeeklyReportProps> = ({
+	children,
+}) => {
 	const { updateUser, user, token } = useContext(AuthContext);
 	const { useAxios } = useAxiosAuthenticated();
 	const [, postWeeklyCheckIn] = useAxios(
@@ -137,12 +142,12 @@ export const WeeklyReportContextProvider: FunctionComponent = ({ children }) => 
 		try {
 			const fields = {
 				/* START OF CHECK-IN PAGE 1 */
-				weight: Number(weight?.text),
-				biceps: Number(biceps?.text),
-				glutes: Number(glutes?.text),
-				waist: Number(waist?.text),
-				thighs: Number(thighs?.text),
-				weeklySteps: Number(weeklySteps?.text),
+				weight: weight?.text,
+				biceps: biceps?.text,
+				glutes: glutes?.text,
+				waist: waist?.text,
+				thighs: thighs?.text,
+				weeklySteps: weeklySteps?.text,
 				frontImage: frontImage?.base64
 					? `data:image/jpg;base64,${frontImage?.base64}`
 					: undefined,
