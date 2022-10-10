@@ -14,7 +14,7 @@ import Button from "../components/common/Button";
 import { useEffect, useState } from "react";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
 import InputValidation from "../components/InputValidation";
-import { Paragraph, Subheading, Text } from "../typography";
+import { Caption, Paragraph, Subheading } from "../typography";
 import { StatusBar } from "expo-status-bar";
 import { useDialog } from "../hooks/useDialog";
 
@@ -165,7 +165,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 											workoutDayID,
 										})
 									}>
-									<Text>Problem att spara? Testa det här.</Text>
+									<Caption>Problem att spara? Testa det här.</Caption>
 								</TouchableOpacity>
 							</View>
 						)}

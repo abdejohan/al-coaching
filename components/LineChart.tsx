@@ -26,7 +26,7 @@ const LineChart: React.FC<LineChartProps> = (props) => {
 		if (sizes && !sizes?.error) {
 			const weightArray = sizes.filter((sizeSet: Array<object>) => "weight" in sizeSet);
 			const weightValues = weightArray[0].weight.map((sizeArray: any) => sizeArray.value);
-			weightValues.length > 1 && setDataArray(weightValues);
+			if (weightValues.length > 1) setDataArray(weightValues.reverse());
 		}
 	}, [sizes]);
 
