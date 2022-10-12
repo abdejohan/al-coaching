@@ -162,10 +162,14 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 									onPress={() =>
 										navigation.navigate("AlternateWorkoutSession", {
 											workouts,
+											newWorkoutIndex,
 											workoutDayID,
+											incomingWorkoutIndex,
 										})
 									}>
-									<Caption>Problem att spara? Testa det här.</Caption>
+									<Caption style={{ padding: 10 }}>
+										Problem att spara? Testa det här.
+									</Caption>
 								</TouchableOpacity>
 							</View>
 						)}
