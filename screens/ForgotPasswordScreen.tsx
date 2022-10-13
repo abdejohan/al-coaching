@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { StyleSheet, View, ImageBackground, TouchableOpacity } from "react-native";
+import {
+	StyleSheet,
+	View,
+	ImageBackground,
+	TouchableOpacity,
+	Dimensions,
+} from "react-native";
 import { Caption, useTheme, TextInput } from "react-native-paper";
 import Button from "../components/common/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -11,6 +17,7 @@ import { ValidInput } from "../types/types";
 import { useDialog } from "../hooks/useDialog";
 import { Headline, Subheading, Paragraph, Text } from "../typography";
 import { StatusBar } from "expo-status-bar";
+import Constants from "expo-constants";
 
 interface ForgotPasswordProps {
 	navigation: any;
@@ -42,9 +49,11 @@ const ForgotPasswordScreen: React.FC<ForgotPasswordProps> = ({ navigation }) => 
 	};
 
 	return (
-		<ImageBackground source={intro_background} style={{ flex: 1 }}>
+		<ImageBackground source={intro_background} style={styles.backgroundImage}>
 			<StatusBar style='light' />
 			<KeyboardAwareScrollView
+				keyboardShouldPersistTaps='handled'
+				enableOnAndroid
 				style={{ backgroundColor: colors.darkestfade }}
 				contentContainerStyle={styles.scrollContentContainer}>
 				<Headline style={{ color: colors.white, marginBottom: 5 }}>
@@ -126,5 +135,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingHorizontal: 20,
 		marginBottom: 50,
+	},
+	backgroundImage: {
+		height: Dimensions.get("window").height + Constants.statusBarHeight,
 	},
 });
