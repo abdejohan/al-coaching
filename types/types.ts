@@ -90,6 +90,24 @@ type Product = {
 	video: string;
 };
 
+// START WORKOUT RELATED
+
+type SaveSet = {
+	saved_reps: string;
+	saved_weight: string;
+	set_id: number;
+	comment: string;
+};
+
+type Set = {
+	reps: string;
+	seconds: string;
+	weight: string;
+	set_id: number;
+	comment: string;
+};
+// END WORKOUT RELATED
+
 type ToggleType = "checked" | "unchecked" | undefined;
 
 type ValidationRules =
@@ -136,4 +154,6 @@ export {
 	User,
 	BlobProps,
 	ValidationRules,
+	SaveSet,
+	Set,
 };

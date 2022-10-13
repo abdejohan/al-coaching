@@ -5,38 +5,26 @@ import {
 	TextInput,
 	TouchableOpacity,
 	Platform,
+	Dimensions,
+	Image,
 } from "react-native";
 import { Divider, useTheme, List, IconButton } from "react-native-paper";
-import HeroScrollView from "../components/common/HeroScrollView";
 import placeholder_image from "../assets/images/placeholder_image.jpg";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "../components/common/Button";
 import { useEffect, useState } from "react";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
 import InputValidation from "../components/InputValidation";
-import { Caption, Paragraph, Subheading } from "../typography";
-import { StatusBar } from "expo-status-bar";
+import { Caption, Paragraph, Subheading, Title } from "../typography";
 import { useDialog } from "../hooks/useDialog";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import YoutubePlayer from "react-native-youtube-iframe";
+import { SaveSet, Set } from "../types/types";
 
 interface WorkoutSessionProps {
 	navigation: any;
 	route: any;
 }
-
-type SaveSet = {
-	saved_reps: string;
-	saved_weight: string;
-	set_id: number;
-	comment: string;
-};
-
-type Set = {
-	reps: string;
-	seconds: string;
-	weight: string;
-	set_id: number;
-	comment: string;
-};
 
 const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) => {
 	const { DialogBox, showDialog } = useDialog();
@@ -101,80 +89,32 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 	}, [historyData]);
 
 	return (
-		<>
-			<StatusBar hidden />
-			<HeroScrollView
-				video={
-					workouts[workoutIndex]?.video
-						? workouts[workoutIndex]?.video?.substring(
-								workouts[workoutIndex]?.video.length - 11
-						  )
-						: null
-				}
-				image={!workouts[workoutIndex].video ? placeholder_image : null}
-				title={workouts[workoutIndex]?.name}
-				button={
-					<View style={{ marginBottom: 20 }}>
-						<View style={{ flexDirection: "row" }}>
-							<Button
-								style={{
-									marginRight: 10,
-									backgroundColor: "lightgrey",
-								}}
-								onPress={() => navigation.goBack()}>
-								<Ionicons
-									name='ios-chevron-back-outline'
-									size={24}
-									color={colors.black}
-								/>
-							</Button>
-							<Button
-								style={{ flexGrow: 1 }}
-								disable={postWorkoutResultsLoading}
-								onPress={() => {
-									postWorkoutResults({
-										data: {
-											scheme_day_id: workoutDayID,
-											exercise_id: workouts[workoutIndex].id,
-											workout: workouts[workoutIndex].category,
-											saved_sets: workoutSets,
-											comment: userComment,
-										},
-									})
-										.then(() => {
-											workoutIndex + 1 === Object.keys(workouts).length
-												? navigation.goBack()
-												: navigation.navigate("WorkoutSession", {
-														workouts,
-														newWorkoutIndex: workoutIndex + 1,
-														workoutDayID: workoutDayID,
-												  });
-										})
-										.catch(() => Alert.alert(`Något gick fel. Försök igen!`));
-								}}>
-								{!postWorkoutResultsLoading && "Nästa övning"}
-								{postWorkoutResultsLoading && "Sparar.."}
-							</Button>
-						</View>
-						{Platform.OS === "android" && (
-							<View style={{ alignItems: "center" }}>
-								<TouchableOpacity
-									onPress={() =>
-										navigation.navigate("AlternateWorkoutSession", {
-											workouts,
-											newWorkoutIndex,
-											workoutDayID,
-											incomingWorkoutIndex,
-										})
-									}>
-									<Caption style={{ padding: 10 }}>
-										Problem att spara? Testa det här.
-									</Caption>
-								</TouchableOpacity>
-							</View>
-						)}
-					</View>
-				}>
+		<KeyboardAwareScrollView
+			style={{ backgroundColor: colors.surface }}
+			enableOnAndroid
+			keyboardShouldPersistTaps='handled'>
+			{workouts[workoutIndex]?.video ? (
+				<YoutubePlayer
+					height={Dimensions.get("window").height / 3}
+					videoId={workouts[workoutIndex]?.video?.substring(
+						workouts[workoutIndex]?.video.length - 11
+					)}
+				/>
+			) : (
+				<Image source={placeholder_image} style={styles.image} />
+			)}
+			<View
+				style={{
+					bottom: 35,
+					padding: 25,
+					backgroundColor: colors.surface,
+					borderTopEndRadius: workouts[workoutIndex]?.video ? 0 : 35,
+					paddingTop: workouts[workoutIndex]?.video ? 0 : 25,
+					borderTopStartRadius: workouts[workoutIndex]?.video ? 0 : 35,
+				}}>
+				<Title style={{ color: colors.highlightText, fontSize: 22, lineHeight: 24 }}>
+					{workouts[workoutIndex]?.name}
+				</Title>
 				<View style={styles.subheader}>
 					<Ionicons
 						name='barbell-outline'
@@ -321,8 +261,64 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 					multiline
 					numberOfLines={4}
 				/>
-			</HeroScrollView>
-		</>
+				<View style={{ marginBottom: 20 }}>
+					<View style={{ flexDirection: "row" }}>
+						<Button
+							style={{
+								marginRight: 10,
+								backgroundColor: "lightgrey",
+							}}
+							onPress={() => navigation.goBack()}>
+							<Ionicons name='ios-chevron-back-outline' size={24} color={colors.black} />
+						</Button>
+						<Button
+							style={{ flexGrow: 1 }}
+							disable={postWorkoutResultsLoading}
+							onPress={() => {
+								postWorkoutResults({
+									data: {
+										scheme_day_id: workoutDayID,
+										exercise_id: workouts[workoutIndex].id,
+										workout: workouts[workoutIndex].category,
+										saved_sets: workoutSets,
+										comment: userComment,
+									},
+								})
+									.then(() => {
+										workoutIndex + 1 === Object.keys(workouts).length
+											? navigation.goBack()
+											: navigation.navigate("WorkoutSession", {
+													workouts,
+													newWorkoutIndex: workoutIndex + 1,
+													workoutDayID: workoutDayID,
+											  });
+									})
+									.catch(() => Alert.alert(`Något gick fel. Försök igen!`));
+							}}>
+							{!postWorkoutResultsLoading && "Nästa övning"}
+							{postWorkoutResultsLoading && "Sparar.."}
+						</Button>
+					</View>
+					{Platform.OS === "android" && (
+						<View style={{ alignItems: "center" }}>
+							<TouchableOpacity
+								onPress={() =>
+									navigation.navigate("AlternateWorkoutSession", {
+										workouts,
+										newWorkoutIndex,
+										workoutDayID,
+										incomingWorkoutIndex,
+									})
+								}>
+								<Caption style={{ padding: 10 }}>
+									Problem att spara? Testa det här.
+								</Caption>
+							</TouchableOpacity>
+						</View>
+					)}
+				</View>
+			</View>
+		</KeyboardAwareScrollView>
 	);
 };
 
@@ -383,5 +379,11 @@ const styles = StyleSheet.create({
 		height: 45,
 		marginLeft: 2,
 		textAlign: "center",
+	},
+	image: {
+		flex: 1,
+		width: "100%",
+		resizeMode: "cover",
+		height: Dimensions.get("window").height / 3,
 	},
 });

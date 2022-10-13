@@ -47,7 +47,7 @@ const PasswordLogin: React.FC<PasswordLoginProps> = ({ navigation }) => {
 	};
 
 	return (
-		<View>
+		<View style={{ marginBottom: 50, paddingHorizontal: 20 }}>
 			<View>
 				<InputValidation
 					onValidation={(valid: boolean, text) => setEmail({ valid, text })}
