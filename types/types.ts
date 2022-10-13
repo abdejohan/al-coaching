@@ -91,6 +91,21 @@ type Product = {
 };
 
 type ToggleType = "checked" | "unchecked" | undefined;
+
+type ValidationRules =
+	| "name"
+	| "email"
+	| "emailOrNull"
+	| "phone"
+	| "phoneOrNull"
+	| "min5"
+	| "min40"
+	| "min1"
+	| "text"
+	| "onlyDigits"
+	| "weightOrHeight"
+	| "null";
+
 type autoCompleteTypes =
 	| "off"
 	| "username"
@@ -120,4 +135,5 @@ export {
 	Product,
 	User,
 	BlobProps,
+	ValidationRules,
 };

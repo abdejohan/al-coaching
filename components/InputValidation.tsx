@@ -8,7 +8,7 @@ import {
 	Platform,
 } from "react-native";
 import { useTheme, TextInput } from "react-native-paper";
-import { autoCapitalizeTypes, autoCompleteTypes, ValidInput } from "../types/types";
+import { autoCapitalizeTypes, autoCompleteTypes, ValidationRules } from "../types/types";
 import { Headline, Text } from "../typography";
 
 interface Props {
@@ -18,15 +18,14 @@ interface Props {
 	multiline?: boolean;
 	value?: string;
 	maxLength?: number;
-	textAlign?: string;
+	textAlign?: "right" | "left" | "center" | undefined;
 	minHeight?: number;
 	numberOfLines?: number | undefined;
-	validationRule?: string;
+	validationRule?: ValidationRules;
 	errorMessage?: string;
 	blurOnSubmit?: boolean;
 	returnKeyType?: ReturnKeyType;
 	keyboardType?: KeyboardType;
-	render?(props: any): Element;
 	onSubmitEditing?: (event: { nativeEvent: { text: string } }) => void;
 	onValidation?(isValid: boolean | boolean[], text: string): any;
 	onChangeText?(value: string): string;
@@ -38,6 +37,9 @@ interface Props {
 	left?: any;
 	theme?: any;
 	onFocus?: any;
+	secureTextEntry?: any;
+	clearTextOnFocus?: any;
+	spellCheck?: any;
 	placeholder?: any;
 	placeholderTextColor?: any;
 	mode?: any;
