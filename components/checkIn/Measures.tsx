@@ -36,6 +36,8 @@ const Measures: React.FC = () => {
 	return (
 		<KeyboardAwareScrollView
 			style={{ marginBottom: 30 }}
+			enableOnAndroid
+			keyboardShouldPersistTaps='handled'
 			contentContainerStyle={{ paddingHorizontal: 25 }}>
 			<Headline style={{ marginBottom: 20, color: colors.highlightText }}>
 				Veckans framsteg

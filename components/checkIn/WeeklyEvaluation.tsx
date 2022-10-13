@@ -19,6 +19,8 @@ const WeeklyEvaluation: React.FC = () => {
 	const { colors } = useTheme();
 	return (
 		<KeyboardAwareScrollView
+			enableOnAndroid
+			keyboardShouldPersistTaps='handled'
 			style={{ marginBottom: 30 }}
 			contentContainerStyle={{ paddingHorizontal: 25 }}>
 			<View

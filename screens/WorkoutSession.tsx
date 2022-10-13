@@ -95,7 +95,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 			keyboardShouldPersistTaps='handled'>
 			{workouts[workoutIndex]?.video ? (
 				<YoutubePlayer
-					height={Dimensions.get("window").height / 3}
+					height={Dimensions.get("window").height / 3.5}
 					videoId={workouts[workoutIndex]?.video?.substring(
 						workouts[workoutIndex]?.video.length - 11
 					)}
@@ -105,14 +105,13 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 			)}
 			<View
 				style={{
-					bottom: 35,
 					padding: 25,
 					backgroundColor: colors.surface,
-					borderTopEndRadius: workouts[workoutIndex]?.video ? 0 : 35,
 					paddingTop: workouts[workoutIndex]?.video ? 0 : 25,
 					borderTopStartRadius: workouts[workoutIndex]?.video ? 0 : 35,
+					borderTopEndRadius: workouts[workoutIndex]?.video ? 0 : 35,
 				}}>
-				<Title style={{ color: colors.highlightText, fontSize: 22, lineHeight: 24 }}>
+				<Title style={{ color: colors.highlightText, fontSize: 22, lineHeight: 22 }}>
 					{workouts[workoutIndex]?.name}
 				</Title>
 				<View style={styles.subheader}>
