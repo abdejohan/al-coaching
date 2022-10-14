@@ -29,7 +29,6 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
 			<StatusBar style='light' />
 			<KeyboardAwareScrollView
 				keyboardShouldPersistTaps='handled'
-				enableOnAndroid
 				style={{ backgroundColor: colors.darkestfade }}
 				contentContainerStyle={styles.scrollContentContainer}>
 				<PasswordLogin navigation={navigation} />
