@@ -37,10 +37,10 @@ export default {
 		android: {
 			package: "app.al.coaching",
 			googleServicesFile: "./google-services.json",
-			versionCode: 40,
+			versionCode: 41,
 			permissions: ["NOTIFICATIONS"],
 			useNextNotificationsApi: true,
-			softwareKeyboardLayoutMode: "pan",
+			// softwareKeyboardLayoutMode: "pan",
 			adaptiveIcon: {
 				foregroundImage: "./assets/images/icon.png",
 				backgroundColor: "#3DA6AF",

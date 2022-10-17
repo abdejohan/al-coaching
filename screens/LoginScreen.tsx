@@ -28,6 +28,7 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
 		<ImageBackground source={login_background} style={styles.backgroundImage}>
 			<StatusBar style='light' />
 			<KeyboardAwareScrollView
+				enableOnAndroid
 				keyboardShouldPersistTaps='handled'
 				style={{ backgroundColor: colors.darkestfade }}
 				contentContainerStyle={styles.scrollContentContainer}>
