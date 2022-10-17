@@ -77,7 +77,7 @@ const WorkoutOverviewScreen: React.FC<WorkoutOverviewProps> = ({ navigation, rou
 								navigation.navigate("WorkoutSession", {
 									workouts: workoutDay.workouts,
 									workoutDayID: workoutDay.id,
-									incomingWorkoutIndex: index,
+									workoutIndex: index,
 								});
 							}}
 						/>

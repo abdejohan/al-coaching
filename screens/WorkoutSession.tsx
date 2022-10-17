@@ -3,9 +3,8 @@ import {
 	StyleSheet,
 	View,
 	TextInput,
-	TouchableOpacity,
-	Platform,
 	Dimensions,
+	ScrollView,
 	Image,
 } from "react-native";
 import { Divider, useTheme, List, IconButton } from "react-native-paper";
@@ -15,9 +14,8 @@ import Button from "../components/common/Button";
 import { useEffect, useState } from "react";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
 import InputValidation from "../components/InputValidation";
-import { Caption, Paragraph, Subheading, Title } from "../typography";
+import { Paragraph, Subheading, Title } from "../typography";
 import { useDialog } from "../hooks/useDialog";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import YoutubePlayer from "react-native-youtube-iframe";
 import { SaveSet, Set } from "../types/types";
 
@@ -28,13 +26,10 @@ interface WorkoutSessionProps {
 
 const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) => {
 	const { DialogBox, showDialog } = useDialog();
-	const { workouts, newWorkoutIndex, workoutDayID, incomingWorkoutIndex } = route.params;
+	const { workouts, workoutDayID, workoutIndex = 0 } = route.params;
 	const [workoutSets, setWorkoutSets] = useState<Array<SaveSet>>([]);
-	const [workoutIndex, setWorkoutIndex] = useState<number>(
-		incomingWorkoutIndex ? incomingWorkoutIndex : 0
-	);
-	const [uniqeKey, setUniqeKey] = useState<number>(0);
 	const [userComment, setUserComment] = useState<string>("");
+	const [exerciseComment, setExcersiceComment] = useState<string>("");
 	const { colors, roundness } = useTheme();
 	const { useAxios } = useAxiosAuthenticated();
 	const [{ loading: postWorkoutResultsLoading }, postWorkoutResults] = useAxios(
@@ -44,6 +39,11 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 		},
 		{ manual: true }
 	);
+
+	const handleDialog = (comment: string) => {
+		setExcersiceComment(comment ? comment : `Denna övning saknar kommentar.`);
+		showDialog();
+	};
 
 	// ENDPOINT FOR FETCHING WORKOUT HISTORY FOR A SPECIFIC EXERCISE
 	const [{ data: historyData, loading: historyLoading, error: historyError }] = useAxios({
@@ -55,17 +55,6 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 			workout: workouts[workoutIndex].category,
 		},
 	});
-
-	// newWorkoutIndex is the index of the current workout
-	// and comes from the previously displayed screen
-	useEffect(() => {
-		if (newWorkoutIndex) {
-			setUniqeKey(newWorkoutIndex);
-			setUserComment("");
-			setWorkoutSets([]);
-			setWorkoutIndex(newWorkoutIndex);
-		}
-	}, [newWorkoutIndex]);
 
 	// Extract the sets from workout object and remove all unnecessary key/value pairs
 	useEffect(() => {
@@ -89,15 +78,14 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 	}, [historyData]);
 
 	return (
-		<KeyboardAwareScrollView
+		<ScrollView
 			style={{ backgroundColor: colors.surface }}
-			enableOnAndroid
 			keyboardShouldPersistTaps='handled'>
 			{workouts[workoutIndex]?.video ? (
 				<YoutubePlayer
 					height={Dimensions.get("window").height / 3.5}
 					videoId={workouts[workoutIndex]?.video?.substring(
-						workouts[workoutIndex]?.video.length - 11
+						workouts[workoutIndex]?.video?.length - 11
 					)}
 				/>
 			) : (
@@ -107,9 +95,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 				style={{
 					padding: 25,
 					backgroundColor: colors.surface,
-					paddingTop: workouts[workoutIndex]?.video ? 0 : 25,
-					borderTopStartRadius: workouts[workoutIndex]?.video ? 0 : 35,
-					borderTopEndRadius: workouts[workoutIndex]?.video ? 0 : 35,
+					paddingTop: workouts[workoutIndex]?.video ? 0 : 20,
 				}}>
 				<Title style={{ color: colors.highlightText, fontSize: 22, lineHeight: 22 }}>
 					{workouts[workoutIndex]?.name}
@@ -138,6 +124,9 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 						<Paragraph>Vikt</Paragraph>
 					</View>
 				</View>
+				<DialogBox>
+					<Paragraph>{exerciseComment}</Paragraph>
+				</DialogBox>
 				{workouts[workoutIndex]?.sets?.map((set: Set, index: number) => (
 					<View key={index} style={{ marginBottom: 1 }}>
 						{/* NEW ADDED BLOCK FROM LIST.ITEM.INPUT */}
@@ -158,7 +147,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 								]}
 								description={`${set.reps} Reps \u00B7 Vila: ${set.seconds}`}
 								descriptionStyle={{ fontSize: 14, marginLeft: -15, color: colors.text }}
-								key={uniqeKey}
+								key={index}
 								right={() => (
 									<View
 										style={{
@@ -170,7 +159,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 										<IconButton
 											icon='information-outline'
 											size={22}
-											onPress={() => showDialog()}
+											onPress={() => handleDialog(set?.comment)}
 											style={[
 												styles.info,
 												{
@@ -179,11 +168,6 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 												},
 											]}
 										/>
-										<DialogBox>
-											<Paragraph>
-												{set.comment ? set.comment : `Denna övning saknar kommentar.`}
-											</Paragraph>
-										</DialogBox>
 										<TextInput
 											autoCorrect={false}
 											value={workoutSets[index]?.saved_reps}
@@ -260,64 +244,38 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 					multiline
 					numberOfLines={4}
 				/>
-				<View style={{ marginBottom: 20 }}>
-					<View style={{ flexDirection: "row" }}>
-						<Button
-							style={{
-								marginRight: 10,
-								backgroundColor: "lightgrey",
-							}}
-							onPress={() => navigation.goBack()}>
-							<Ionicons name='ios-chevron-back-outline' size={24} color={colors.black} />
-						</Button>
-						<Button
-							style={{ flexGrow: 1 }}
-							disable={postWorkoutResultsLoading}
-							onPress={() => {
-								postWorkoutResults({
-									data: {
-										scheme_day_id: workoutDayID,
-										exercise_id: workouts[workoutIndex].id,
-										workout: workouts[workoutIndex].category,
-										saved_sets: workoutSets,
-										comment: userComment,
-									},
-								})
-									.then(() => {
-										workoutIndex + 1 === Object.keys(workouts).length
-											? navigation.goBack()
-											: navigation.navigate("WorkoutSession", {
-													workouts,
-													newWorkoutIndex: workoutIndex + 1,
-													workoutDayID: workoutDayID,
-											  });
-									})
-									.catch(() => Alert.alert(`Något gick fel. Försök igen!`));
-							}}>
-							{!postWorkoutResultsLoading && "Nästa övning"}
-							{postWorkoutResultsLoading && "Sparar.."}
-						</Button>
-					</View>
-					{Platform.OS === "android" && (
-						<View style={{ alignItems: "center" }}>
-							<TouchableOpacity
-								onPress={() =>
-									navigation.navigate("AlternateWorkoutSession", {
-										workouts,
-										newWorkoutIndex,
-										workoutDayID,
-										incomingWorkoutIndex,
-									})
-								}>
-								<Caption style={{ padding: 10 }}>
-									Problem att spara? Testa det här.
-								</Caption>
-							</TouchableOpacity>
-						</View>
-					)}
+				<View
+					style={{
+						marginVertical: 20,
+					}}>
+					<Button
+						disable={postWorkoutResultsLoading}
+						onPress={() => {
+							postWorkoutResults({
+								data: {
+									scheme_day_id: workoutDayID,
+									exercise_id: workouts[workoutIndex].id,
+									workout: workouts[workoutIndex].category,
+									saved_sets: workoutSets,
+									comment: userComment,
+								},
+							})
+								.then(() => navigation.goBack())
+								.catch(() => Alert.alert(`Något gick fel. Försök igen!`));
+						}}>
+						{!postWorkoutResultsLoading && "Spara"}
+						{postWorkoutResultsLoading && "Sparar.."}
+					</Button>
+					<Button
+						style={{
+							backgroundColor: "lightgrey",
+						}}
+						onPress={() => navigation.goBack()}>
+						Tillbaka
+					</Button>
 				</View>
 			</View>
-		</KeyboardAwareScrollView>
+		</ScrollView>
 	);
 };
 
@@ -383,6 +341,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		width: "100%",
 		resizeMode: "cover",
-		height: Dimensions.get("window").height / 3,
+		height: Dimensions.get("window").height / 3.5,
 	},
 });
