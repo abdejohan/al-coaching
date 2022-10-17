@@ -19,16 +19,19 @@ const LineChart: React.FC<LineChartProps> = (props) => {
 	const { colors } = useTheme();
 	const [dataArray, setDataArray] = useState<Array<number>>([70, 70]);
 	const screenWidth = Dimensions.get("window").width - 80;
+	const [displayChart, setDisplayChart] = useState<boolean>(false);
 
 	// This useEffect sets the data array for the line chart, and the current user weight
 	// Values from API comes as strings and are converted to numbers
 	useEffect(() => {
+		setDisplayChart(false);
 		if (sizes && !sizes?.error) {
 			const weightArray = sizes.filter((sizeSet: Array<object>) => "weight" in sizeSet);
 			const weightValues = weightArray[0].weight.map((sizeArray: any) => sizeArray.value);
 			if (weightValues.length > 1) setDataArray(weightValues.reverse());
+			setDisplayChart(true);
 		}
-	}, [sizes]);
+	}, [sizes, user]);
 
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surface }]}>
@@ -84,15 +87,17 @@ const LineChart: React.FC<LineChartProps> = (props) => {
 						</Headline>
 					</View>
 				)}
-				<SvgLineChart
-					style={{ height: 100, width: screenWidth }}
-					gridMin={user?.start_weight}
-					gridMax={user?.goal_weight}
-					data={dataArray}
-					curve={shape.curveNatural}
-					svg={{ stroke: colors.primary, strokeWidth: 10 }}
-					contentInset={{ top: 20, bottom: 20 }}
-				/>
+				{displayChart && (
+					<SvgLineChart
+						style={{ height: 100, width: screenWidth }}
+						gridMin={user?.start_weight}
+						gridMax={user?.goal_weight}
+						data={dataArray}
+						curve={shape.curveNatural}
+						svg={{ stroke: colors.primary, strokeWidth: 10 }}
+						contentInset={{ top: 20, bottom: 20 }}
+					/>
+				)}
 				<View style={{ flexDirection: "row", justifyContent: "space-between" }}>
 					<Text style={{ fontSize: 12 }}>Start</Text>
 					<View style={{ flexGrow: 1 }} />
