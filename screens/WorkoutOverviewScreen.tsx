@@ -86,29 +86,21 @@ const WorkoutOverviewScreen: React.FC<WorkoutOverviewProps> = ({ navigation, rou
 				))}
 				<View
 					style={{
-						paddingTop: 50,
-						flexDirection: "row",
-						alignItems: "flex-end",
-						flexGrow: 1,
+						marginTop: 50,
+						marginBottom: 20,
+						flex: 1,
 					}}>
-					<Button
-						style={{
-							backgroundColor: "lightgrey",
-							marginRight: 10,
-							marginBottom: 20,
-						}}
-						onPress={() => navigation.goBack()}>
-						<Ionicons name='ios-chevron-back-outline' size={24} color='black' />
-					</Button>
 					<Button
 						onPress={() =>
 							navigation.navigate("WorkoutSession", {
 								workouts: workoutDay.workouts,
 								workoutDayID: workoutDay.id,
 							})
-						}
-						style={{ flex: 1 }}>
+						}>
 						Påbörja träningspass
+					</Button>
+					<Button backgroundColor='grey' onPress={() => navigation.goBack()}>
+						Tillbaka
 					</Button>
 				</View>
 			</ParallaxScrollView>

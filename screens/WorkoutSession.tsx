@@ -39,6 +39,20 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 		},
 		{ manual: true }
 	);
+	/**
+	 * 
+	 const [{ data: exerciseData, loading: fetchExerciseLoading }, fetchExercise] = useAxios(
+		 {
+			url: "v2/workout/exercise/list",
+			method: "GET",
+			data: { id: 295 },
+		}
+	);
+	
+	useEffect(() => {
+		console.log(exerciseData);
+	}, [exerciseData]);
+	*/
 
 	const handleDialog = (comment: string) => {
 		setExcersiceComment(comment ? comment : `Denna övning saknar kommentar.`);
@@ -271,11 +285,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 						{!postWorkoutResultsLoading && "Spara"}
 						{postWorkoutResultsLoading && "Sparar.."}
 					</Button>
-					<Button
-						style={{
-							backgroundColor: "lightgrey",
-						}}
-						onPress={() => navigation.goBack()}>
+					<Button backgroundColor='grey' onPress={() => navigation.goBack()}>
 						Tillbaka
 					</Button>
 				</View>
