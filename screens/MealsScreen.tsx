@@ -22,6 +22,7 @@ const MealsScreen: React.FC<DietProps> = ({ navigation, route }) => {
 						navigation.navigate("Ingredients", {
 							ingredients: day?.products,
 							name: day?.name,
+							comment: day?.comment,
 						})
 					}
 				/>

@@ -1,7 +1,7 @@
 import { ScrollView, View } from "react-native";
 import { Divider, useTheme } from "react-native-paper";
 import ListItemBasic from "../components/common/ListItemBasic";
-import { Subheading } from "../typography";
+import { Headline, Subheading } from "../typography";
 
 interface DietCategoryProps {
 	navigation: any;
@@ -18,7 +18,7 @@ const calculateTotalNutrientValue = (ingredients: Array<any>, unit: string) => {
 };
 
 const IngredientsScreen: React.FC<DietCategoryProps> = ({ navigation, route }) => {
-	const { ingredients } = route.params;
+	const { ingredients, comment } = route.params;
 	const { colors, roundness } = useTheme();
 
 	return (
@@ -26,6 +26,26 @@ const IngredientsScreen: React.FC<DietCategoryProps> = ({ navigation, route }) =
 			contentContainerStyle={{ padding: 20, paddingBottom: 200 }}
 			style={{ backgroundColor: colors.background }}>
 			<>
+				{typeof comment === "string" && (
+					<View
+						style={{
+							backgroundColor: colors.surface,
+							marginBottom: 20,
+							padding: 20,
+							borderRadius: roundness,
+						}}>
+						<Headline
+							style={{
+								fontSize: 22,
+								color: colors.highlightText,
+								lineHeight: 22,
+								marginBottom: 2,
+							}}>
+							Anders säger:
+						</Headline>
+						<Subheading>- {comment}</Subheading>
+					</View>
+				)}
 				<View style={{ borderRadius: roundness, backgroundColor: colors.surface }}>
 					{ingredients?.map((ingredient: any, index: number) => (
 						<View key={index}>
