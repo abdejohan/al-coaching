@@ -37,7 +37,7 @@ const Button: React.FC<ButtonProps> = (props) => {
 			color={color ? color : colors.white}
 			style={{
 				marginBottom: 20,
-				backgroundColor: !disable ? backgroundColor ?? colors.primary : colors.neutral,
+				backgroundColor: !disable ? backgroundColor ?? colors.primary : "grey",
 				...style,
 			}}
 			contentStyle={{ margin: 5 }}
