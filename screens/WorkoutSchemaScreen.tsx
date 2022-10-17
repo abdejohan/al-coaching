@@ -33,36 +33,52 @@ const WorkoutSchemaScreen: React.FC<WorkoutSchemaProps> = ({ navigation, route }
 							fontSize: 16,
 							fontFamily: "ubuntu-light",
 						}}
-						onPress={() => navigation.navigate("WorkoutOverview", { workoutDay: day })}
-						description={() => (
-							<View style={{ flexDirection: "row", marginLeft: -3 }}>
-								<Ionicons
-									size={13}
-									name='barbell-outline'
-									color={colors.primary}
-									style={{ transform: [{ rotate: "135deg" }], marginRight: 9 }}
-								/>
-								<Text style={{ fontFamily: "ubuntu-light", marginTop: 5 }}>
-									{day.workouts.length} övningar
-								</Text>
-							</View>
-						)}
-						right={() => (
-							<View style={{ justifyContent: "center" }}>
-								<View
-									style={{
-										backgroundColor: colors.onSurface,
-										width: 40,
-										height: 40,
-										justifyContent: "center",
-										alignItems: "center",
-										borderRadius: roundness,
-										marginRight: 10,
-									}}>
-									<IconButton icon='arrow-right' size={18} color={colors.highlightText} />
-								</View>
-							</View>
-						)}
+						onPress={() =>
+							day?.workouts?.length > 0
+								? navigation.navigate("WorkoutOverview", { workoutDay: day })
+								: null
+						}
+						description={() => {
+							if (day?.workouts?.length > 0) {
+								return (
+									<View style={{ flexDirection: "row", marginLeft: -3 }}>
+										<Ionicons
+											size={13}
+											name='barbell-outline'
+											color={colors.primary}
+											style={{ transform: [{ rotate: "135deg" }], marginRight: 9 }}
+										/>
+										<Text style={{ fontFamily: "ubuntu-light", marginTop: 5 }}>
+											{day?.workouts?.length} övningar
+										</Text>
+									</View>
+								);
+							}
+						}}
+						right={() => {
+							if (day?.workouts?.length > 0) {
+								return (
+									<View style={{ justifyContent: "center" }}>
+										<View
+											style={{
+												backgroundColor: colors.onSurface,
+												width: 40,
+												height: 40,
+												justifyContent: "center",
+												alignItems: "center",
+												borderRadius: roundness,
+												marginRight: 10,
+											}}>
+											<IconButton
+												icon='arrow-right'
+												size={18}
+												color={colors.highlightText}
+											/>
+										</View>
+									</View>
+								);
+							}
+						}}
 					/>
 				))}
 		</ScrollView>
