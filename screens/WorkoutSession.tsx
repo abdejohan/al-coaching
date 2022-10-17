@@ -80,6 +80,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 	return (
 		<ScrollView
 			style={{ backgroundColor: colors.surface }}
+			bounces={false}
 			keyboardShouldPersistTaps='handled'>
 			{workouts[workoutIndex]?.video ? (
 				<YoutubePlayer
@@ -93,9 +94,13 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 			)}
 			<View
 				style={{
-					padding: 25,
+					padding: 20,
 					backgroundColor: colors.surface,
-					paddingTop: workouts[workoutIndex]?.video ? 0 : 20,
+					paddingTop: workouts[workoutIndex]?.video
+						? Dimensions.get("window").width < 350
+							? 20
+							: 0
+						: 20,
 				}}>
 				<Title style={{ color: colors.highlightText, fontSize: 22, lineHeight: 22 }}>
 					{workouts[workoutIndex]?.name}
