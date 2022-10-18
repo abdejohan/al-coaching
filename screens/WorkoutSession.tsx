@@ -6,6 +6,8 @@ import {
 	Dimensions,
 	ScrollView,
 	Image,
+	TouchableOpacity,
+	Platform,
 } from "react-native";
 import { Divider, useTheme, List, IconButton } from "react-native-paper";
 import placeholder_image from "../assets/images/placeholder_image.jpg";
@@ -14,7 +16,7 @@ import Button from "../components/common/Button";
 import { useEffect, useState } from "react";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
 import InputValidation from "../components/InputValidation";
-import { Paragraph, Subheading, Title } from "../typography";
+import { Caption, Paragraph, Subheading, Title } from "../typography";
 import { useDialog } from "../hooks/useDialog";
 import YoutubePlayer from "react-native-youtube-iframe";
 import { SaveSet, Set } from "../types/types";
@@ -289,6 +291,20 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 						Tillbaka
 					</Button>
 				</View>
+				{Platform.OS === "android" && (
+					<View style={{ alignItems: "center" }}>
+						<TouchableOpacity
+							onPress={() =>
+								navigation.navigate("AlternateWorkoutSession", {
+									workouts,
+									workoutIndex,
+									workoutDayID,
+								})
+							}>
+							<Caption style={{ padding: 10 }}>Problem att spara? Testa det här.</Caption>
+						</TouchableOpacity>
+					</View>
+				)}
 			</View>
 		</ScrollView>
 	);
