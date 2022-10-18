@@ -35,13 +35,10 @@ const AlternateWorkoutSession: React.FC<AlternateWorkoutSessionProps> = ({
 	route,
 }) => {
 	const { DialogBox, showDialog } = useDialog();
+	const [exerciseComment, setExcersiceComment] = useState<string>("");
 	const { darkMode } = useContext(AuthContext);
-	const { workouts, newWorkoutIndex, workoutDayID, incomingWorkoutIndex } = route.params;
+	const { workouts, workoutIndex, workoutDayID } = route.params;
 	const [workoutSets, setWorkoutSets] = useState<Array<SaveSet>>([]);
-	const [workoutIndex, setWorkoutIndex] = useState<number>(
-		incomingWorkoutIndex ? incomingWorkoutIndex : 0
-	);
-	const [uniqeKey, setUniqeKey] = useState<number>(0);
 	const [userComment, setUserComment] = useState<string>("");
 	const { colors, roundness } = useTheme();
 	const { useAxios } = useAxiosAuthenticated();
@@ -53,6 +50,11 @@ const AlternateWorkoutSession: React.FC<AlternateWorkoutSessionProps> = ({
 		{ manual: true }
 	);
 
+	const handleDialog = (comment: string) => {
+		setExcersiceComment(comment ? comment : `Denna övning saknar kommentar.`);
+		showDialog();
+	};
+
 	// ENDPOINT FOR FETCHING WORKOUT HISTORY FOR A SPECIFIC EXERCISE
 	const [{ data: historyData, loading: historyLoading, error: historyError }] = useAxios({
 		url: "/v2/exercise/track/history/latest",
@@ -63,17 +65,6 @@ const AlternateWorkoutSession: React.FC<AlternateWorkoutSessionProps> = ({
 			workout: workouts[workoutIndex].category,
 		},
 	});
-
-	// newWorkoutIndex is the index of the current workout
-	// and comes from the previously displayed screen
-	useEffect(() => {
-		if (newWorkoutIndex) {
-			setUniqeKey(newWorkoutIndex);
-			setUserComment("");
-			setWorkoutSets([]);
-			setWorkoutIndex(newWorkoutIndex);
-		}
-	}, [newWorkoutIndex]);
 
 	// Extract the sets from workout object and remove all unnecessary key/value pairs
 	useEffect(() => {
@@ -139,6 +130,9 @@ const AlternateWorkoutSession: React.FC<AlternateWorkoutSessionProps> = ({
 						<Paragraph>Vikt</Paragraph>
 					</View>
 				</View>
+				<DialogBox>
+					<Paragraph>{exerciseComment}</Paragraph>
+				</DialogBox>
 				{workouts[workoutIndex]?.sets?.map((set: Set, index: number) => (
 					<View key={index} style={{ marginBottom: 1 }}>
 						{/* NEW ADDED BLOCK FROM LIST.ITEM.INPUT */}
@@ -159,7 +153,6 @@ const AlternateWorkoutSession: React.FC<AlternateWorkoutSessionProps> = ({
 								]}
 								description={`${set.reps} Reps \u00B7 Vila: ${set.seconds}`}
 								descriptionStyle={{ fontSize: 14, marginLeft: -15, color: colors.text }}
-								key={uniqeKey}
 								right={() => (
 									<View
 										style={{
@@ -171,7 +164,7 @@ const AlternateWorkoutSession: React.FC<AlternateWorkoutSessionProps> = ({
 										<IconButton
 											icon='information-outline'
 											size={22}
-											onPress={() => showDialog()}
+											onPress={() => handleDialog(set?.comment)}
 											style={[
 												styles.info,
 												{
@@ -180,11 +173,7 @@ const AlternateWorkoutSession: React.FC<AlternateWorkoutSessionProps> = ({
 												},
 											]}
 										/>
-										<DialogBox>
-											<Paragraph>
-												{set.comment ? set.comment : `Denna övning saknar kommentar.`}
-											</Paragraph>
-										</DialogBox>
+
 										<TextInput
 											autoCorrect={false}
 											value={workoutSets[index]?.saved_reps}
@@ -262,15 +251,7 @@ const AlternateWorkoutSession: React.FC<AlternateWorkoutSessionProps> = ({
 					multiline
 					numberOfLines={4}
 				/>
-				<View style={{ flexDirection: "row" }}>
-					<Button
-						style={{
-							marginRight: 10,
-							backgroundColor: "lightgrey",
-						}}
-						onPress={() => navigation.goBack()}>
-						<Ionicons name='ios-chevron-back-outline' size={24} color={colors.black} />
-					</Button>
+				<View>
 					<Button
 						style={{ flexGrow: 1 }}
 						disable={postWorkoutResultsLoading}
@@ -289,6 +270,9 @@ const AlternateWorkoutSession: React.FC<AlternateWorkoutSessionProps> = ({
 						}}>
 						{!postWorkoutResultsLoading && "Spara"}
 						{postWorkoutResultsLoading && "Sparar.."}
+					</Button>
+					<Button backgroundColor='grey' onPress={() => navigation.goBack()}>
+						Tillbaka
 					</Button>
 				</View>
 			</View>
