@@ -34,6 +34,8 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 	const [exerciseComment, setExcersiceComment] = useState<string>("");
 	const { colors, roundness } = useTheme();
 	const { useAxios } = useAxiosAuthenticated();
+
+	// THIS IS FOR POSTING THE EXERCISE RESULTS
 	const [{ loading: postWorkoutResultsLoading }, postWorkoutResults] = useAxios(
 		{
 			url: "/v2/exercise/track",
@@ -41,25 +43,12 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 		},
 		{ manual: true }
 	);
-	/**
-	 * 
-	 const [{ data: exerciseData, loading: fetchExerciseLoading }, fetchExercise] = useAxios(
-		 {
-			url: "v2/workout/exercise/list",
-			method: "GET",
-			data: { id: 295 },
-		}
-	);
-	
-	useEffect(() => {
-		console.log(exerciseData);
-	}, [exerciseData]);
-	*/
 
-	const handleDialog = (comment: string) => {
-		setExcersiceComment(comment ? comment : `Denna övning saknar kommentar.`);
-		showDialog();
-	};
+	// THIS IS ONLY USED FOR FETCHING THE LATEST YOUTUBE VIDEO URL
+	const [{ data: exerciseData }] = useAxios({
+		url: "v2/workout/exercise/list?id=" + workouts[workoutIndex].id,
+		method: "GET",
+	});
 
 	// ENDPOINT FOR FETCHING WORKOUT HISTORY FOR A SPECIFIC EXERCISE
 	const [{ data: historyData, loading: historyLoading, error: historyError }] = useAxios({
@@ -93,16 +82,21 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 		setWorkoutSets(cleanSetsWithId);
 	}, [historyData]);
 
+	const handleDialog = (comment: string) => {
+		setExcersiceComment(comment ? comment : `Denna övning saknar kommentar.`);
+		showDialog();
+	};
+
 	return (
 		<ScrollView
 			style={{ backgroundColor: colors.surface }}
 			bounces={false}
 			keyboardShouldPersistTaps='handled'>
-			{workouts[workoutIndex]?.video ? (
+			{exerciseData?.exercise?.video ? (
 				<YoutubePlayer
 					height={Dimensions.get("window").height / 3.5}
-					videoId={workouts[workoutIndex]?.video?.substring(
-						workouts[workoutIndex]?.video?.length - 11
+					videoId={exerciseData?.exercise?.video?.substring(
+						exerciseData?.exercise?.video?.length - 11
 					)}
 				/>
 			) : (
@@ -112,7 +106,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 				style={{
 					padding: 20,
 					backgroundColor: colors.surface,
-					paddingTop: workouts[workoutIndex]?.video
+					paddingTop: exerciseData?.exercise?.video
 						? Dimensions.get("window").width < 350
 							? 20
 							: 0
