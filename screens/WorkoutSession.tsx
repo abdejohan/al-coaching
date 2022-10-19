@@ -70,10 +70,10 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 			(set: Set, setIndex: number) => {
 				return {
 					set_id: set?.set_id,
-					saved_reps: historyData?.performance?.saved_sets[setIndex]?.saved_reps
+					saved_reps: historyData?.performance?.saved_sets
 						? historyData?.performance?.saved_sets[setIndex]?.saved_reps
 						: "0",
-					saved_weight: historyData?.performance?.saved_sets[setIndex]?.saved_weight
+					saved_weight: historyData?.performance?.saved_sets
 						? historyData?.performance?.saved_sets[setIndex]?.saved_weight
 						: "0",
 				};
