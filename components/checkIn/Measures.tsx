@@ -188,36 +188,31 @@ const Measures: React.FC = () => {
 							borderRadius: 5,
 						}}
 						onPress={() => pickImage().then((base64Img) => setFrontImage(base64Img))}>
-						{!frontImage && <Headline>Framsida</Headline>}
 						{!frontImage && (
-							<Subheading style={{ textAlign: "center", padding: 10 }}>
-								Tryck för att ladda upp bild
-							</Subheading>
+							<View style={{ alignItems: "center" }}>
+								<Headline>Framsida</Headline>
+								<Subheading style={{ padding: 10 }}>
+									Tryck för att ladda upp bild
+								</Subheading>
+							</View>
 						)}
 						{frontImage && (
-							<>
-								<View
+							<View>
+								<Image
+									source={{ uri: `data:image/jpeg;base64,${frontImage.base64}` }}
 									style={{
-										backgroundColor: "rgba(0,0,0,1)",
+										width: uploadImageWidth,
+										height: uploadImageWidth,
+										marginTop: 0,
 										borderRadius: 5,
-									}}>
-									<Image
-										source={{ uri: `data:image/jpeg;base64,${frontImage.base64}` }}
-										style={{
-											width: uploadImageWidth,
-											height: uploadImageWidth,
-											marginTop: 0,
-											borderRadius: 5,
-											opacity: 0.7,
-										}}
-									/>
-								</View>
+									}}
+								/>
 								<TouchableOpacity
 									onPress={() => setFrontImage(undefined)}
 									style={{ position: "absolute", top: 3, right: 5 }}>
-									<FontAwesome5 name='times-circle' size={20} color='#CBD2D0' />
+									<FontAwesome5 name='times-circle' size={20} color={colors.error} />
 								</TouchableOpacity>
-							</>
+							</View>
 						)}
 					</TouchableOpacity>
 				</View>
@@ -233,38 +228,33 @@ const Measures: React.FC = () => {
 							borderRadius: 5,
 						}}
 						onPress={() => pickImage().then((base64Img) => setSideImage(base64Img))}>
-						{!sideImage && <Headline>Profil</Headline>}
 						{!sideImage && (
-							<Subheading
-								onPress={() => pickImage().then((base64Img) => setSideImage(base64Img))}
-								style={{ textAlign: "center", padding: 10 }}>
-								Tryck för att ladda upp bild
-							</Subheading>
+							<View style={{ alignItems: "center" }}>
+								<Headline>Profil</Headline>
+								<Subheading
+									onPress={() => pickImage().then((base64Img) => setSideImage(base64Img))}
+									style={{ padding: 10 }}>
+									Tryck för att ladda upp bild
+								</Subheading>
+							</View>
 						)}
 						{sideImage && (
-							<>
-								<View
+							<View>
+								<Image
+									source={{ uri: `data:image/jpeg;base64,${sideImage.base64}` }}
 									style={{
-										backgroundColor: "rgba(0,0,0,1)",
+										width: uploadImageWidth,
+										height: uploadImageWidth,
+										marginTop: 0,
 										borderRadius: 5,
-									}}>
-									<Image
-										source={{ uri: `data:image/jpeg;base64,${sideImage.base64}` }}
-										style={{
-											width: uploadImageWidth,
-											height: uploadImageWidth,
-											marginTop: 0,
-											borderRadius: 5,
-											opacity: 0.7,
-										}}
-									/>
-								</View>
+									}}
+								/>
 								<TouchableOpacity
 									onPress={() => setSideImage(undefined)}
 									style={{ position: "absolute", top: 3, right: 5 }}>
-									<FontAwesome5 name='times-circle' size={20} color='#CBD2D0' />
+									<FontAwesome5 name='times-circle' size={20} color={colors.error} />
 								</TouchableOpacity>
-							</>
+							</View>
 						)}
 					</TouchableOpacity>
 				</View>
@@ -280,38 +270,33 @@ const Measures: React.FC = () => {
 							borderRadius: 5,
 						}}
 						onPress={() => pickImage().then((base64Img) => setBackImage(base64Img))}>
-						{!backImage && <Headline>Baksida</Headline>}
 						{!backImage && (
-							<Subheading
-								onPress={() => pickImage().then((base64Img) => setBackImage(base64Img))}
-								style={{ textAlign: "center", padding: 10 }}>
-								Tryck för att ladda upp bild
-							</Subheading>
+							<View style={{ alignItems: "center" }}>
+								<Headline>Baksida</Headline>
+								<Subheading
+									onPress={() => pickImage().then((base64Img) => setBackImage(base64Img))}
+									style={{ padding: 10 }}>
+									Tryck för att ladda upp bild
+								</Subheading>
+							</View>
 						)}
 						{backImage && (
-							<>
-								<View
+							<View>
+								<Image
+									source={{ uri: `data:image/jpeg;base64,${backImage.base64}` }}
 									style={{
-										backgroundColor: "rgba(0,0,0,1)",
+										width: uploadImageWidth,
+										height: uploadImageWidth,
+										marginTop: 0,
 										borderRadius: 5,
-									}}>
-									<Image
-										source={{ uri: `data:image/jpeg;base64,${backImage.base64}` }}
-										style={{
-											width: uploadImageWidth,
-											height: uploadImageWidth,
-											marginTop: 0,
-											borderRadius: 5,
-											opacity: 0.7,
-										}}
-									/>
-								</View>
+									}}
+								/>
 								<TouchableOpacity
 									onPress={() => setBackImage(undefined)}
 									style={{ position: "absolute", top: 3, right: 5 }}>
-									<FontAwesome5 name='times-circle' size={20} color='#CBD2D0' />
+									<FontAwesome5 name='times-circle' size={20} color={colors.error} />
 								</TouchableOpacity>
-							</>
+							</View>
 						)}
 					</TouchableOpacity>
 				</View>
