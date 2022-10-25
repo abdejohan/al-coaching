@@ -5,7 +5,7 @@ export default {
 		owner: "coach-apps",
 		name: "AL Coaching",
 		slug: "al-coaching",
-		version: "1.6.6",
+		version: "1.6.7",
 		orientation: "portrait",
 		icon: "./assets/images/icon.png",
 		scheme: "myapp",
@@ -37,12 +37,12 @@ export default {
 		android: {
 			package: "app.al.coaching",
 			googleServicesFile: "./google-services.json",
-			versionCode: 42,
+			versionCode: 43,
 			permissions: ["NOTIFICATIONS"],
 			useNextNotificationsApi: true,
 			// softwareKeyboardLayoutMode: "pan",
 			adaptiveIcon: {
-				foregroundImage: "./assets/images/icon.png",
+				foregroundImage: "./assets/images/adaptive-icon.png",
 				backgroundColor: "#3DA6AF",
 			},
 		},
