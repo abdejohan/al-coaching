@@ -93,7 +93,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 		<KeyboardAwareScrollView
 			style={{ backgroundColor: colors.surface }}
 			bounces={false}
-			keyboardShouldPersistTaps='handled'>
+			keyboardShouldPersistTaps={Platform.OS === "android" ? "never" : "handled"}>
 			{exerciseData?.exercise?.video ? (
 				<YoutubePlayer
 					height={Dimensions.get("window").height / 3.5}
