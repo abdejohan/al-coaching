@@ -8,6 +8,7 @@ import {
 	Image,
 	TouchableOpacity,
 	Platform,
+	KeyboardAvoidingView,
 } from "react-native";
 import { Divider, useTheme, List, IconButton } from "react-native-paper";
 import placeholder_image from "../assets/images/placeholder_image.jpg";
@@ -20,6 +21,7 @@ import { Caption, Paragraph, Subheading, Title } from "../typography";
 import { useDialog } from "../hooks/useDialog";
 import YoutubePlayer from "react-native-youtube-iframe";
 import { SaveSet, Set } from "../types/types";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 interface WorkoutSessionProps {
 	navigation: any;
@@ -88,7 +90,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 	};
 
 	return (
-		<ScrollView
+		<KeyboardAwareScrollView
 			style={{ backgroundColor: colors.surface }}
 			bounces={false}
 			keyboardShouldPersistTaps='handled'>
@@ -300,7 +302,7 @@ const WorkoutSession: React.FC<WorkoutSessionProps> = ({ navigation, route }) =>
 					</View>
 				)}
 			</View>
-		</ScrollView>
+		</KeyboardAwareScrollView>
 	);
 };
 
