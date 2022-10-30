@@ -23,7 +23,6 @@ import NotificationsContext from "../context/Notifications";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
 import ListItemSetting from "../components/common/ListItemSetting";
 import { FontAwesome5, MaterialIcons, Ionicons } from "@expo/vector-icons";
-import { useImagePicker } from "../hooks/useImagePicker";
 import { useDialog } from "../hooks/useDialog";
 import * as Linking from "expo-linking";
 import * as Notifications from "expo-notifications";
@@ -32,7 +31,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 import avatar_placeholder from "../assets/images/avatar_placeholder.png";
 import * as Device from "expo-device";
-
+import * as DocumentPicker from "expo-document-picker";
+import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 interface SettingsProps {
 	navigation: any;
 }
@@ -46,6 +46,7 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 		logout,
 		updateUser,
 		userLoading,
+		token,
 		setDarkMode,
 	} = useContext(AuthContext);
 	const { permissionStatus, setPermissionStatus } = useContext(NotificationsContext);
@@ -54,7 +55,6 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 	);
 	const [darkmode, setDarkmode] = useState(globaldarkMode ? true : false);
 	const { DialogBox, showDialog, hideDialog } = useDialog();
-	const { takeImage, pickImage } = useImagePicker();
 	const [{ loading: avatarLoading }, editClient] = useAxios(
 		{
 			url: "/client/edit",
@@ -71,11 +71,36 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 		setDarkmode(!darkmode);
 	};
 
+	const pickDocument = async () => {
+		let pickedImage = await DocumentPicker.getDocumentAsync({
+			type: "image/*",
+		});
+
+		const manipulatedImageResult = await manipulateAsync(
+			// @ts-ignore
+			pickedImage.uri,
+			[{ resize: { height: 60, width: 60 } }],
+			{ base64: true, compress: 1, format: SaveFormat.PNG }
+		);
+
+		return manipulatedImageResult.base64;
+	};
+
+	// For some reason, using axios for POSTing avatar will give an error and display the Alert message to the user that saving failed.
+	// even thought the avatar is succesfully saved to S3 storage.
 	const uploadAvatar = async (img: string | undefined | null) => {
 		if (typeof img === "string") {
-			await editClient({ data: { avatar: `data:image/jpeg;base64, ${img}` } })
+			fetch(Constants!.manifest!.extra!.apiUrl + "/client/edit", {
+				method: "POST",
+				headers: {
+					Authorization: "Bearer " + token,
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ avatar: `data:image/png;base64, ${img}` }),
+			})
 				.then(() => updateUser())
-				.catch(() => Alert.alert("Kunde inte spara bilden, försök igen."));
+				.catch((error) => Alert.alert("Kunde inte spara bilden, försök igen."));
 		}
 	};
 
@@ -181,24 +206,14 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 								mode='text'
 								onPress={() => {
 									hideDialog();
-									pickImage().then((img) => uploadAvatar(img?.base64));
+									pickDocument()
+										.then((base64Img) => uploadAvatar(base64Img))
+										.catch(() => null);
 								}}
 								style={{ margin: 0 }}>
 								välj foto
 							</Button>
 							<Divider />
-							<>
-								<Button
-									mode='text'
-									onPress={() => {
-										hideDialog();
-										takeImage().then((img) => uploadAvatar(img?.base64));
-									}}
-									style={{ margin: 0 }}>
-									Ta foto
-								</Button>
-								<Divider />
-							</>
 							<Button
 								mode='text'
 								color={colors.error}

@@ -4005,6 +4005,14 @@ expo-device@~4.3.0:
   dependencies:
     ua-parser-js "^0.7.19"
 
+expo-document-picker@~10.3.0:
+  version "10.3.0"
+  resolved "https://registry.yarnpkg.com/expo-document-picker/-/expo-document-picker-10.3.0.tgz#6a88fe69f6dcf6b8f2e65158de94c00695ae4972"
+  integrity sha512-wo6PrZwTE8h5xTO5xKkR6bodBuimacyp5fhIho6vwzBDrBH/Mp6xEbsth6yP8jgcCFUGa1oWWPCSqBxBv+ZZIA==
+  dependencies:
+    "@expo/config-plugins" "~5.0.0"
+    uuid "^3.3.2"
+
 expo-eas-client@~0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/expo-eas-client/-/expo-eas-client-0.3.0.tgz#21383fc95a52e71e13c7276456db20388fefcf95"
@@ -4035,7 +4043,14 @@ expo-image-loader@~3.2.0:
   resolved "https://registry.yarnpkg.com/expo-image-loader/-/expo-image-loader-3.2.0.tgz#d98b021660edef7243f7c5ec011b8d0545626d41"
   integrity sha512-LU3Q2prn64/HxdToDmxgMIRXS1ZvD9Q3iCxRVTZn1fPQNNDciIQFE5okaa74Ogx20DFHs90r6WoUd7w9Af1OGQ==
 
-expo-image-picker@~13.3.1:
+expo-image-manipulator@~10.4.0:
+  version "10.4.0"
+  resolved "https://registry.yarnpkg.com/expo-image-manipulator/-/expo-image-manipulator-10.4.0.tgz#23570d9ca1625b9cb2583f2808172dfa088cea56"
+  integrity sha512-10L6eEbGGmgkZnt6bS+TkPAEuhkWa3AAlXeozLK7fKg24AUZj33FQuqc59i7ka3qMVEnsIc5bABcjimHEA4/Hg==
+  dependencies:
+    expo-image-loader "~3.2.0"
+
+expo-image-picker@^13.3.1:
   version "13.3.1"
   resolved "https://registry.yarnpkg.com/expo-image-picker/-/expo-image-picker-13.3.1.tgz#7e8fe1dd7a58ab9e0fa17569ab6b64256ece0c98"
   integrity sha512-IY84uDu9uxetAup5yw0CIIujigl/lM3grwyfpeZFMKGmWHzmKamptjd/sG8K65xkb6tF9awmGMW0qglHQ9hakQ==
@@ -7448,6 +7463,11 @@ react-native-gradle-plugin@^0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.0.7.tgz#96602f909745239deab7b589443f14fce5da2056"
   integrity sha512-+4JpbIx42zGTONhBTIXSyfyHICHC29VTvhkkoUOJAh/XHPEixpuBduYgf6Y4y9wsN1ARlQhBBoptTvXvAFQf5g==
+
+react-native-image-picker@^4.10.0:
+  version "4.10.0"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-4.10.0.tgz#471ca942bd1189134eff63e25903147f54aeb8c2"
+  integrity sha512-QNK4ZnFLD+BdiM1QL1jh9GUALhRXm3MV97crhnTCSMv50H6E4tq3ozgfyxF5uKz0cECbNkWswg4sjgqZKEJtww==
 
 react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.3.1:
   version "1.3.1"
