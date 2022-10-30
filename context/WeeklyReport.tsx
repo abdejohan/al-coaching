@@ -1,4 +1,3 @@
-import { ImageInfo } from "expo-image-picker";
 import React, {
 	useState,
 	FunctionComponent,
@@ -22,18 +21,18 @@ type ContextType = {
 	waist: ValidInput | null;
 	thighs: ValidInput | null;
 	weeklySteps: ValidInput | null;
-	frontImage: ImageInfo | undefined;
-	backImage: ImageInfo | undefined;
-	sideImage: ImageInfo | undefined;
+	frontImage: string | undefined;
+	backImage: string | undefined;
+	sideImage: string | undefined;
 	setWeight: (weight: ValidInput) => void;
 	setBiceps: (biceps: ValidInput) => void;
 	setGlutes: (glutes: ValidInput) => void;
 	setWaist: (waist: ValidInput) => void;
 	setThighs: (thighs: ValidInput) => void;
 	setWeeklySteps: (weeklySteps: ValidInput) => void;
-	setFrontImage: (frontImage: ImageInfo | undefined) => void;
-	setBackImage: (backImage: ImageInfo | undefined) => void;
-	setSideImage: (sideImage: ImageInfo | undefined) => void;
+	setFrontImage: (frontImage: string | undefined) => void;
+	setBackImage: (backImage: string | undefined) => void;
+	setSideImage: (sideImage: string | undefined) => void;
 	/* START OF CHECK-IN PAGE 2 */
 	howHasTheWeekBeen: string;
 	completedChallenges: ValidInput | null;
@@ -122,9 +121,9 @@ export const WeeklyReportContextProvider: FunctionComponent<WeeklyReportProps> =
 	const [waist, setWaist] = useState<ValidInput | null>(null);
 	const [thighs, setThighs] = useState<ValidInput | null>(null);
 	const [weeklySteps, setWeeklySteps] = useState<ValidInput | null>(null);
-	const [frontImage, setFrontImage] = useState<ImageInfo | undefined>();
-	const [backImage, setBackImage] = useState<ImageInfo | undefined>();
-	const [sideImage, setSideImage] = useState<ImageInfo | undefined>();
+	const [frontImage, setFrontImage] = useState<string | undefined>();
+	const [backImage, setBackImage] = useState<string | undefined>();
+	const [sideImage, setSideImage] = useState<string | undefined>();
 	// START OF CHECK-IN PAGE 2
 	const [howHasTheWeekBeen, setHowHasTheWeekBeen] = useState("Jättebra");
 	const [completedChallenges, setCompletedChallenges] = useState<ValidInput | null>(null);
@@ -148,15 +147,9 @@ export const WeeklyReportContextProvider: FunctionComponent<WeeklyReportProps> =
 				waist: waist?.text,
 				thighs: thighs?.text,
 				weeklySteps: weeklySteps?.text,
-				frontImage: frontImage?.base64
-					? `data:image/jpg;base64,${frontImage?.base64}`
-					: undefined,
-				backImage: backImage?.base64
-					? `data:image/jpg;base64,${backImage?.base64}`
-					: undefined,
-				sideImage: sideImage?.base64
-					? `data:image/jpg;base64,${sideImage?.base64}`
-					: undefined,
+				frontImage: frontImage ? `data:image/png;base64,${frontImage}` : undefined,
+				backImage: backImage ? `data:image/png;base64,${backImage}` : undefined,
+				sideImage: sideImage ? `data:image/png;base64,${sideImage}` : undefined,
 				/* START OF CHECK-IN PAGE 2 */
 				howHasTheWeekBeen: howHasTheWeekBeen,
 				completedChallenges: completedChallenges?.text,

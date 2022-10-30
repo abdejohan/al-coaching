@@ -1,12 +1,13 @@
 import { View, Image, TouchableOpacity, Platform } from "react-native";
 import { Divider, TextInput, useTheme } from "react-native-paper";
 import InputValidation from "../InputValidation";
-import { useImagePicker } from "../../hooks/useImagePicker";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useContext, useState } from "react";
 import WeeklyReport from "../../context/WeeklyReport";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Headline, Subheading } from "../../typography";
+import * as DocumentPicker from "expo-document-picker";
+import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 
 const Measures: React.FC = () => {
 	const [uploadImageWidth, setUploadImageWidth] = useState<number>(0);
@@ -31,7 +32,21 @@ const Measures: React.FC = () => {
 		setSideImage,
 	} = useContext(WeeklyReport);
 	const { colors } = useTheme();
-	const { pickImage } = useImagePicker();
+
+	const pickDocument = async () => {
+		let pickedImage = await DocumentPicker.getDocumentAsync({
+			type: "image/*",
+		});
+
+		const manipulatedImageResult = await manipulateAsync(
+			// @ts-ignore
+			pickedImage.uri,
+			[{ resize: { height: 600 } }],
+			{ base64: true, compress: 1, format: SaveFormat.PNG }
+		);
+
+		return manipulatedImageResult.base64;
+	};
 
 	return (
 		<KeyboardAwareScrollView
@@ -187,7 +202,11 @@ const Measures: React.FC = () => {
 							borderColor: colors.highlightText,
 							borderRadius: 5,
 						}}
-						onPress={() => pickImage().then((base64Img) => setFrontImage(base64Img))}>
+						onPress={() =>
+							pickDocument()
+								.then((base64Img) => setFrontImage(base64Img))
+								.catch(() => null)
+						}>
 						{!frontImage && (
 							<View style={{ alignItems: "center" }}>
 								<Headline>Framsida</Headline>
@@ -199,7 +218,7 @@ const Measures: React.FC = () => {
 						{frontImage && (
 							<View>
 								<Image
-									source={{ uri: `data:image/jpeg;base64,${frontImage.base64}` }}
+									source={{ uri: `data:image/png;base64,${frontImage}` }}
 									style={{
 										width: uploadImageWidth,
 										height: uploadImageWidth,
@@ -209,8 +228,14 @@ const Measures: React.FC = () => {
 								/>
 								<TouchableOpacity
 									onPress={() => setFrontImage(undefined)}
-									style={{ position: "absolute", top: 3, right: 5 }}>
-									<FontAwesome5 name='times-circle' size={20} color={colors.error} />
+									style={{
+										position: "absolute",
+										top: 3,
+										right: 5,
+										paddingLeft: 10,
+										paddingBottom: 10,
+									}}>
+									<FontAwesome5 name='times-circle' size={40} color={colors.error} />
 								</TouchableOpacity>
 							</View>
 						)}
@@ -227,13 +252,15 @@ const Measures: React.FC = () => {
 							borderColor: colors.highlightText,
 							borderRadius: 5,
 						}}
-						onPress={() => pickImage().then((base64Img) => setSideImage(base64Img))}>
+						onPress={() =>
+							pickDocument()
+								.then((base64Img) => setSideImage(base64Img))
+								.catch(() => null)
+						}>
 						{!sideImage && (
 							<View style={{ alignItems: "center" }}>
 								<Headline>Profil</Headline>
-								<Subheading
-									onPress={() => pickImage().then((base64Img) => setSideImage(base64Img))}
-									style={{ padding: 10 }}>
+								<Subheading style={{ padding: 10 }}>
 									Tryck för att ladda upp bild
 								</Subheading>
 							</View>
@@ -241,7 +268,7 @@ const Measures: React.FC = () => {
 						{sideImage && (
 							<View>
 								<Image
-									source={{ uri: `data:image/jpeg;base64,${sideImage.base64}` }}
+									source={{ uri: `data:image/png;base64,${sideImage}` }}
 									style={{
 										width: uploadImageWidth,
 										height: uploadImageWidth,
@@ -251,8 +278,14 @@ const Measures: React.FC = () => {
 								/>
 								<TouchableOpacity
 									onPress={() => setSideImage(undefined)}
-									style={{ position: "absolute", top: 3, right: 5 }}>
-									<FontAwesome5 name='times-circle' size={20} color={colors.error} />
+									style={{
+										position: "absolute",
+										top: 3,
+										right: 5,
+										paddingLeft: 10,
+										paddingBottom: 10,
+									}}>
+									<FontAwesome5 name='times-circle' size={40} color={colors.error} />
 								</TouchableOpacity>
 							</View>
 						)}
@@ -269,13 +302,15 @@ const Measures: React.FC = () => {
 							borderColor: colors.highlightText,
 							borderRadius: 5,
 						}}
-						onPress={() => pickImage().then((base64Img) => setBackImage(base64Img))}>
+						onPress={() =>
+							pickDocument()
+								.then((base64Img) => setBackImage(base64Img))
+								.catch(() => null)
+						}>
 						{!backImage && (
 							<View style={{ alignItems: "center" }}>
 								<Headline>Baksida</Headline>
-								<Subheading
-									onPress={() => pickImage().then((base64Img) => setBackImage(base64Img))}
-									style={{ padding: 10 }}>
+								<Subheading style={{ padding: 10 }}>
 									Tryck för att ladda upp bild
 								</Subheading>
 							</View>
@@ -283,7 +318,7 @@ const Measures: React.FC = () => {
 						{backImage && (
 							<View>
 								<Image
-									source={{ uri: `data:image/jpeg;base64,${backImage.base64}` }}
+									source={{ uri: `data:image/png;base64,${backImage}` }}
 									style={{
 										width: uploadImageWidth,
 										height: uploadImageWidth,
@@ -293,8 +328,14 @@ const Measures: React.FC = () => {
 								/>
 								<TouchableOpacity
 									onPress={() => setBackImage(undefined)}
-									style={{ position: "absolute", top: 3, right: 5 }}>
-									<FontAwesome5 name='times-circle' size={20} color={colors.error} />
+									style={{
+										position: "absolute",
+										top: 3,
+										right: 5,
+										paddingLeft: 10,
+										paddingBottom: 10,
+									}}>
+									<FontAwesome5 name='times-circle' size={40} color={colors.error} />
 								</TouchableOpacity>
 							</View>
 						)}
