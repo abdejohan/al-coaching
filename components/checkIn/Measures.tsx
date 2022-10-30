@@ -41,7 +41,7 @@ const Measures: React.FC = () => {
 		const manipulatedImageResult = await manipulateAsync(
 			// @ts-ignore
 			pickedImage.uri,
-			[{ resize: { height: 600 } }],
+			[{ resize: { height: 500 } }],
 			{ base64: true, compress: 1, format: SaveFormat.PNG }
 		);
 

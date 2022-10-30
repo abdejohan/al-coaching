@@ -79,7 +79,7 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 		const manipulatedImageResult = await manipulateAsync(
 			// @ts-ignore
 			pickedImage.uri,
-			[{ resize: { height: 60, width: 60 } }],
+			[{ resize: { height: 200, width: 200 } }],
 			{ base64: true, compress: 1, format: SaveFormat.PNG }
 		);
 
