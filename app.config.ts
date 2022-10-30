@@ -5,7 +5,7 @@ export default {
 		owner: "coach-apps",
 		name: "AL Coaching",
 		slug: "al-coaching",
-		version: "1.6.7",
+		version: "1.6.8",
 		orientation: "portrait",
 		icon: "./assets/images/icon.png",
 		scheme: "myapp",
@@ -37,7 +37,7 @@ export default {
 		android: {
 			package: "app.al.coaching",
 			googleServicesFile: "./google-services.json",
-			versionCode: 52,
+			versionCode: 53,
 			permissions: ["NOTIFICATIONS"],
 			useNextNotificationsApi: true,
 			// softwareKeyboardLayoutMode: "pan",

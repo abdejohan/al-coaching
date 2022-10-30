@@ -6,8 +6,7 @@ import { useContext, useState } from "react";
 import WeeklyReport from "../../context/WeeklyReport";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Headline, Subheading } from "../../typography";
-import * as DocumentPicker from "expo-document-picker";
-import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
+import { pickAvatarDocument, pickAvatarIOS } from "../../functions";
 
 const Measures: React.FC = () => {
 	const [uploadImageWidth, setUploadImageWidth] = useState<number>(0);
@@ -32,21 +31,6 @@ const Measures: React.FC = () => {
 		setSideImage,
 	} = useContext(WeeklyReport);
 	const { colors } = useTheme();
-
-	const pickDocument = async () => {
-		let pickedImage = await DocumentPicker.getDocumentAsync({
-			type: "image/*",
-		});
-
-		const manipulatedImageResult = await manipulateAsync(
-			// @ts-ignore
-			pickedImage.uri,
-			[{ resize: { height: 500 } }],
-			{ base64: true, compress: 1, format: SaveFormat.PNG }
-		);
-
-		return manipulatedImageResult.base64;
-	};
 
 	return (
 		<KeyboardAwareScrollView
@@ -202,11 +186,18 @@ const Measures: React.FC = () => {
 							borderColor: colors.highlightText,
 							borderRadius: 5,
 						}}
-						onPress={() =>
-							pickDocument()
-								.then((base64Img) => setFrontImage(base64Img))
-								.catch(() => null)
-						}>
+						onPress={() => {
+							if (Platform.OS === "android") {
+								pickAvatarDocument()
+									.then((base64Img) => setFrontImage(base64Img))
+									.catch(() => null);
+							}
+							if (Platform.OS === "ios") {
+								pickAvatarIOS()
+									.then((base64Img) => setFrontImage(base64Img))
+									.catch(() => null);
+							}
+						}}>
 						{!frontImage && (
 							<View style={{ alignItems: "center" }}>
 								<Headline>Framsida</Headline>
@@ -252,11 +243,18 @@ const Measures: React.FC = () => {
 							borderColor: colors.highlightText,
 							borderRadius: 5,
 						}}
-						onPress={() =>
-							pickDocument()
-								.then((base64Img) => setSideImage(base64Img))
-								.catch(() => null)
-						}>
+						onPress={() => {
+							if (Platform.OS === "android") {
+								pickAvatarDocument()
+									.then((base64Img) => setSideImage(base64Img))
+									.catch(() => null);
+							}
+							if (Platform.OS === "ios") {
+								pickAvatarIOS()
+									.then((base64Img) => setSideImage(base64Img))
+									.catch(() => null);
+							}
+						}}>
 						{!sideImage && (
 							<View style={{ alignItems: "center" }}>
 								<Headline>Profil</Headline>
@@ -302,11 +300,18 @@ const Measures: React.FC = () => {
 							borderColor: colors.highlightText,
 							borderRadius: 5,
 						}}
-						onPress={() =>
-							pickDocument()
-								.then((base64Img) => setBackImage(base64Img))
-								.catch(() => null)
-						}>
+						onPress={() => {
+							if (Platform.OS === "android") {
+								pickAvatarDocument()
+									.then((base64Img) => setBackImage(base64Img))
+									.catch(() => null);
+							}
+							if (Platform.OS === "ios") {
+								pickAvatarIOS()
+									.then((base64Img) => setBackImage(base64Img))
+									.catch(() => null);
+							}
+						}}>
 						{!backImage && (
 							<View style={{ alignItems: "center" }}>
 								<Headline>Baksida</Headline>

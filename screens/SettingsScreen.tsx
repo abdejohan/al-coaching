@@ -8,6 +8,7 @@ import {
 	TouchableOpacity,
 	AppState,
 	AppStateStatus,
+	Platform,
 } from "react-native";
 import {
 	useTheme,
@@ -31,8 +32,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 import avatar_placeholder from "../assets/images/avatar_placeholder.png";
 import * as Device from "expo-device";
-import * as DocumentPicker from "expo-document-picker";
-import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
+import { pickAvatarDocument, pickAvatarIOS } from "../functions";
 interface SettingsProps {
 	navigation: any;
 }
@@ -69,21 +69,6 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 
 	const darkmodeSwitch = () => {
 		setDarkmode(!darkmode);
-	};
-
-	const pickDocument = async () => {
-		let pickedImage = await DocumentPicker.getDocumentAsync({
-			type: "image/*",
-		});
-
-		const manipulatedImageResult = await manipulateAsync(
-			// @ts-ignore
-			pickedImage.uri,
-			[{ resize: { height: 200, width: 200 } }],
-			{ base64: true, compress: 1, format: SaveFormat.PNG }
-		);
-
-		return manipulatedImageResult.base64;
 	};
 
 	// For some reason, using axios for POSTing avatar will give an error and display the Alert message to the user that saving failed.
@@ -206,9 +191,16 @@ const SettingsScreen: React.FC<SettingsProps> = ({ navigation }) => {
 								mode='text'
 								onPress={() => {
 									hideDialog();
-									pickDocument()
-										.then((base64Img) => uploadAvatar(base64Img))
-										.catch(() => null);
+									if (Platform.OS === "android") {
+										pickAvatarDocument()
+											.then((base64Img) => uploadAvatar(base64Img))
+											.catch(() => null);
+									}
+									if (Platform.OS === "ios") {
+										pickAvatarIOS()
+											.then((base64Img) => uploadAvatar(base64Img))
+											.catch(() => null);
+									}
 								}}
 								style={{ margin: 0 }}>
 								välj foto

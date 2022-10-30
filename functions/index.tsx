@@ -1,7 +1,10 @@
-import { ref, uploadBytes, deleteObject } from "firebase/storage";
-import dayjs from "dayjs";
-import { storage } from "../firebase";
+//import { ref, uploadBytes, deleteObject } from "firebase/storage";
+//import dayjs from "dayjs";
+//import { storage } from "../firebase";
 import { Alert } from "react-native";
+import * as DocumentPicker from "expo-document-picker";
+import * as ImagePicker from "expo-image-picker";
+import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 
 // arg1: image uri taken with expo-image-picker
 // arg2: directory name where the image will be stored (we use the user email adress)
@@ -9,6 +12,7 @@ import { Alert } from "react-native";
 // 2a. Create a firebase storage reference
 // 2b. Generate a timestamp for the file name
 // 3. Upload blob and return filename
+/*
 const uploadChatImageAsync = async (imageUri: string, userEmail: string) => {
 	let filename: string = "";
 
@@ -79,5 +83,90 @@ const deleteAvatarImage = (userEmail: string) => {
 
 	return null;
 };
+ */
 
-export { uploadChatImageAsync, uploadAvatarImageAsync, deleteAvatarImage };
+const pickImageIOS = async () => {
+	const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+	if (status === "granted") {
+		const pickedImage = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			quality: 1,
+		});
+
+		if (!pickedImage.cancelled) {
+			const manipulatedImageResult = await manipulateAsync(
+				pickedImage.uri,
+				[{ resize: { height: 200, width: 200 } }],
+				{ base64: true, compress: 1, format: SaveFormat.PNG }
+			);
+
+			return manipulatedImageResult.base64;
+		}
+	} else {
+		Alert.alert("Saknar tillgång till bilder. Ändra inställningar i mobilen.");
+	}
+};
+
+const pickAvatarIOS = async () => {
+	const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+	if (status === "granted") {
+		const pickedImage = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			quality: 1,
+		});
+
+		if (!pickedImage.cancelled) {
+			const manipulatedImageResult = await manipulateAsync(
+				pickedImage.uri,
+				[{ resize: { height: 200, width: 200 } }],
+				{ base64: true, compress: 1, format: SaveFormat.PNG }
+			);
+
+			return manipulatedImageResult.base64;
+		}
+	} else {
+		Alert.alert("Saknar tillgång till bilder. Ändra inställningar i mobilen.");
+	}
+};
+
+const pickDocument = async () => {
+	let pickedImage = await DocumentPicker.getDocumentAsync({
+		type: "image/*",
+	});
+
+	const manipulatedImageResult = await manipulateAsync(
+		// @ts-ignore
+		pickedImage.uri,
+		[{ resize: { height: 500 } }],
+		{ base64: true, compress: 1, format: SaveFormat.PNG }
+	);
+
+	return manipulatedImageResult.base64;
+};
+
+const pickAvatarDocument = async () => {
+	let pickedImage = await DocumentPicker.getDocumentAsync({
+		type: "image/*",
+	});
+
+	const manipulatedImageResult = await manipulateAsync(
+		// @ts-ignore
+		pickedImage.uri,
+		[{ resize: { height: 500 } }],
+		{ base64: true, compress: 1, format: SaveFormat.PNG }
+	);
+
+	return manipulatedImageResult.base64;
+};
+
+export {
+	/*
+	uploadChatImageAsync, 
+	uploadAvatarImageAsync, 
+	deleteAvatarImage, 
+	*/
+	pickImageIOS,
+	pickAvatarIOS,
+	pickDocument,
+	pickAvatarDocument,
+};
