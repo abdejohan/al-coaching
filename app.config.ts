@@ -37,7 +37,7 @@ export default {
 		android: {
 			package: "app.al.coaching",
 			googleServicesFile: "./google-services.json",
-			versionCode: 44,
+			versionCode: 51,
 			permissions: ["NOTIFICATIONS"],
 			useNextNotificationsApi: true,
 			// softwareKeyboardLayoutMode: "pan",
@@ -63,6 +63,13 @@ export default {
 				{
 					icon: "./assets/images/icon.png",
 					color: "#1B3E5B",
+				},
+			],
+			[
+				"expo-image-picker",
+				{
+					photosPermission:
+						"The app accesses your photos to let you share them with your coach.",
 				},
 			],
 		],
