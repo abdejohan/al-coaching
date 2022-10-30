@@ -52,7 +52,7 @@ const StartScreen: React.FC<StartProps> = ({ navigation, route }) => {
 	// This will update the charts values if the weekly report has successfully been submitted
 	useEffect(() => {
 		if (status === "success") {
-			fetchSizes().catch((error) => Alert.alert("Sizes " + error.response.data.error));
+			fetchSizes().catch((error) => Alert.alert("Kunde tyvärr inte ladda dina värden.")); // dev error message: "Sizes " + error.response.data.error
 		}
 	}, [status]);
 
