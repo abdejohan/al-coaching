@@ -91,16 +91,11 @@ const pickImageIOS = async () => {
 		const pickedImage = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
 			quality: 1,
+			base64: true,
 		});
 
 		if (!pickedImage.cancelled) {
-			const manipulatedImageResult = await manipulateAsync(
-				pickedImage.uri,
-				[{ resize: { height: 200, width: 200 } }],
-				{ base64: true, compress: 1, format: SaveFormat.PNG }
-			);
-
-			return manipulatedImageResult.base64;
+			return pickedImage.base64;
 		}
 	} else {
 		Alert.alert("Saknar tillgång till bilder. Ändra inställningar i mobilen.");
@@ -113,16 +108,11 @@ const pickAvatarIOS = async () => {
 		const pickedImage = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
 			quality: 1,
+			base64: true,
 		});
 
 		if (!pickedImage.cancelled) {
-			const manipulatedImageResult = await manipulateAsync(
-				pickedImage.uri,
-				[{ resize: { height: 200, width: 200 } }],
-				{ base64: true, compress: 1, format: SaveFormat.PNG }
-			);
-
-			return manipulatedImageResult.base64;
+			return pickedImage.base64;
 		}
 	} else {
 		Alert.alert("Saknar tillgång till bilder. Ändra inställningar i mobilen.");
@@ -137,7 +127,7 @@ const pickDocument = async () => {
 	const manipulatedImageResult = await manipulateAsync(
 		// @ts-ignore
 		pickedImage.uri,
-		[{ resize: { height: 500 } }],
+		[{ resize: {} }],
 		{ base64: true, compress: 1, format: SaveFormat.PNG }
 	);
 
@@ -152,7 +142,7 @@ const pickAvatarDocument = async () => {
 	const manipulatedImageResult = await manipulateAsync(
 		// @ts-ignore
 		pickedImage.uri,
-		[{ resize: { height: 500 } }],
+		[{ resize: {} }],
 		{ base64: true, compress: 1, format: SaveFormat.PNG }
 	);
 
