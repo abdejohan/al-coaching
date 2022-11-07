@@ -6,7 +6,7 @@ import { useContext, useState } from "react";
 import WeeklyReport from "../../context/WeeklyReport";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Headline, Subheading } from "../../typography";
-import { pickAvatarDocument, pickAvatarIOS } from "../../functions";
+import { pickDocument, pickImageIOS } from "../../functions";
 
 const Measures: React.FC = () => {
 	const [uploadImageWidth, setUploadImageWidth] = useState<number>(0);
@@ -188,12 +188,12 @@ const Measures: React.FC = () => {
 						}}
 						onPress={() => {
 							if (Platform.OS === "android") {
-								pickAvatarDocument()
+								pickDocument()
 									.then((base64Img) => setFrontImage(base64Img))
 									.catch(() => null);
 							}
 							if (Platform.OS === "ios") {
-								pickAvatarIOS()
+								pickImageIOS()
 									.then((base64Img) => setFrontImage(base64Img))
 									.catch(() => null);
 							}
@@ -245,12 +245,12 @@ const Measures: React.FC = () => {
 						}}
 						onPress={() => {
 							if (Platform.OS === "android") {
-								pickAvatarDocument()
+								pickDocument()
 									.then((base64Img) => setSideImage(base64Img))
 									.catch(() => null);
 							}
 							if (Platform.OS === "ios") {
-								pickAvatarIOS()
+								pickImageIOS()
 									.then((base64Img) => setSideImage(base64Img))
 									.catch(() => null);
 							}
@@ -302,12 +302,12 @@ const Measures: React.FC = () => {
 						}}
 						onPress={() => {
 							if (Platform.OS === "android") {
-								pickAvatarDocument()
+								pickDocument()
 									.then((base64Img) => setBackImage(base64Img))
 									.catch(() => null);
 							}
 							if (Platform.OS === "ios") {
-								pickAvatarIOS()
+								pickImageIOS()
 									.then((base64Img) => setBackImage(base64Img))
 									.catch(() => null);
 							}

@@ -127,7 +127,7 @@ const pickDocument = async () => {
 	const manipulatedImageResult = await manipulateAsync(
 		// @ts-ignore
 		pickedImage.uri,
-		[{ resize: {} }],
+		[],
 		{ base64: true, compress: 1, format: SaveFormat.PNG }
 	);
 
@@ -142,7 +142,7 @@ const pickAvatarDocument = async () => {
 	const manipulatedImageResult = await manipulateAsync(
 		// @ts-ignore
 		pickedImage.uri,
-		[{ resize: {} }],
+		[],
 		{ base64: true, compress: 1, format: SaveFormat.PNG }
 	);
 
