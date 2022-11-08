@@ -6,7 +6,6 @@ import React, {
 	useCallback,
 } from "react";
 import * as SecureStore from "expo-secure-store";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LoginResponse, LoginWithTokenResponse } from "../types/index";
 import useAxios from "axios-hooks";
 import { User } from "../types/types";
@@ -29,7 +28,7 @@ type ContextType = {
 	setDarkMode: (value: boolean) => void;
 	isLoggingOut: boolean;
 	login: (response: LoginResponse) => void;
-	updateUser: () => void;
+	updateUser: () => Promise<void>;
 	initialRoute: string;
 	userLoading: boolean;
 };
@@ -42,7 +41,7 @@ const AuthContext = React.createContext<ContextType>({
 	darkMode: false,
 	setDarkMode: () => {},
 	login: () => {},
-	updateUser: () => {},
+	updateUser: async () => {},
 	initialRoute: "Intro",
 	userLoading: false,
 });
@@ -65,7 +64,7 @@ export const AuthContextProvider: FunctionComponent = (props: any) => {
 				url: `${Constants!.manifest!.extra!.apiUrl}/client/get`,
 				headers: { Authorization: "Bearer " + jwtToken },
 			})
-				.then(async (response) => {
+				.then(async (response: any) => {
 					setUser(response.data.client);
 					//console.log(response.data.client);
 					setToken(jwtToken);
@@ -95,8 +94,8 @@ export const AuthContextProvider: FunctionComponent = (props: any) => {
 				url: `${Constants!.manifest!.extra!.apiUrl}/client/get`,
 				headers: { Authorization: "Bearer " + token },
 			})
-				.then((res) => {
-					setUser(res.data.client);
+				.then((response: any) => {
+					setUser(response.data.client);
 				})
 				.catch(() => undefined);
 		}

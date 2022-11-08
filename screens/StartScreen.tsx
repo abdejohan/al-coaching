@@ -6,8 +6,9 @@ import {
 	Alert,
 	ImageBackground,
 	TouchableOpacity,
+	RefreshControl,
 } from "react-native";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import AuthContext from "../context/Auth";
 import CircleChart from "../components/CircleChart";
 import LineChart from "../components/LineChart";
@@ -30,9 +31,10 @@ interface StartProps {
 
 const StartScreen: React.FC<StartProps> = ({ navigation, route }) => {
 	const status = route?.params?.status;
-	const { user, initialRoute, darkMode } = useContext(AuthContext);
+	const { user, initialRoute, darkMode, updateUser } = useContext(AuthContext);
 	const { colors, roundness } = useTheme();
 	const { useAxios } = useAxiosAuthenticated();
+	const [refreshing, setRefreshing] = useState(false);
 	const [{ data: sizesData, loading: sizesLoading, error: sizesError }, fetchSizes] =
 		useAxios({
 			url: `/measures/get`,
@@ -44,6 +46,13 @@ const StartScreen: React.FC<StartProps> = ({ navigation, route }) => {
 		},
 		{ manual: true }
 	);
+
+	const onRefresh = useCallback(() => {
+		setRefreshing(true);
+		updateUser()
+			.then(() => setRefreshing(false))
+			.catch(() => {});
+	}, []);
 
 	useEffect(() => {
 		initialRoute === "Intro" && navigation.navigate("IntroSlider");
@@ -77,7 +86,17 @@ const StartScreen: React.FC<StartProps> = ({ navigation, route }) => {
 				alignItems: "center",
 				justifyContent: "space-between",
 				paddingBottom: 50,
-			}}>
+			}}
+			refreshControl={
+				<RefreshControl
+					titleColor={colors.primary}
+					colors={[colors.primary]}
+					tintColor={colors.primary}
+					progressBackgroundColor={colors.surface}
+					refreshing={refreshing}
+					onRefresh={onRefresh}
+				/>
+			}>
 			<StatusBar style={darkMode ? "light" : "dark"} />
 			<View
 				style={{
