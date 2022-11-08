@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useCallback, useState } from "react";
 import { StyleSheet, ScrollView, View, RefreshControl } from "react-native";
 import { IconButton, useTheme, List } from "react-native-paper";
+import ListItem from "../components/common/ListItem";
 import { useAxiosAuthenticated } from "../hooks/useAxiosAuthenticated";
 import { Paragraph, Subheading } from "../typography";
 
@@ -43,45 +44,14 @@ const WorkoutScreen: React.FC<WorkoutProps> = ({ navigation }) => {
 			{workoutData &&
 				!workoutLoading &&
 				workoutData.map((workoutSchema: any, index: number) => (
-					<List.Item
+					<ListItem
 						key={index}
-						borderless
-						style={[
-							styles.listItem,
-							{ borderRadius: roundness, backgroundColor: colors.surface },
-						]}
 						title={workoutSchema.name}
-						titleStyle={{
-							fontSize: 16,
-							color: colors.highlightText,
-							fontFamily: "ubuntu-medium",
-						}}
-						descriptionStyle={{
-							color: colors.text,
-							fontSize: 16,
-							fontFamily: "ubuntu-light",
-						}}
 						onPress={() =>
 							navigation.navigate("WorkoutSchemaScreen", {
 								workoutSchema: workoutSchema.workout_days,
 							})
 						}
-						right={() => (
-							<View style={{ justifyContent: "center" }}>
-								<View
-									style={{
-										backgroundColor: colors.onSurface,
-										width: 40,
-										height: 40,
-										justifyContent: "center",
-										alignItems: "center",
-										borderRadius: roundness,
-										marginRight: 10,
-									}}>
-									<IconButton icon='arrow-right' size={18} color={colors.highlightText} />
-								</View>
-							</View>
-						)}
 					/>
 				))}
 			{workoutData?.length === 0 && !workoutLoading && (
